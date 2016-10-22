@@ -3,41 +3,44 @@
         <div class="row">
         <div class="col-md-6 col-md-offset-3">
         <div class="well bs-component">
-            <form class="form-horizontal">
+            <form class="form-horizontal" method="post" action="/register">
             <fieldset>
-                <legend>Регистрация</legend>
+                <legend>Р РµРіРёСЃС‚СЂР°С†РёСЏ</legend>
                 <div class="form-group">
-                    <label for="inputLogin" class="col-md-2 control-label">Логин</label>
+                    <label for="inputLogin" class="col-md-2 control-label">Р›РѕРіРёРЅ</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" id="inputLogin" placeholder="Логин">
+                        <input type="text" class="form-control" id="inputLogin" placeholder="Р›РѕРіРёРЅ"
+                               name="username" value="${username}">
                     </div>
                 </div>
                    
                 <div class="form-group">                       
-                    <label for="inputPasswod" class="col-md-2 control-label">Пароль</label>
+                    <label for="inputPasswod" class="col-md-2 control-label">РџР°СЂРѕР»СЊ</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" id="inputPasswod" placeholder="Пароль">
-                        <input type="text" class="form-control" placeholder="Повторите пароль">
+                        <input type="text" class="form-control" id="inputPasswod" placeholder="РџР°СЂРѕР»СЊ" name="password">
+                        <input type="text" class="form-control" placeholder="РџРѕРІС‚РѕСЂРёС‚Рµ РїР°СЂРѕР»СЊ" name="password_repeat">
                     </div>
                 </div>
                 
                 <div class="form-group">                       
-                    <label for="inputName" class="col-md-2 control-label">Имя</label>
+                    <label for="inputName" class="col-md-2 control-label">РРјСЏ</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="Имя">
+                        <input type="text" class="form-control" id="inputName" placeholder="РРјСЏ"
+                               name="name" value="${name}">
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="inputEmail" class="col-md-2 control-label">Почта</label>
+                    <label for="inputEmail" class="col-md-2 control-label">РџРѕС‡С‚Р°</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" id="inputEmail" placeholder="Почта">
+                        <input type="text" class="form-control" id="inputEmail" placeholder="РџРѕС‡С‚Р°"
+                               name="email" value="${email}">
                     </div>
                 </div>
                 <hr/>
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-2">            
-                        <button type="submit" class="btn btn-default">Зарегестрироваться</button>
+                        <button type="submit" class="btn btn-default">Р—Р°СЂРµРіРµСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ</button>
                     </div>
                 </div>     
             </fieldset>

@@ -6,10 +6,7 @@
  */
 package app.models;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -21,6 +18,27 @@ public class Users {
 
     private static Connection connection = DB.getInstance().getConnection();
 
+    public static User get(String username) throws SQLException {
+        PreparedStatement st = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
+        st.setString(1, username);
+        ResultSet rs = st.executeQuery();
+        if(!rs.next())
+            return null;
+
+        return new User(rs.getString("username"), rs.getString("password"), rs.getString("name"), null);
+    }
+
+    public static boolean create(User user) throws SQLException {
+        PreparedStatement st = connection.prepareStatement("INSERT INTO users (username, password, name)" +
+                "VALUES (?, ?, ?)");
+
+        st.setString(1, user.getUsername());
+        st.setString(2, user.getPassword());
+        st.setString(3, user.getName());
+
+        return st.executeUpdate() > 0;
+    }
+
     public static String getPassword(String username) throws SQLException {
         Statement st = connection.createStatement();
         ResultSet rs = st.executeQuery("SELECT password FROM users WHERE username = "+username);
@@ -29,5 +47,9 @@ public class Users {
             return null;
 
         return rs.getString("password");
+    }
+
+    public static boolean exists(String username) throws SQLException {
+        return get(username) != null;
     }
 }

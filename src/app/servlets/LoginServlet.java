@@ -1,6 +1,7 @@
 package app.servlets;
 
 import app.Helpers;
+import app.models.User;
 import app.models.Users;
 
 import javax.servlet.ServletException;
@@ -20,38 +21,37 @@ import java.util.Map;
  * 11-501
  * Login page
  */
-public class LoginServlet extends HttpServlet {
-    private static Map<String, String> errors = new HashMap<>();
-    static {
-        errors.put("password", "Invalid password");
-        errors.put("username", "User doesn't exist");
-        errors.put("db", "Database error");
-    }
-
+public class LoginServlet extends FormServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String, String> map = getParameterMap(request);
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         try {
             //todo db
-            String realPassword = Users.getPassword(username);
-            if(realPassword == null) {
-                response.sendRedirect("/login?error=username");
+            User user = Users.get(username);
+            if(user == null) {
+                map.put("error", "username_404");
+                redirect(request, response, map);
             }
-            else if(password.equals(realPassword)) {
+            else if(!user.getPassword().equals(password)) {
+                map.put("error", "password_invalid");
+                redirect(request, response, map);
+            }
+            else {
                 request.getSession().setAttribute("username", username);
 
-                Cookie userCookie = new Cookie("username", username);
-                userCookie.setMaxAge(60*60*24*7);
-                response.addCookie(userCookie);
-
+                if(request.getParameter("remember") != null) {
+                    Cookie userCookie = new Cookie("username", username);
+                    userCookie.setMaxAge(60*60*24*7);
+                    response.addCookie(userCookie);
+                }
                 response.sendRedirect("/");
-            } else {
-                response.sendRedirect("/login?error=password&login="+username);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("/login?error=db");
+            map.put("error", "db");
+            redirect(request, response, map);
         }
     }
 
@@ -70,7 +70,7 @@ public class LoginServlet extends HttpServlet {
         Map<String, String> data = new HashMap<>();
         data.put("username", oldUsername);
         if(error != null)
-            data.put("error", errors.get(error));
+            data.put("error", Helpers.getErrorMessage(error));
 
         Helpers.render(getServletContext(), response, "login.ftl", data);
     }

@@ -1,9 +1,3 @@
-/**
- * By Anton Krylov (anthony.kryloff@gmail.com)
- * Date: 10/19/16 6:57 PM
- * 11-501
- * Task
- */
 package app.servlets;
 
 import javax.servlet.ServletException;
@@ -23,7 +17,6 @@ public class LogoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
         req.getSession().removeAttribute("username");
 
         Cookie replacement = new Cookie("username", "");

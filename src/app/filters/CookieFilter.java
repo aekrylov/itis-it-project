@@ -4,6 +4,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -20,8 +21,9 @@ public class CookieFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpRequest = (HttpServletRequest)req;
         Cookie[] cookies = httpRequest.getCookies();
+        String sessionUsername = (String) httpRequest.getSession().getAttribute("username");
 
-        if(cookies != null) {
+        if(cookies != null && sessionUsername == null) {
             for (Cookie cookie : cookies) {
                 //todo security
                 if (cookie.getName().equals("username")) {
@@ -31,7 +33,6 @@ public class CookieFilter implements Filter {
                 }
             }
         }
-
         chain.doFilter(req, resp);
     }
 
