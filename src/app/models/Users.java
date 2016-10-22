@@ -1,9 +1,3 @@
-/**
- * By Anton Krylov (anthony.kryloff@gmail.com)
- * Date: 10/19/16 7:37 PM
- * 11-501
- * Task
- */
 package app.models;
 
 import java.sql.*;
@@ -25,16 +19,17 @@ public class Users {
         if(!rs.next())
             return null;
 
-        return new User(rs.getString("username"), rs.getString("password"), rs.getString("name"), null);
+        return new User(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
     }
 
     public static boolean create(User user) throws SQLException {
-        PreparedStatement st = connection.prepareStatement("INSERT INTO users (username, password, name)" +
-                "VALUES (?, ?, ?)");
+        PreparedStatement st = connection.prepareStatement("INSERT INTO users (username, password, name, email)" +
+                "VALUES (?, ?, ?, ?)");
 
         st.setString(1, user.getUsername());
         st.setString(2, user.getPassword());
         st.setString(3, user.getName());
+        st.setString(4, user.getEmail());
 
         return st.executeUpdate() > 0;
     }

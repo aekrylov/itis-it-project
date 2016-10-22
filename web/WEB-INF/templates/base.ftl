@@ -13,22 +13,20 @@
         <link href="static/css/style.css" rel="stylesheet">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<#--
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+-->
+        <script src="static/js/bootstrap.min.js"></script>
     </head>
     <body style="margin-top: 70px;">
 
-    <#include 'header.ftl'>
-    <div class="container">
-    <@body>
-            Dummy body
-    </@body>
-    <#include 'footer.ftl'>
-    </div>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="static/js/bootstrap.min.js"></script>
+        <#include 'header.ftl'>
+        <div class="container">
+        <@body>
+                Dummy body
+        </@body>
+        </div>
+        <#include 'footer.ftl'>
     </body>
 </html>
 </#macro>
