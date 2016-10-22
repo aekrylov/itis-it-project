@@ -5,7 +5,10 @@ import freemarker.template.TemplateException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +43,18 @@ public class Helpers {
         } catch (TemplateException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String encrypt(String str) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(str.getBytes());
+            byte[] digest =  md.digest();
+            return DatatypeConverter.printHexBinary(digest);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

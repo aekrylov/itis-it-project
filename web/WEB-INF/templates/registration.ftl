@@ -10,7 +10,7 @@
                     <label for="inputLogin" class="col-md-2 control-label">Логин</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" id="inputLogin" placeholder="Логин"
-                               name="username" value="${username}">
+                               name="username" value="${username!}">
                     </div>
                 </div>
                    
@@ -26,7 +26,7 @@
                     <label for="inputName" class="col-md-2 control-label">Имя</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" id="inputName" placeholder="Имя"
-                               name="name" value="${name}">
+                               name="name" value="${name!}">
                     </div>
                 </div>
                 
@@ -34,7 +34,7 @@
                     <label for="inputEmail" class="col-md-2 control-label">Почта</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" id="inputEmail" placeholder="Почта"
-                               name="email" value="${email}">
+                               name="email" value="${email!}">
                     </div>
                 </div>
                 <hr/>

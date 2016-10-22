@@ -34,7 +34,7 @@ public class LoginServlet extends FormServlet {
                 map.put("error", "username_404");
                 redirect(request, response, map);
             }
-            else if(!user.getPassword().equals(password)) {
+            else if(!user.getPassword().equals(Helpers.encrypt(password))) {
                 map.put("error", "password_invalid");
                 redirect(request, response, map);
             }

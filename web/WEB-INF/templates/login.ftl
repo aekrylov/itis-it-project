@@ -7,7 +7,7 @@
                 <fieldset>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input type="text" class="form-control" placeholder="Логин" name="username" value="${username}">
+                            <input type="text" class="form-control" placeholder="Логин" name="username" value="${username!}">
                         </div>  
                     </div> 
                     <div class="form-group">
