@@ -1,6 +1,7 @@
 package app.models;
 
 import java.sql.*;
+import java.util.NoSuchElementException;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -19,7 +20,17 @@ public class Users {
         if(!rs.next())
             return null;
 
-        return new User(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
+        return fromResultSet(rs);
+    }
+
+    public static User get(int id) throws SQLException {
+        PreparedStatement st = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
+        st.setInt(1, id);
+        ResultSet rs = st.executeQuery();
+        if(!rs.next())
+            throw new NoSuchElementException("User not found");
+
+        return fromResultSet(rs);
     }
 
     public static boolean create(User user) throws SQLException {
@@ -46,5 +57,10 @@ public class Users {
 
     public static boolean exists(String username) throws SQLException {
         return get(username) != null;
+    }
+
+    private static User fromResultSet(ResultSet rs) throws SQLException {
+        return new User(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("email"),
+                rs.getInt("id"), rs.getString("photo"), rs.getDouble("rating"));
     }
 }

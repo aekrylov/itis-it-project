@@ -3,6 +3,8 @@
 Used computers marketplace
 
 - [x] Authorization
-- [ ] Profile
+- [x] Profile
 - [ ] Items
+- [ ] Search
 - [ ] Reviews
+- [ ] Messages

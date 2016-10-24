@@ -1,14 +1,17 @@
 package app;
 
+import app.models.Users;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,9 +36,16 @@ public class Helpers {
         return errors.get(errorCode);
     }
 
-    public static void render(ServletContext sc, HttpServletResponse response, String templateName, Object dataModel)
+    public static void render(ServletContext sc, HttpServletRequest request, HttpServletResponse response, String templateName, Object dataModel)
             throws IOException {
 
+        if(dataModel instanceof Map && request.getSession().getAttribute("username") != null) {
+            try {
+                ((Map)dataModel).put("current_user", Users.get((String) request.getSession().getAttribute("username")));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         Template tmpl = ConfigSingleton.getConfig(sc).getTemplate(templateName);
         try {
             response.setContentType("text/html;charset=UTF-8");

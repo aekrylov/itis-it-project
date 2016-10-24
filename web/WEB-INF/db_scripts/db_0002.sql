@@ -1,0 +1,1 @@
+ALTER TABLE buy_sells ADD COLUMN "date" TIMESTAMP DEFAULT current_timestamp;

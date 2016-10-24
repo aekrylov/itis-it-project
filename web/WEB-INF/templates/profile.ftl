@@ -4,19 +4,27 @@
         
             <div class="col-md-4">
 
-                <h3 > Крылов Антон </h3>
-                <img src="profile_photo/1.jpg" width="250" height="375" />
+                <h3>${user.name}</h3>
+                <img src="${user.photo!}" width="250" height="375" />
 
-                <a href="#" class="btn btn-default">Изменить фотографию</a>
-                <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-cog"></span></a>
+                <#if owner??>
+                    <a href="#" class="btn btn-default">Изменить фотографию</a>
+                    <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-cog"></span></a>
+                <#else>
+                    <a href="#" class="btn btn-default">Написать сообщение</a>
+                </#if>
 
                 <hr/>
 
-                <p><b>Почта: </b> anton@gmail.com</p>
-                <p><b>Товаров: </b> 2</p>
-                <p><b>Рейтинг: </b> 4.7</p>
+                <#if user.email??><p><b>Почта: </b> ${user.email}</p></#if>
+                <p><b>Товаров: </b> ${post_count}</p>
+                <p><b>Рейтинг: </b> ${user.rating?string["0.#"]}</p>
                 <h3>Тут будут звезды </h3>
-                <a href="#" class="btn btn-default" align="right">Товары</a> <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></a>
+
+                <a href="#" class="btn btn-default" align="right">Товары</a>
+                <#if owner??>
+                    <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></a>
+                </#if>
 
             </div>
 
@@ -36,28 +44,20 @@
                 </div>
 
 
-                <div class="well bs-component">
-                <fieldset>
+                <#list feedbacks as f >
+                    <div class="well bs-component">
+                        <fieldset>
 
-                    <legend>Маликов Дамир</legend>
-                    <p><b>Оценка: </b> 4.5</p>
-                    <p>Уинстон ощутил пустоту в груди. Это — двоемыслие. Им овладело чувство смертельной беспомощности. Если бы он был уверен, что О’Брайен солгал, это не казалось бы таким важным. Но очень может быть, что О’Брайен в самом деле забыл фотографию. А если так, то он уже забыл и то, как отрицал, что ее помнит, и что это забыл — тоже забыл. Можно ли быть уверенным, что это просто фокусы? А вдруг такой безумный вывих в мозгах на самом деле происходит? — вот что приводило Уинстона в отчаяние.</p>
-                    <p align="right">26 октября 2016</p>
+                            <legend>${f.author.name}</legend>
+                            <p><b>Оценка: </b> ${f.score}</p>
+                            <p>${f.comment}</p>
+                            <#-- TODO date format -->
+                            <p align="right">${f.date}</p>
 
-                </fieldset> 
-                </div>
-                
-                <div class="well bs-component">
-                <fieldset>
+                        </fieldset>
+                    </div>
 
-                    <legend>Маликов Дамир</legend>
-                    <p><b>Оценка: </b> 4.5</p>
-                    <p>Уинстон ощутил пустоту в груди. Это — двоемыслие. Им овладело чувство смертельной беспомощности. Если бы он был уверен, что О’Брайен солгал, это не казалось бы таким важным. Но очень может быть, что О’Брайен в самом деле забыл фотографию. А если так, то он уже забыл и то, как отрицал, что ее помнит, и что это забыл — тоже забыл. Можно ли быть уверенным, что это просто фокусы? А вдруг такой безумный вывих в мозгах на самом деле происходит? — вот что приводило Уинстона в отчаяние.</p>
-                    <p align="right">26 октября 2016</p>
-
-                </fieldset> 
-                </div>
-                      
+                </#list>
             </div>
             
         </div>

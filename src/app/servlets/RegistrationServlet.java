@@ -1,12 +1,10 @@
 package app.servlets;
 
 import app.Helpers;
-import app.QueryString;
 import app.models.User;
 import app.models.Users;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -82,6 +80,6 @@ public class RegistrationServlet extends FormServlet {
             dataModel.putAll(getParameterMap(request));
         }
 
-        Helpers.render(getServletContext(), response, "registration.ftl", dataModel);
+        Helpers.render(getServletContext(), request, response, "registration.ftl", dataModel);
     }
 }
