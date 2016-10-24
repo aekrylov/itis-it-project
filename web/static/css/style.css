@@ -9,3 +9,23 @@ img  {
     margin-bottom: 15px;
     margin-top:  15px;
 }
+a {
+    color: black;
+}
+.badge {
+    background-color: #696969;
+    color: #ffffff;
+}
+.btn-primary{
+    background-color: #696969;
+    color: #ffffff;
+    background-image: none;
+    border: none;
+}
+.pager{
+    float:right;
+}
+.panel-default .panel-heading{
+    background-color: #696969;
+    color: #ffffff;
+}
