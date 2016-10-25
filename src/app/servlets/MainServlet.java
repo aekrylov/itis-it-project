@@ -1,5 +1,7 @@
 package app.servlets;
 
+import app.Helpers;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,6 @@ import java.io.IOException;
  */
 public class MainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //todo
+        Helpers.render(getServletContext(), request, response, "main.ftl", null);
     }
 }

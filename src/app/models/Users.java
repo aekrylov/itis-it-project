@@ -59,7 +59,7 @@ public class Users {
         return get(username) != null;
     }
 
-    private static User fromResultSet(ResultSet rs) throws SQLException {
+    static User fromResultSet(ResultSet rs) throws SQLException {
         return new User(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("email"),
                 rs.getInt("id"), rs.getString("photo"), rs.getDouble("rating"));
     }

@@ -23,6 +23,10 @@
         <servlet-name>ProfileServlet</servlet-name>
         <servlet-class>app.servlets.ProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChatListServlet</servlet-name>
+        <servlet-class>app.servlets.ChatListServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>MainServlet</servlet-name>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>RegistrationServlet</servlet-name>
         <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatListServlet</servlet-name>
+        <url-pattern>/user/chats</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>
@@ -61,5 +69,7 @@
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
         <servlet-name>LogoutServlet</servlet-name>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-name>ChatListServlet</servlet-name>
     </filter-mapping>
 </web-app>

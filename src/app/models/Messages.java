@@ -1,0 +1,97 @@
+package app.models;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+/**
+ * By Anton Krylov (anthony.kryloff@gmail.com)
+ * Date: 10/25/16 9:02 PM
+ */
+public class Messages extends DAO {
+
+    public static Message get(int id) throws SQLException {
+        PreparedStatement st = connection.prepareStatement(
+                "SELECT * FROM messages " +
+                "JOIN conversations on conversations.id = messages.conversation " +
+                "WHERE messages.id = ? ");
+        st.setInt(1, id);
+
+        ResultSet rs = st.executeQuery();
+        if(rs.next()) {
+            int from = rs.getInt("from");
+            int to = rs.getInt("user1");
+            if(from == to)
+                to = rs.getInt("user2");
+
+            return new Message(id, Users.get(from), Users.get(to),
+                    rs.getString("text"), rs.getDate("date"), rs.getBoolean("read"));
+        }
+        return null;
+    }
+
+    public static List<Message> getConversation(User user1, User user2) throws SQLException {
+        int id1 = user1.getId();
+        int id2 = user2.getId();
+        if(id1 > id2) {
+            id1 = user2.getId();
+            id2 = user1.getId();
+        }
+
+        PreparedStatement st = connection.prepareStatement(
+                "SELECT messages.id as id, \"from\", text, date FROM conversations " +
+                        "INNER JOIN messages on conversations.id = messages.conversation " +
+                        "WHERE user1 = ? AND user2 = ?"
+        );
+
+        st.setInt(1, id1);
+        st.setInt(2, id2);
+
+        ResultSet rs = st.executeQuery();
+
+        List<Message> list = new ArrayList<>(rs.getFetchSize());
+        while (rs.next()) {
+            User from = user1;
+            User to = user2;
+            if(rs.getInt("from") != from.getId()) {
+                from = user2;
+                to = user1;
+            }
+            list.add(new Message(rs.getInt("id"), from, to, rs.getString("text"), rs.getDate("date"), rs.getBoolean("read")));
+        }
+
+        return list;
+    }
+
+    public static List<Conversation> getConversations(User user) throws SQLException {
+        //TODO use unread_count field instead?
+        PreparedStatement st = connection.prepareStatement(
+                "SELECT t.*, " +
+                        "(SELECT count(1) FROM messages WHERE read = FALSE AND conversation = conv_id) as c, " +
+                        "(SELECT messages.id FROM messages WHERE conversation = conv_id ORDER BY date DESC LIMIT 1) as mid " +
+                        "FROM " +
+                        "(SELECT conversations.id as conv_id, conversations.user1, conversations.user2, users.* from conversations " +
+                        "JOIN users on (conversations.user1 = users.id AND user2 = ?) or " +
+                        "(conversations.user2 = users.id AND user1 = ?) ) as t "
+        );
+        st.setInt(1, user.getId());
+        st.setInt(2, user.getId());
+
+        ResultSet rs = st.executeQuery();
+
+        List<Conversation> list = new ArrayList<>(rs.getFetchSize());
+
+        while (rs.next()) {
+            User user2 = Users.fromResultSet(rs);
+            list.add(new Conversation(rs.getInt("conv_id"), user, user2, rs.getInt("c"), Messages.get(rs.getInt("mid"))));
+        }
+
+        return list;
+
+    }
+
+
+}
