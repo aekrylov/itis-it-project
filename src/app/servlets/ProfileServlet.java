@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
 public class ProfileServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer id = Integer.valueOf(request.getParameter("id"));
+        Integer id = request.getParameter("id") == null ? 0 : Integer.valueOf(request.getParameter("id"));
 
         try {
             User user = Users.get(id);

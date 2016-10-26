@@ -18,7 +18,7 @@ public class Users {
         st.setString(1, username);
         ResultSet rs = st.executeQuery();
         if(!rs.next())
-            return null;
+            throw new NoSuchElementException("User not found");
 
         return fromResultSet(rs);
     }
@@ -56,7 +56,12 @@ public class Users {
     }
 
     public static boolean exists(String username) throws SQLException {
-        return get(username) != null;
+        try {
+            get(username);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
 
     static User fromResultSet(ResultSet rs) throws SQLException {

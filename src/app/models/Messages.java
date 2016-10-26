@@ -70,7 +70,7 @@ public class Messages extends DAO {
         //TODO use unread_count field instead?
         PreparedStatement st = connection.prepareStatement(
                 "SELECT t.*, " +
-                        "(SELECT count(1) FROM messages WHERE read = FALSE AND conversation = conv_id) as c, " +
+                        "(SELECT count(1) FROM messages WHERE read = FALSE AND \"from\" != ? AND conversation = conv_id) as c, " +
                         "(SELECT messages.id FROM messages WHERE conversation = conv_id ORDER BY date DESC LIMIT 1) as mid " +
                         "FROM " +
                         "(SELECT conversations.id as conv_id, conversations.user1, conversations.user2, users.* from conversations " +
@@ -79,6 +79,7 @@ public class Messages extends DAO {
         );
         st.setInt(1, user.getId());
         st.setInt(2, user.getId());
+        st.setInt(3, user.getId());
 
         ResultSet rs = st.executeQuery();
 
@@ -90,7 +91,23 @@ public class Messages extends DAO {
         }
 
         return list;
+    }
 
+    public static int getUnreadCount(User user) throws SQLException {
+        PreparedStatement st = connection.prepareStatement(
+                "SELECT count(1) FROM messages " +
+                        "JOIN conversations ON messages.conversation = conversations.id " +
+                        "WHERE conversations.user1 = ? or conversations.user2 = ? AND \"from\" != ? " +
+                        "AND messages.read = FALSE "
+        );
+        st.setInt(1, user.getId());
+        st.setInt(2, user.getId());
+        st.setInt(3, user.getId());
+
+        ResultSet rs = st.executeQuery();
+        if(rs.next())
+            return rs.getInt(1);
+        return 0;
     }
 
 

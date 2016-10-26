@@ -70,6 +70,6 @@ public class LoginServlet extends FormServlet {
         if(error != null)
             data.put("error", Helpers.getErrorMessage(error));
 
-        Helpers.render(getServletContext(), request, response, "login.ftl", data);
+        Helpers.render(getServletContext(), response, "login.ftl", data);
     }
 }

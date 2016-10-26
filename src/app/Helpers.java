@@ -1,5 +1,7 @@
 package app;
 
+import app.models.Messages;
+import app.models.User;
 import app.models.Users;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -36,23 +38,33 @@ public class Helpers {
         return errors.get(errorCode);
     }
 
-    public static void render(ServletContext sc, HttpServletRequest request, HttpServletResponse response, String templateName, Object dataModel)
+    public static void render(ServletContext sc, HttpServletRequest request, HttpServletResponse response,
+                              String templateName, Map<String, Object> dataModel)
             throws IOException {
 
-        if(dataModel instanceof Map && request.getSession().getAttribute("username") != null) {
+        if(dataModel != null && request.getSession().getAttribute("username") != null) {
             try {
-                ((Map)dataModel).put("current_user", Users.get((String) request.getSession().getAttribute("username")));
+                User user = Users.get((String) request.getSession().getAttribute("username"));
+                dataModel.put("current_user", user);
+                dataModel.put("unread_count", Messages.getUnreadCount(user));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+
+        render(sc, response, templateName, dataModel);
+    }
+
+    public static void render(ServletContext sc, HttpServletResponse resp,
+                              String templateName, Object dataModel) throws IOException {
         Template tmpl = ConfigSingleton.getConfig(sc).getTemplate(templateName);
         try {
-            response.setContentType("text/html;charset=UTF-8");
-            tmpl.process(dataModel, response.getWriter());
+            resp.setContentType("text/html;charset=UTF-8");
+            tmpl.process(dataModel, resp.getWriter());
         } catch (TemplateException e) {
             e.printStackTrace();
         }
+
     }
 
     //TODO migrate to basic servlet?
