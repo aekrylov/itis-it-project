@@ -9,6 +9,7 @@
         </div>
 
         <div class="col-md-11">
+            <div class="well bs-component">
 
             <div class="row">
                 <div class="col-md-4">
@@ -22,36 +23,63 @@
                     </ul>
                 </div>
             </div>
-            <hr/>
 
-            <#list messages as msg>
-            <#-- todo -->
-                <div class="row <#if msg.from.id = user1.id>msg-sent<#else>msg-received</#if>">
-                    <div class="col-md-8  <#if msg.from.id = user1.id>col-md-offset-4</#if>">
-                        <div class="well well-sm">
+                <hr/>
+
+                <div class="well bs-component" style="background-color:#ffffff;">
+
+                    <#list messages as msg>
+                        <#-- todo -->
+                        <#if msg.from.id = user2.id>
                             <div class="row">
-                                <#if msg.from.id = user1.id>
-                                    <div class="col-md-1">
-                                        <button type="button" class="close">&times;</button>
+                                <div class="col-md-8">
+                                    <div class="well well-sm">
+                                        <div class="row">
+                                            <div class="col-md-11">
+                                                <p>${msg.text}</p>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button type="button" class="close">&times;</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-11">
-                                        <p>${msg.text}</p>
-                                    </div>
-                                <#else>
-                                    <div class="col-md-11">
-                                        <p>${msg.text}</p>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <button type="button" class="close">&times;</button>
-                                    </div>
-                                </#if>
-
+                                    <p>${msg.timestamp}</p>
                                 </div>
-                        </div>
-                        <p>${msg.timestamp?datetime}</p>
+                            </div>
+
+                        <#else>
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-4">
+                                    <div class="well well-sm">
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <button type="button" class="close" style="float:left;">&times;</button>
+                                            </div>
+                                            <div class="col-md-11">
+                                                <p align="right">${msg.text}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p align="right">${msg.timestamp}</p>
+                                </div>
+                            </div>
+
+                        </#if>
+                    </#list>
+                </div>
+
+                <hr/>
+
+                <div class="row">
+                    <div class="col-md-10">
+                        <textarea class="form-control" rows="3" placeholder="Введите сообщение"></textarea>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-default" style="float:right;">Отправить</button>
                     </div>
                 </div>
-            </#list>
+
+            </div>
         </div>
 
     </div>
