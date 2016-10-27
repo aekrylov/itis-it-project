@@ -28,7 +28,7 @@ public class Messages extends DAO {
                 to = rs.getInt("user2");
 
             return new Message(id, Users.get(from), Users.get(to),
-                    rs.getString("text"), rs.getDate("date"), rs.getBoolean("read"));
+                    rs.getString("text"), rs.getTimestamp("date"), rs.getBoolean("read"));
         }
         return null;
     }
@@ -42,7 +42,7 @@ public class Messages extends DAO {
         }
 
         PreparedStatement st = connection.prepareStatement(
-                "SELECT messages.id as id, \"from\", text, date FROM conversations " +
+                "SELECT messages.* FROM conversations " +
                         "INNER JOIN messages on conversations.id = messages.conversation " +
                         "WHERE user1 = ? AND user2 = ?"
         );
@@ -60,10 +60,22 @@ public class Messages extends DAO {
                 from = user2;
                 to = user1;
             }
-            list.add(new Message(rs.getInt("id"), from, to, rs.getString("text"), rs.getDate("date"), rs.getBoolean("read")));
+            list.add(new Message(rs.getInt("id"), from, to, rs.getString("text"), rs.getTimestamp("date"), rs.getBoolean("read")));
         }
 
         return list;
+    }
+
+    public static int markRead(User thisUser, User thatUser) throws SQLException {
+        PreparedStatement st = connection.prepareStatement("" +
+                "UPDATE messages SET read = TRUE " +
+                "FROM conversations WHERE messages.conversation = conversations.id " +
+                "AND ( ? in (user1, user2) AND ? in (user1, user2) AND messages.from = ? )");
+
+        st.setInt(1, thisUser.getId());
+        st.setInt(2, thatUser.getId());
+        st.setInt(3, thatUser.getId());
+        return st.executeUpdate();
     }
 
     public static List<Conversation> getConversations(User user) throws SQLException {

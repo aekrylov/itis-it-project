@@ -18,8 +18,9 @@ import java.util.Map;
  * 11-501
  * Registration
  */
-public class RegistrationServlet extends FormServlet {
+public class RegistrationServlet extends BaseServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doPost(request, response);
 
         Map<String, String> params = getParameterMap(request);
         if(!params.get("password").equals(params.get("password_repeat"))) {

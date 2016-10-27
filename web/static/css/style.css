@@ -29,3 +29,16 @@ a {
     background-color: #696969;
     color: #ffffff;
 }
+
+.msg-received p {
+    text-align: left;
+}
+.msg-sent p {
+    text-align: right;
+}
+.msg-received button {
+    float: right !important;
+}
+.msg-sent button {
+    float: left !important;
+}

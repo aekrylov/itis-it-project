@@ -8,6 +8,7 @@ package app.servlets;
 
 import app.QueryString;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +22,19 @@ import java.util.Map;
  * 11-501
  * Task 
  */
-public abstract class FormServlet extends HttpServlet {
+public abstract class BaseServlet extends HttpServlet {
 
-    protected void redirect(HttpServletRequest req, HttpServletResponse resp, Map<String, String> params)
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
+    }
+
+    protected static void redirect(HttpServletRequest req, HttpServletResponse resp, Map<String, String> params)
             throws IOException {
         params.remove("password");
         params.remove("password_repeat");
@@ -31,7 +42,7 @@ public abstract class FormServlet extends HttpServlet {
 
     }
 
-    protected Map<String, String> getParameterMap(HttpServletRequest req) {
+    protected static Map<String, String> getParameterMap(HttpServletRequest req) {
         Map<String, String[]> map = req.getParameterMap();
         Map<String, String> result = new HashMap<>();
         for(Map.Entry<String, String[]> entry: map.entrySet()) {

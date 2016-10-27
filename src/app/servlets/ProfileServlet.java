@@ -23,10 +23,13 @@ import java.util.NoSuchElementException;
 public class ProfileServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer id = request.getParameter("id") == null ? 0 : Integer.valueOf(request.getParameter("id"));
-
         try {
-            User user = Users.get(id);
+            User user;
+            if(request.getParameter("id") == null) {
+                user = Users.get(Helpers.getUsername(request));
+            } else {
+                user = Users.get(Integer.parseInt(request.getParameter("id")));
+            }
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("post_count", Posts.countPosts(user));
             dataModel.put("feedbacks", Feedbacks.getRecentFeedbacks(user, 5));

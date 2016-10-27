@@ -19,14 +19,14 @@ import java.util.Map;
  * 11-501
  * Login page
  */
-public class LoginServlet extends FormServlet {
+public class LoginServlet extends BaseServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doPost(request, response);
         Map<String, String> map = getParameterMap(request);
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         try {
-            //todo db
             User user = Users.get(username);
             if(user == null) {
                 map.put("error", "username_404");
@@ -56,7 +56,7 @@ public class LoginServlet extends FormServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Object username = request.getSession().getAttribute("username");
         if(username != null) {
-            response.sendRedirect("/");
+            response.sendRedirect("/user");
             return;
         }
 

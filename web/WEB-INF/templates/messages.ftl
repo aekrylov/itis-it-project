@@ -26,7 +26,8 @@
 
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h4><a>${conv.user2.name} <span class="badge">${conv.unreadCount}</span> </a></h4>
+                                    <h4><a href="/user/chat?uid=${conv.user2.id}">${conv.user2.name}
+                                        <span class="badge">${conv.unreadCount}</span> </a></h4>
                                 </div>
 
                                 <div class="col-md-6">
@@ -35,7 +36,7 @@
                             </div>
                             <hr/>
                             <p>${conv.lastMessage.text}</p>
-                            <p align="right">${conv.lastMessage.date}</p>
+                            <p align="right">${conv.lastMessage.timestamp}</p>
 
                         </fieldset>
                     </div>

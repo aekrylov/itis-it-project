@@ -1,6 +1,6 @@
 package app.models;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -12,16 +12,16 @@ public class Message {
     private User to;
 
     private String text;
-    private Date date;
+    private Timestamp timestamp;
 
     private boolean read;
 
-    public Message(int id, User from, User to, String text, Date date, boolean read) {
+    public Message(int id, User from, User to, String text, Timestamp date, boolean read) {
         this.id = id;
         this.from = from;
         this.to = to;
         this.text = text;
-        this.date = date;
+        this.timestamp = date;
         this.read = read;
     }
 
@@ -34,8 +34,8 @@ public class Message {
     public String getText() {
         return text;
     }
-    public Date getDate() {
-        return date;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
     public int getId() {
         return id;
