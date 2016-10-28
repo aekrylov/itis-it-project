@@ -1,10 +1,3 @@
- <!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="windows-1251">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
- 
     <div class="container">
         <div class="row">  
            <div class="col-md-12">
@@ -27,17 +20,17 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <th><a>Ноутбук ASUS s301l</a></th>
+                        <td><a>Ноутбук ASUS s301l</a></td>
                         <td>28 октября 2016</td>
                         <td>Маликов Дамир</td>                        
                       </tr>
                       <tr>
-                        <th><a>Ноутбук ASUS s301l</a></th>
+                        <td><a>Ноутбук ASUS s301l</a></td>
                         <td>28 октября 2016</td>
                         <td>Маликов Дамир</td>                        
                       </tr>
                       <tr>
-                        <th><a>Ноутбук ASUS s301l</a></th>
+                        <td><a>Ноутбук ASUS s301l</a></td>
                         <td>28 октября 2016</td>
                         <td>Маликов Дамир</td>                        
                       </tr>
@@ -61,27 +54,28 @@
                       <tr>
                         <td><a>Ноутбук ASUS s301l</a></td>
                         <td>28 октября 2016</td>
-                         <td>Маликов Дамир</td>
+                        <td>Маликов Дамир</td>
+                        <!-- Только до отправления отзыва-->
                         <td><button class="btn btn-default"  data-toggle="modal" data-target="#ModalRecall" >Оставить отзыв</button> </td>
                       </tr>
                       <tr>
                         <td><a>Ноутбук ASUS s301l</a></td>
                         <td>28 октября 2016</td>
-                         <td>Маликов Дамир</td>
+                        <td>Маликов Дамир</td>
+                        <!-- Только до отправления отзыва-->
                         <td><button class="btn btn-default"  data-toggle="modal" data-target="#ModalRecall" >Оставить отзыв</button> </td>
                       </tr>
                       <tr>
                         <td><a>Ноутбук ASUS s301l</a></td>
                         <td>28 октября 2016</td>
-                         <td>Маликов Дамир</td>
+                        <td>Маликов Дамир</td>
                         <td><button class="btn btn-default"  data-toggle="modal" data-target="#ModalRecall" >Оставить отзыв</button> </td>
                       </tr>
                     </tbody>
                   </table> 
             </div>                
             </div>
-            
-            
+                   
                         
             <!-- Modal -->
             <div class="modal fade" id="ModalRecall" tabindex="-1" role="dialog" aria-hidden="true">
@@ -94,23 +88,17 @@
                   <div class="modal-body">
                     <div class="form-group">
                         <b>Оценка:</b>
-                        <br /> 
+                        <br/> 
                         <div id="rateYo"></div>
+                        <div class="counter"></div>
                     
                         <script type="text/javascript">$(function () {
                             $("#rateYo").rateYo({ 
-                                rating: '0', 
-                                });
-                            }); 
+                                rating: '0',
+                                halfStar: true
+                            });
+                        }); 
                         </script>
-                         <script type="text/javascript">$(function () {
- 
-  $("#rateYo").rateYo().on("rateyo.change", function (e, data) {
- 
-                var rating = data.rating;
-                $(this).next().text(rating);
-              });
-});</script>
                         <br/>
                         <b>Отзыв:</b>
                         <textarea class="form-control" rows="3"></textarea>

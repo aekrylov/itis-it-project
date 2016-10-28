@@ -1,5 +1,3 @@
-
-
     <div class="container">
         <div class="well bs-component">
         <div class="row">
@@ -22,27 +20,27 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="inputCost" class="col-md-4 control-label">Бренд</label>
+                    <label for="inputBrand" class="col-md-4 control-label">Бренд</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputCost" placeholder="Введите бренд">
+                        <input type="text" class="form-control" id="inputBrand" placeholder="Введите бренд">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCost" class="col-md-4 control-label">Модель</label>
+                    <label for="inputModel" class="col-md-4 control-label">Модель</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputCost" placeholder="Введите модель">
+                        <input type="text" class="form-control" id="inputModel" placeholder="Введите модель">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCost" class="col-md-4 control-label">Процессор</label>
+                    <label for="inputProcessor" class="col-md-4 control-label">Процессор</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputCost" placeholder="Введите модель процессора">
+                        <input type="text" class="form-control" id="inputProcessor" placeholder="Введите модель процессора">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCost" class="col-md-4 control-label">Число ядер</label>
+                    <label for="inputCoreNumder" class="col-md-4 control-label">Число ядер</label>
                     <div class="col-md-2">
-                        <select class="form-control" id="inputCost">
+                        <select class="form-control" id="inputCoreNumder">
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -53,30 +51,30 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCost" class="col-md-4 control-label">Размер ОЗУ</label>
+                    <label for="inputRAM" class="col-md-4 control-label">Размер ОЗУ</label>
                     <div class="col-md-2">
-                        <input type="text" class="form-control" id="inputCost">
+                        <input type="text" class="form-control" id="inputRAM">
                     </div>
                     <div class="col-md-2">
                         <h5>Гб</h5>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCost" class="col-md-4 control-label">Видеокарта</label>
+                    <label for="inputVideoCard" class="col-md-4 control-label">Видеокарта</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputCost" placeholder="Введите модель видеокарты">
+                        <input type="text" class="form-control" id="inputVideoCard" placeholder="Введите модель видеокарты">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCost" class="col-md-4 control-label">Жесткий диск</label>
+                    <label for="inputHD" class="col-md-4 control-label">Жесткий диск</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputCost" placeholder="Введите тип жесткого диска">
+                        <input type="text" class="form-control" id="inputHD" placeholder="Введите тип жесткого диска">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCost" class="col-md-4 control-label">Объем жесткого диска</label>
+                    <label for="inputHDVolume" class="col-md-4 control-label">Объем жесткого диска</label>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="inputCost">
+                        <input type="text" class="form-control" id="inputHDVolume">
                     </div>
                     <div class="col-md-2">
                         <h5>Гб</h5>
@@ -112,7 +110,28 @@
                     </div>
                 </div>
                 
-                <a href="#" class="btn btn-default">Добавить фотографии</a>
+                <button class="btn btn-default" data-toggle="modal" data-target="#PhotoInputModal">Добавить фотографии</button>
+                
+
+                <!-- Modal -->
+                <div class="modal fade" id="PhotoInputModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="ModalLabel">Загрузка фотографий/h4>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group">
+                            <input type="file" multiple>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Сохранить</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             
             </div>
             
