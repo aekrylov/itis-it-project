@@ -1,0 +1,131 @@
+ <!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="windows-1251">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+ 
+    <div class="container">
+        <div class="row">  
+           <div class="col-md-12">
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#buy" data-toggle="tab">Покупки</a></li>
+                <li><a href="#sale" data-toggle="tab">Продажи</a></li>
+            </ul>
+
+            <div class="tab-content">
+              <div class="tab-pane" id="sale">
+              <div class="well bs-component">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Наименование</th>
+                        <th>Дата</th>
+                        <th>Покупатель</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th><a>Ноутбук ASUS s301l</a></th>
+                        <td>28 октября 2016</td>
+                        <td>Маликов Дамир</td>                        
+                      </tr>
+                      <tr>
+                        <th><a>Ноутбук ASUS s301l</a></th>
+                        <td>28 октября 2016</td>
+                        <td>Маликов Дамир</td>                        
+                      </tr>
+                      <tr>
+                        <th><a>Ноутбук ASUS s301l</a></th>
+                        <td>28 октября 2016</td>
+                        <td>Маликов Дамир</td>                        
+                      </tr>
+                    </tbody>
+                  </table> 
+            </div> 
+            </div>
+            
+            <div class="tab-pane active" id="buy">
+            <div class="well bs-component">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Наименование</th>
+                        <th>Дата</th>
+                        <th>Продавец</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><a>Ноутбук ASUS s301l</a></td>
+                        <td>28 октября 2016</td>
+                         <td>Маликов Дамир</td>
+                        <td><button class="btn btn-default"  data-toggle="modal" data-target="#ModalRecall" >Оставить отзыв</button> </td>
+                      </tr>
+                      <tr>
+                        <td><a>Ноутбук ASUS s301l</a></td>
+                        <td>28 октября 2016</td>
+                         <td>Маликов Дамир</td>
+                        <td><button class="btn btn-default"  data-toggle="modal" data-target="#ModalRecall" >Оставить отзыв</button> </td>
+                      </tr>
+                      <tr>
+                        <td><a>Ноутбук ASUS s301l</a></td>
+                        <td>28 октября 2016</td>
+                         <td>Маликов Дамир</td>
+                        <td><button class="btn btn-default"  data-toggle="modal" data-target="#ModalRecall" >Оставить отзыв</button> </td>
+                      </tr>
+                    </tbody>
+                  </table> 
+            </div>                
+            </div>
+            
+            
+                        
+            <!-- Modal -->
+            <div class="modal fade" id="ModalRecall" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Оставить отзыв</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="form-group">
+                        <b>Оценка:</b>
+                        <br /> 
+                        <div id="rateYo"></div>
+                    
+                        <script type="text/javascript">$(function () {
+                            $("#rateYo").rateYo({ 
+                                rating: '0', 
+                                });
+                            }); 
+                        </script>
+                         <script type="text/javascript">$(function () {
+ 
+  $("#rateYo").rateYo().on("rateyo.change", function (e, data) {
+ 
+                var rating = data.rating;
+                $(this).next().text(rating);
+              });
+});</script>
+                        <br/>
+                        <b>Отзыв:</b>
+                        <textarea class="form-control" rows="3"></textarea>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Отправить</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+               
+           
+           </div> 
+           
+        </div>
+    </div>

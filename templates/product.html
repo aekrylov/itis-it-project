@@ -1,20 +1,33 @@
+
+
+
     <div class="container">
         <div class="row">       
             <div class="col-md-12">
             <h3> Ноутбук: ASUS s301l</h3>
             </div>
         </div>
-    </div>
-    
-    <div class="container">
+
         <div class="row">
         
-            <div class="col-md-4">
-                <img src="product_photo\1.jpg" width="375" height="250" style="margin-top:0px;"/>
+            <div class="col-md-8">
+                <div class="fotorama">
+                      <img src="product_photo\1.jpg">
+                      <img src="product_photo\2.jpg">
+                </div>
+                
+                <h4>Описание:</h4>
+       
+                <p>Уинстон ощутил пустоту в груди. Это — двоемыслие. Им овладело чувство смертельной беспомощности. Если бы он был уверен, что О’Брайен солгал, это не казалось бы таким важным. Но очень может быть, что О’Брайен в самом деле забыл фотографию. А если так, то он уже забыл и то, как отрицал, что ее помнит, и что это забыл — тоже забыл. Можно ли быть уверенным, что это просто фокусы? А вдруг такой безумный вывих в мозгах на самом деле происходит? — вот что приводило Уинстона в отчаяние.</p>          
 
-                <h4>Характеристики:</h4>
+            </div>
+            
+            <div class="col-md-3 col-md-offset-1" style="margin-top: 20px;">
+                 
+                <p><b>Стоимость: </b> 15000</p>
+                <p><b>Продавец: </b><a>Крылов Антон</a></p>
                 <hr/>
- 
+                <h4>Характеристики:</h4>
                 <p><b>Тип: </b> ноутбук</p>
                 <p><b>Бренд: </b> ASUS</p>
                 <p><b>Модель: </b> s301l</p>
@@ -24,17 +37,38 @@
                 <p><b>Видеокарта: </b> intel HD Graphics 4400</p>
                 <p><b>Жесткий диск: </b> 6000 Гб</p>
                 <p><b>Объем жесткого диска: </b> 4.7</p>
-
-            </div>
-            
-            <div class="col-md-7 col-md-offset-1">
-
-                <p><b>Стоимость: </b> 15000</p>
-                <p><b>Продавец: </b> Крылов Антон</p>
                 <hr/>
-                <p>Уинстон ощутил пустоту в груди. Это — двоемыслие. Им овладело чувство смертельной беспомощности. Если бы он был уверен, что О’Брайен солгал, это не казалось бы таким важным. Но очень может быть, что О’Брайен в самом деле забыл фотографию. А если так, то он уже забыл и то, как отрицал, что ее помнит, и что это забыл — тоже забыл. Можно ли быть уверенным, что это просто фокусы? А вдруг такой безумный вывих в мозгах на самом деле происходит? — вот что приводило Уинстона в отчаяние.</p>
+     
+                <!-- для продавца-->
+                <p align="right"><button class="btn btn-default btn-block" style="float:rigth;" data-toggle="modal" data-target="#Modal">Продать товар</button></p>
+                <p align="right">  <a href="#" class="btn btn-default btn-block" style="float:rigth;">Удалить</a> </p>
+                               
+                
+                <!-- Modal -->
+                <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Выберите покупателя</h4>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Введите логин">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Продать</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- для покупателей>
                 <p align="right"> <a href="#" class="btn btn-default" style="float:rigth;">Добавить товар в избранное</a></p>
                 <p align="right">  <a href="#" class="btn btn-default" style="float:rigth;">Связаться с продавцом</a> </p>
+                <-->
+             
             </div>
         
         </div>

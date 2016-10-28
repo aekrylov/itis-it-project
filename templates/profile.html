@@ -1,21 +1,64 @@
-   <div class="container">
+
+
+    <div class="container">
         <div class="row">
         
             <div class="col-md-4">
 
                 <h3 > Крылов Антон </h3>
-                <img src="profile_photo\1.jpg" width="250" height="375" />
+                <img src="profile_photo\1.jpg" width="300"/>
 
-                <a href="#" class="btn btn-default">Изменить фотографию</a>
-                <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-cog"></span></a>
+                <button class="btn btn-default"  data-toggle="modal" data-target="#Modal1" >Изменить фотографию</button>         
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="ModalLabel">Изменение фотографии</h4>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group">
+                            <input type="file">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" >Сохранить изменения</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <a href="settings.html" class="btn btn-default"><span class="glyphicon glyphicon-cog"></span></a>
+                
 
                 <hr/>
+                <p><b>Рейтинг: </b>4.7 от 3 пользователей </p>
+                
+                <div class="row">
+                <div class="col-md-12">
+               
+                    <div id="rateYo"></div>
+                
+                    <script type="text/javascript">$(function () {
+                        $("#rateYo").rateYo({ 
+                            rating: '4.7', 
+                            readOnly: true
+                            });
+                        }); </script>
+                </div>
+                </div>
+                
+                <br/>
 
                 <p><b>Почта: </b> anton@gmail.com</p>
+                <p><b>Логин: </b> anton</p>
                 <p><b>Товаров: </b> 2</p>
-                <p><b>Рейтинг: </b> 4.7</p>
-                <h3>Тут будут звезды </h3>
-                <a href="#" class="btn btn-default" align="right">Товары</a> <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></a>
+
+                <br/>
+                <a href="user_products.html" class="btn btn-default">Товары</a> <a href="new_product.html" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></a>
 
             </div>
 
@@ -38,7 +81,7 @@
                 <div class="well bs-component">
                 <fieldset>
 
-                    <legend>Маликов Дамир</legend>
+                    <legend><a href="#">Маликов Дамир</a></legend>
                     <p><b>Оценка: </b> 4.5</p>
                     <p>Уинстон ощутил пустоту в груди. Это — двоемыслие. Им овладело чувство смертельной беспомощности. Если бы он был уверен, что О’Брайен солгал, это не казалось бы таким важным. Но очень может быть, что О’Брайен в самом деле забыл фотографию. А если так, то он уже забыл и то, как отрицал, что ее помнит, и что это забыл — тоже забыл. Можно ли быть уверенным, что это просто фокусы? А вдруг такой безумный вывих в мозгах на самом деле происходит? — вот что приводило Уинстона в отчаяние.</p>
                     <p align="right">26 октября 2016</p>
@@ -49,7 +92,7 @@
                 <div class="well bs-component">
                 <fieldset>
 
-                    <legend>Маликов Дамир</legend>
+                    <legend><a href="#">Маликов Дамир</a></legend>
                     <p><b>Оценка: </b> 4.5</p>
                     <p>Уинстон ощутил пустоту в груди. Это — двоемыслие. Им овладело чувство смертельной беспомощности. Если бы он был уверен, что О’Брайен солгал, это не казалось бы таким важным. Но очень может быть, что О’Брайен в самом деле забыл фотографию. А если так, то он уже забыл и то, как отрицал, что ее помнит, и что это забыл — тоже забыл. Можно ли быть уверенным, что это просто фокусы? А вдруг такой безумный вывих в мозгах на самом деле происходит? — вот что приводило Уинстона в отчаяние.</p>
                     <p align="right">26 октября 2016</p>
