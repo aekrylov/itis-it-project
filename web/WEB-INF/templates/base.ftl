@@ -12,10 +12,14 @@
         <link href="/static/css/bootstrap.min.css" rel="stylesheet">
         <link href="/static/css/style.css" rel="stylesheet">
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery/rateyo/jquery.rateyo.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery/fotorama/fotorama.js"></script>
+    <script type="text/javascript" src="/static/js/jquery/slimscroll/jquery.slimscroll.min.js"></script>
+
     </head>
-    <body style="margin-top: 70px;">
+
+<body style="margin-top: 70px;">
 
         <#include 'header.ftl'>
         <div class="container">
@@ -24,6 +28,7 @@
         </@body>
         </div>
         <#include 'footer.ftl'>
+        <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
     </body>
 </html>
 </#macro>

@@ -1,7 +1,7 @@
 hr {
      color: #DCDCDC;
      background-color: #DCDCDC;
-     height: 0.5px;
+     height: 0.6px;
 }
 
 img  {
@@ -9,8 +9,17 @@ img  {
     margin-bottom: 15px;
     margin-top:  15px;
 }
+
+.panel-default {
+    background-color: #F5F5F5;
+}
+
+.list-group-item {
+    background-color: #F5F5F5;
+}
+
 a {
-    color: black;
+    color: #696969;
 }
 .badge {
     background-color: #696969;
