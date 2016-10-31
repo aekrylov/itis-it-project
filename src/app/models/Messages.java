@@ -33,6 +33,31 @@ public class Messages extends DAO {
         return null;
     }
 
+    public static boolean create(Message message) throws SQLException {
+        PreparedStatement st = connection.prepareStatement(
+                "INSERT INTO messages (conversation, \"from\", text, date) " +
+                        "VALUES ((SELECT id FROM conversations WHERE user1 IN (?, ?) AND user2 in (?, ?) )," +
+                        "?, ?, ?) RETURNING id"
+        );
+
+        st.setInt(1, message.getFrom().getId());
+        st.setInt(2, message.getTo().getId());
+
+        st.setInt(3, message.getFrom().getId());
+        st.setInt(4, message.getTo().getId());
+
+        st.setInt(5, message.getFrom().getId());
+        st.setString(6, message.getText());
+        st.setTimestamp(7, message.getTimestamp());
+
+        ResultSet rs = st.executeQuery();
+        if(!rs.next())
+            return false;
+
+        message.setId(rs.getInt(1));
+        return true;
+    }
+
     public static List<Message> getConversation(User user1, User user2) throws SQLException {
         int id1 = user1.getId();
         int id2 = user2.getId();
@@ -44,7 +69,8 @@ public class Messages extends DAO {
         PreparedStatement st = connection.prepareStatement(
                 "SELECT messages.* FROM conversations " +
                         "INNER JOIN messages on conversations.id = messages.conversation " +
-                        "WHERE user1 = ? AND user2 = ?"
+                        "WHERE user1 = ? AND user2 = ? " +
+                        "ORDER BY date ASC "
         );
 
         st.setInt(1, id1);

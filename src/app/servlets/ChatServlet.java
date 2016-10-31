@@ -5,13 +5,15 @@ import app.models.Message;
 import app.models.Messages;
 import app.models.User;
 import app.models.Users;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +22,25 @@ import java.util.Map;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/25/16 10:28 PM
  */
-public class ChatServlet extends HttpServlet {
+public class ChatServlet extends BaseServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //todo message sent
+        super.doPost(request, response);
+        String text = request.getParameter("text");
+        int to = Integer.parseInt(request.getParameter("to"));
+
+        JSONObject object = new JSONObject();
+        try {
+            Message message = new Message(Users.get(Helpers.getUsername(request)), Users.get(to),
+                    text, Timestamp.from(Instant.now()));
+
+            String status = Messages.create(message) ? "OK" : "ERROR";
+            object.put("status", status);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            object.put("error", e.getMessage());
+        } finally {
+            response.getWriter().print(object);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -9,9 +9,7 @@ import java.util.NoSuchElementException;
  * 11-501
  * Task 
  */
-public class Users {
-
-    private static Connection connection = DB.getInstance().getConnection();
+public class Users extends DAO {
 
     public static User get(String username) throws SQLException {
         PreparedStatement st = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
@@ -65,7 +63,7 @@ public class Users {
     }
 
     static User fromResultSet(ResultSet rs) throws SQLException {
-        return new User(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("email"),
-                rs.getInt("id"), rs.getString("photo"), rs.getDouble("rating"));
+        return new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("email"),
+                rs.getString("photo"), rs.getDouble("rating"));
     }
 }

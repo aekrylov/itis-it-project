@@ -47,7 +47,7 @@ public class User {
         return rating;
     }
 
-    public User(String username, String password, String name, String email, int id, String photo, double rating) {
+    public User(int id, String username, String password, String name, String email, String photo, double rating) {
         this(username, password, name, email);
         this.photo = photo;
         this.rating = rating;

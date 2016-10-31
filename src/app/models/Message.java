@@ -14,7 +14,14 @@ public class Message {
     private String text;
     private Timestamp timestamp;
 
-    private boolean read;
+    private boolean read = false;
+
+    public Message(User from, User to, String text, Timestamp timestamp) {
+        this.from = from;
+        this.to = to;
+        this.text = text;
+        this.timestamp = timestamp;
+    }
 
     public Message(int id, User from, User to, String text, Timestamp date, boolean read) {
         this.id = id;
@@ -42,5 +49,12 @@ public class Message {
     }
     public boolean isRead() {
         return read;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setRead(boolean read) {
+        this.read = read;
     }
 }

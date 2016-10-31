@@ -15,18 +15,6 @@ import java.util.Map;
  * Task 
  */
 public class QueryString {
-
-    public static String encodeStringArrays(Map<String, String[]> map) {
-        String res = "?";
-        for(Map.Entry<String, String[]> entry: map.entrySet()) {
-            String key = entry.getKey();
-            for(String value: entry.getValue()) {
-                res += key + "=" + value + "&";
-            }
-        }
-        return res;
-    }
-
     public static String encodeStrings(Map<String, String> map) {
         String res = "?";
         for(Map.Entry<String, String> entry: map.entrySet()) {

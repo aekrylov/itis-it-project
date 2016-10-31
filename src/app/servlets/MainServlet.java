@@ -14,8 +14,9 @@ import java.io.IOException;
  * 11-501
  * Home page servlet
  */
-public class MainServlet extends HttpServlet {
+public class MainServlet extends BaseServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doGet(request, response);
         Helpers.render(getServletContext(), request, response, "main.ftl", null);
     }
 }

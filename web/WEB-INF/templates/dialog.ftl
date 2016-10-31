@@ -71,12 +71,15 @@
                 <hr/>
 
                 <div class="row">
-                    <div class="col-md-10">
-                        <textarea class="form-control" rows="3" placeholder="Введите сообщение"></textarea>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-default" style="float:right;">Отправить</button>
-                    </div>
+                    <form method="post" action="/user/chat">
+                        <input type="hidden" name="to" value="${user2.id}">
+                        <div class="col-md-10">
+                            <textarea class="form-control" rows="3" placeholder="Введите сообщение" name="text"></textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-default" style="float:right;">Отправить</button>
+                        </div>
+                    </form>
                 </div>
 
             </div>

@@ -42,7 +42,10 @@ public class Helpers {
                               String templateName, Map<String, Object> dataModel)
             throws IOException {
 
-        if(dataModel != null && request.getSession().getAttribute("username") != null) {
+        if(request.getSession().getAttribute("username") != null) {
+            if(dataModel == null)
+                dataModel = new HashMap<>();
+
             try {
                 User user = Users.get((String) request.getSession().getAttribute("username"));
                 dataModel.put("current_user", user);
