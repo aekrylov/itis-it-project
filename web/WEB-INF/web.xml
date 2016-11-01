@@ -89,7 +89,7 @@
 
     <filter-mapping>
         <filter-name>CookieFilter</filter-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>

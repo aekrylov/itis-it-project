@@ -34,14 +34,12 @@ public abstract class DAO {
             // String label = fields[i].getAnnotationsByType(DbColumn.class)[0].value();
             int index = rs.findColumn(label);
             types[i] = fields[i].getType();
-            values[i] = rs.getObject(index);
+            values[i] = types[i].cast(rs.getObject(index));
         }
 
         try {
             Constructor<E> constructor = c.getConstructor(types);
-            new User((int)values[0], (String)values[1], (String)values[2], (String)values[3],
-                    (String)values[4], (String)values[5], (double)values[6]);
-            return constructor.newInstance(values[0], values[1], values[2], values[3], values[4], values[5], values[6]);
+            return constructor.newInstance(values[0], values[1], values[2], values[3], values[4], values[5]);
         } catch (ReflectiveOperationException e) {
             e.printStackTrace();
         }
