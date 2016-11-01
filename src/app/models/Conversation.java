@@ -6,7 +6,6 @@ package app.models;
  */
 public class Conversation {
 
-    private int id;
     private User user1;
     private User user2;
 
@@ -14,17 +13,13 @@ public class Conversation {
 
     private Message lastMessage;
 
-    public Conversation(int id, User user1, User user2, int unreadCount, Message lastMessage) {
-        this.id = id;
+    public Conversation(User user1, User user2, int unreadCount, Message lastMessage) {
         this.user1 = user1;
         this.user2 = user2;
         this.unreadCount = unreadCount;
         this.lastMessage = lastMessage;
     }
 
-    public int getId() {
-        return id;
-    }
     public User getUser1() {
         return user1;
     }

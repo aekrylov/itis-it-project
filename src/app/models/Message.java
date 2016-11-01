@@ -7,12 +7,12 @@ import java.sql.Timestamp;
  * Date: 10/25/16 9:06 PM
  */
 public class Message {
-    private int id;
+    private Integer id;
     private User from;
     private User to;
 
     private String text;
-    private Timestamp timestamp;
+    private Timestamp date;
 
     private boolean read = false;
 
@@ -20,7 +20,7 @@ public class Message {
         this.from = from;
         this.to = to;
         this.text = text;
-        this.timestamp = timestamp;
+        this.date = timestamp;
     }
 
     public Message(int id, User from, User to, String text, Timestamp date, boolean read) {
@@ -28,7 +28,7 @@ public class Message {
         this.from = from;
         this.to = to;
         this.text = text;
-        this.timestamp = date;
+        this.date = date;
         this.read = read;
     }
 
@@ -41,8 +41,8 @@ public class Message {
     public String getText() {
         return text;
     }
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public Timestamp getDate() {
+        return date;
     }
     public int getId() {
         return id;

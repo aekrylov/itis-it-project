@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -16,16 +15,13 @@ public class Messages extends DAO {
     public static Message get(int id) throws SQLException {
         PreparedStatement st = connection.prepareStatement(
                 "SELECT * FROM messages " +
-                "JOIN conversations on conversations.id = messages.conversation " +
                 "WHERE messages.id = ? ");
         st.setInt(1, id);
 
         ResultSet rs = st.executeQuery();
         if(rs.next()) {
             int from = rs.getInt("from");
-            int to = rs.getInt("user1");
-            if(from == to)
-                to = rs.getInt("user2");
+            int to = rs.getInt("to");
 
             return new Message(id, Users.get(from), Users.get(to),
                     rs.getString("text"), rs.getTimestamp("date"), rs.getBoolean("read"));
@@ -35,20 +31,15 @@ public class Messages extends DAO {
 
     public static boolean create(Message message) throws SQLException {
         PreparedStatement st = connection.prepareStatement(
-                "INSERT INTO messages (conversation, \"from\", text, date) " +
-                        "VALUES ((SELECT id FROM conversations WHERE user1 IN (?, ?) AND user2 in (?, ?) )," +
-                        "?, ?, ?) RETURNING id"
+                "INSERT INTO messages (\"from\", \"to\", text, date) " +
+                        "VALUES (?, ?, ?, ?) RETURNING id"
         );
 
         st.setInt(1, message.getFrom().getId());
         st.setInt(2, message.getTo().getId());
 
-        st.setInt(3, message.getFrom().getId());
-        st.setInt(4, message.getTo().getId());
-
-        st.setInt(5, message.getFrom().getId());
-        st.setString(6, message.getText());
-        st.setTimestamp(7, message.getTimestamp());
+        st.setString(3, message.getText());
+        st.setTimestamp(4, message.getDate());
 
         ResultSet rs = st.executeQuery();
         if(!rs.next())
@@ -61,20 +52,18 @@ public class Messages extends DAO {
     public static List<Message> getConversation(User user1, User user2) throws SQLException {
         int id1 = user1.getId();
         int id2 = user2.getId();
-        if(id1 > id2) {
-            id1 = user2.getId();
-            id2 = user1.getId();
-        }
 
         PreparedStatement st = connection.prepareStatement(
-                "SELECT messages.* FROM conversations " +
-                        "INNER JOIN messages on conversations.id = messages.conversation " +
-                        "WHERE user1 = ? AND user2 = ? " +
+                "SELECT messages.* FROM messages " +
+                        "WHERE \"from\" in (?, ?) AND \"to\" in (?, ?) " +
                         "ORDER BY date ASC "
         );
 
         st.setInt(1, id1);
         st.setInt(2, id2);
+
+        st.setInt(3, id1);
+        st.setInt(4, id2);
 
         ResultSet rs = st.executeQuery();
 
@@ -95,25 +84,24 @@ public class Messages extends DAO {
     public static int markRead(User thisUser, User thatUser) throws SQLException {
         PreparedStatement st = connection.prepareStatement("" +
                 "UPDATE messages SET read = TRUE " +
-                "FROM conversations WHERE messages.conversation = conversations.id " +
-                "AND ( ? in (user1, user2) AND ? in (user1, user2) AND messages.from = ? )");
+                "WHERE \"from\" = ? AND \"to\" = ?");
 
-        st.setInt(1, thisUser.getId());
-        st.setInt(2, thatUser.getId());
-        st.setInt(3, thatUser.getId());
+        st.setInt(1, thatUser.getId());
+        st.setInt(2, thisUser.getId());
         return st.executeUpdate();
     }
 
     public static List<Conversation> getConversations(User user) throws SQLException {
         //TODO use unread_count field instead?
         PreparedStatement st = connection.prepareStatement(
-                "SELECT t.*, " +
-                        "(SELECT count(1) FROM messages WHERE read = FALSE AND \"from\" != ? AND conversation = conv_id) as c, " +
-                        "(SELECT messages.id FROM messages WHERE conversation = conv_id ORDER BY date DESC LIMIT 1) as mid " +
-                        "FROM " +
-                        "(SELECT conversations.id as conv_id, conversations.user1, conversations.user2, users.* from conversations " +
-                        "JOIN users on (conversations.user1 = users.id AND user2 = ?) or " +
-                        "(conversations.user2 = users.id AND user1 = ?) ) as t "
+                "SELECT messages.id mid, \"from\", \"to\", \"date\", \"read\", \"text\", users.*, " +
+                        "(SELECT count(1) FROM messages m " +
+                        "WHERE ARRAY[m.\"from\", m.\"to\"] @> ARRAY[messages.\"from\", messages.\"to\"] AND m.to = ? AND m.read = FALSE " +
+                        ") as c" +
+                        " FROM messages " +
+                        "JOIN users on users.id in (\"from\", \"to\") AND users.id != ? " +
+                        "where ? in (\"from\", \"to\") AND date = (SELECT max(date) FROM messages m\n" +
+                        "WHERE ARRAY[m.\"from\", m.\"to\"] @> ARRAY[messages.\"from\", messages.\"to\"]) "
         );
         st.setInt(1, user.getId());
         st.setInt(2, user.getId());
@@ -125,7 +113,14 @@ public class Messages extends DAO {
 
         while (rs.next()) {
             User user2 = Users.fromResultSet(rs);
-            list.add(new Conversation(rs.getInt("conv_id"), user, user2, rs.getInt("c"), Messages.get(rs.getInt("mid"))));
+            User from = user;
+            User to = user2;
+            if(from.getId() != rs.getInt("from")) {
+                from = user2;
+                to = user;
+            }
+            Message msg = new Message(rs.getInt("mid"), from, to, rs.getString("text"), rs.getTimestamp("date"), rs.getBoolean("read"));
+            list.add(new Conversation(user, user2, rs.getInt("c"), msg));
         }
 
         return list;
@@ -133,14 +128,9 @@ public class Messages extends DAO {
 
     public static int getUnreadCount(User user) throws SQLException {
         PreparedStatement st = connection.prepareStatement(
-                "SELECT count(1) FROM messages " +
-                        "JOIN conversations ON messages.conversation = conversations.id " +
-                        "WHERE conversations.user1 = ? or conversations.user2 = ? AND \"from\" != ? " +
-                        "AND messages.read = FALSE "
+                "SELECT count(1) FROM messages WHERE \"to\" = ? AND read = FALSE "
         );
         st.setInt(1, user.getId());
-        st.setInt(2, user.getId());
-        st.setInt(3, user.getId());
 
         ResultSet rs = st.executeQuery();
         if(rs.next())

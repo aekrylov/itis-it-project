@@ -25,7 +25,7 @@
                                         <div class="row">
                                             <div class="col-md-11">
                                                 <p>${msg.text}</p>
-                                                <p class="text-muted">${msg.timestamp}</p>
+                                                <p class="text-muted">${msg.date}</p>
                                             </div>
                                             <div class="col-md-1">
                                                 <button type="button" class="close">&times;</button>
@@ -47,7 +47,7 @@
                                             </div>
                                             <div class="col-md-11">
                                                 <p align="right">${msg.text}</p>
-                                                <p align="right" class="text-muted">${msg.timestamp}</p>
+                                                <p align="right" class="text-muted">${msg.date}</p>
                                             </div>
 
                                         </div>

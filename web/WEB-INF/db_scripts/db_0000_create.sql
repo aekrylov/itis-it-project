@@ -55,15 +55,12 @@ CREATE TABLE favorites (
   "date" datetime DEFAULT now()
 );
 
-CREATE TABLE conversations (
-  id SERIAL PRIMARY KEY,
-  user1 int REFERENCES users(id),
-  user2 int REFERENCES users(id)
-);
-
 CREATE TABLE messages (
-  id INT PRIMARY KEY ,
-  "from" int REFERENCES users(id),
-  "text" TEXT,
-  "date" DATEtime DEFAULT now()
+  id INTEGER PRIMARY KEY,
+  "from" INTEGER REFERENCES public.users (id),
+  text TEXT,
+  date TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  read BOOLEAN NOT NULL DEFAULT false,
+  "to" INTEGER REFERENCES public.users (id)
 );
+CREATE INDEX messages_from_to_index ON messages USING BTREE ("from", "to");
