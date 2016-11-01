@@ -1,5 +1,7 @@
 package app.models;
 
+import javafx.geometry.Pos;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,5 +23,16 @@ public class Posts extends DAO {
         }
 
         return rs.getInt(1);
+    }
+
+    public static Post get(int id) throws SQLException {
+        PreparedStatement st = connection.prepareStatement("SELECT * FROM posts WHERE id = ?");
+        st.setInt(1, id);
+
+        ResultSet rs = st.executeQuery();
+        if(!rs.next())
+            return null;
+
+        return new Post(rs.getInt("id"), Products.get(rs.getInt("product")), Users.get(rs.getInt("user")), rs.getTimestamp("date"));
     }
 }

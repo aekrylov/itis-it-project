@@ -31,6 +31,10 @@
         <servlet-name>ChatServlet</servlet-name>
         <servlet-class>app.servlets.ChatServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ItemServlet</servlet-name>
+        <servlet-class>app.servlets.ItemServlet</servlet-class>
+    </servlet>
 
     <servlet>
         <servlet-name>default</servlet-name>
@@ -73,6 +77,11 @@
         <servlet-name>ProfileServlet</servlet-name>
         <url-pattern>/user</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ItemServlet</servlet-name>
+        <url-pattern>/item</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/static/*</url-pattern>
