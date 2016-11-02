@@ -35,6 +35,10 @@
         <servlet-name>ItemServlet</servlet-name>
         <servlet-class>app.servlets.ItemServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ItemAddServlet</servlet-name>
+        <servlet-class>app.servlets.ItemAddServlet</servlet-class>
+    </servlet>
 
     <servlet>
         <servlet-name>default</servlet-name>
@@ -80,6 +84,10 @@
     <servlet-mapping>
         <servlet-name>ItemServlet</servlet-name>
         <url-pattern>/item</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ItemAddServlet</servlet-name>
+        <url-pattern>/item/add</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

@@ -1,7 +1,5 @@
 package app.models;
 
-import javafx.geometry.Pos;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,6 +31,11 @@ public class Posts extends DAO {
         if(!rs.next())
             return null;
 
-        return new Post(rs.getInt("id"), Products.get(rs.getInt("product")), Users.get(rs.getInt("user")), rs.getTimestamp("date"));
+        return new Post(rs.getInt("id"), Products.get(rs.getInt("product")),
+                Users.get(rs.getInt("user")), rs.getTimestamp("timestamp"));
+    }
+
+    public static boolean create(Post post) throws SQLException {
+        return create(post, Post.class);
     }
 }

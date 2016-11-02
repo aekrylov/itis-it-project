@@ -4,7 +4,7 @@ package app.models;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/1/16 10:03 PM
  */
-public class Product {
+public class Product extends Entity {
     public enum ProductType {
         DESKTOP, LAPTOP, AIO
     }

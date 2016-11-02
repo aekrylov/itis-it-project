@@ -23,4 +23,8 @@ public class Products extends DAO {
 
         return fromResultSet(rs);
     }
+
+    public static boolean create(Product product) throws SQLException {
+        return create(product, Product.class);
+    }
 }

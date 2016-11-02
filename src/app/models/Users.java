@@ -32,15 +32,7 @@ public class Users extends DAO {
     }
 
     public static boolean create(User user) throws SQLException {
-        PreparedStatement st = connection.prepareStatement("INSERT INTO users (username, password, name, email)" +
-                "VALUES (?, ?, ?, ?)");
-
-        st.setString(1, user.getUsername());
-        st.setString(2, user.getPassword());
-        st.setString(3, user.getName());
-        st.setString(4, user.getEmail());
-
-        return st.executeUpdate() > 0;
+        return create(user, User.class);
     }
 
     public static String getPassword(String username) throws SQLException {

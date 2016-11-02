@@ -1,6 +1,7 @@
 package app.servlets;
 
 import app.Helpers;
+import app.misc.ValidationException;
 import app.models.User;
 import app.models.Users;
 
@@ -43,6 +44,16 @@ public class RegistrationServlet extends BaseServlet {
                 Helpers.encrypt(params.get("password")),
                 params.get("name"),
                 params.get("email"));
+
+        try {
+            user.validate();
+        } catch (ValidationException e) {
+            params.put("error", "validation");
+            params.put("cause", e.getMessage());
+            params.put("field", e.getField());
+            redirect(request, response, params);
+            return;
+        }
 
         try {
             if(Users.create(user)) {

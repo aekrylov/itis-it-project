@@ -6,7 +6,7 @@ import java.sql.Date;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/24/16 9:26 PM
  */
-public class Feedback {
+public class Feedback extends Entity {
 
     private int id;
     private User author;

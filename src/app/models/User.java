@@ -6,13 +6,15 @@
  */
 package app.models;
 
+import app.misc.ValidationException;
+
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/22/16 7:05 PM
  * 11-501
  * Task 
  */
-public class User {
+public class User extends Entity {
     private int id;
     private String username;
     private String password;
@@ -59,6 +61,19 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public boolean validate() throws ValidationException {
+        if(!username.matches("^[a-zA-Z0-9]{3,}$"))
+            throw new ValidationException("invalid", "username");
+
+        if(!password.matches("^[a-zA-Z0-9]{6,}$"))
+            throw new ValidationException("invalid", "password");
+
+        if(name == null)
+            throw new ValidationException("empty", "name");
+
+        return true;
     }
 
 }

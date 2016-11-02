@@ -6,7 +6,7 @@ import java.sql.Timestamp;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/1/16 10:29 PM
  */
-public class Post {
+public class Post extends Entity {
     private int id;
     private Product product;
     private User user;
@@ -19,6 +19,11 @@ public class Post {
         this.product = product;
         this.user = user;
         this.timestamp = timestamp;
+    }
+
+    public Post(Product product, User user) {
+        this.product = product;
+        this.user = user;
     }
 
     public int getId() {

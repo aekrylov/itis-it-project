@@ -1,46 +1,50 @@
-    <div class="container">
+<#include 'base.ftl'>
+
+<#macro body>
+<div class="container">
         <div class="well bs-component">
-        <div class="row">
-        
-        
+            <form class="form-horizontal" method="post">
+
+            <div class="row">
+
+
             <div class="col-md-7">
-            <form class="form-horizontal">
                 <div class="form-group">
                     <label for="inputName" class="col-md-4 control-label">Наименование</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputName" placeholder="Введите наименование товара">
+                        <input type="text" class="form-control" id="inputName" name="name" placeholder="Введите наименование товара">
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="inputCost" class="col-md-4 control-label">Стоимость</label>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="inputCost">
+                        <input type="text" class="form-control" id="inputCost" name="price">
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="inputBrand" class="col-md-4 control-label">Бренд</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputBrand" placeholder="Введите бренд">
+                        <input type="text" class="form-control" id="inputBrand" name="brand" placeholder="Введите бренд">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputModel" class="col-md-4 control-label">Модель</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputModel" placeholder="Введите модель">
+                        <input type="text" class="form-control" id="inputModel" name="model" placeholder="Введите модель">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputProcessor" class="col-md-4 control-label">Процессор</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputProcessor" placeholder="Введите модель процессора">
+                        <input type="text" class="form-control" id="inputProcessor" name="cpu_name" placeholder="Введите модель процессора">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputCoreNumder" class="col-md-4 control-label">Число ядер</label>
                     <div class="col-md-2">
-                        <select class="form-control" id="inputCoreNumder">
+                        <select class="form-control" id="inputCoreNumder" name="cpu_cores">
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -53,28 +57,28 @@
                 <div class="form-group">
                     <label for="inputRAM" class="col-md-4 control-label">Размер ОЗУ</label>
                     <div class="col-md-2">
-                        <input type="text" class="form-control" id="inputRAM">
+                        <input type="text" class="form-control" id="inputRAM" name="ram_gb">
                     </div>
                     <div class="col-md-2">
                         <h5>Гб</h5>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputVideoCard" class="col-md-4 control-label">����������</label>
+                    <label for="inputVideoCard" class="col-md-4 control-label">Видеокарта</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputVideoCard" placeholder="������� ������ ����������">
+                        <input type="text" class="form-control" id="inputVideoCard" name="video_card" placeholder="Введите модель видеокарты">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputHD" class="col-md-4 control-label">������� ����</label>
+                    <label for="inputHD" class="col-md-4 control-label">Жесткий диск</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputHD" placeholder="������� ��� �������� �����">
+                        <input type="text" class="form-control" id="inputHD" name="hdd_name" placeholder="Введите тип жесткого диска">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputHDVolume" class="col-md-4 control-label">����� �������� �����</label>
+                    <label for="inputHDVolume" class="col-md-4 control-label">Объем жесткого диска</label>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="inputHDVolume">
+                        <input type="text" class="form-control" id="inputHDVolume" name="hdd_capacity">
                     </div>
                     <div class="col-md-2">
                         <h5>Гб</h5>
@@ -82,7 +86,6 @@
                 </div>
    
                  
-            </form>
             </div>
 
             
@@ -92,25 +95,25 @@
                     <h4>Выберите тип:</h4>
                     <div class="radio">
                         <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        <input type="radio" name="type" id="optionsRadios1" value="desktop" checked>
                         Настольный компьютер
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        <input type="radio" name="type" id="optionsRadios2" value="laptop">
                         Ноутбук
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        <input type="radio" name="type" id="optionsRadios3" value="aio">
                         Моноблок
                         </label>
                     </div>
                 </div>
                 
-                <button class="btn btn-default" data-toggle="modal" data-target="#PhotoInputModal">�������� ����������</button>
+                <button class="btn btn-default" data-toggle="modal" data-target="#PhotoInputModal">Добавить фотографии</button>
 
 
                 <!-- Modal -->
@@ -119,7 +122,7 @@
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="ModalLabel">�������� ����������/h4>
+                        <h4 class="modal-title" id="ModalLabel">Загрузка фотографий</h4>
                       </div>
                       <div class="modal-body">
                         <div class="form-group">
@@ -127,15 +130,15 @@
                         </div>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">���������</button>
+                        <button type="button" class="btn btn-primary">Сохранить</button>
                       </div>
                     </div>
                   </div>
                 </div>
             
             </div>
-            
-         </div>
+
+        </div>
          
          
          <div class="row">
@@ -148,7 +151,10 @@
                </div>             
             </div>   
         </div>
-        
-        
+            </form>
+
+
         </div>
     </div>
+</#macro>
+<@display "Добавить товар"></@display>

@@ -75,6 +75,10 @@ public class Helpers {
         return (String) req.getSession().getAttribute("username");
     }
 
+    public static User getCurrentUser(HttpServletRequest req) throws SQLException {
+        return Users.get((String) req.getSession().getAttribute("username"));
+    }
+
     public static String encrypt(String str) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
