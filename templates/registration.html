@@ -6,26 +6,31 @@
                 <form class="form-horizontal">
                 <fieldset>
                     <legend>Регистрация</legend>
-                    <div class="form-group has-feedback">
-                        <label for="inputLogin" class="col-md-2 control-label">Логин</label>
+                     <div class="form-group has-feedback">
+                        <label for="inputLogin" class="col-md-2 control-label">Логин*</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" id="inputLogin" placeholder="Логин" required>
                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                            <p style="color: red; margin: 0px;">Логин должен состоять из латинских букв, цифр и быть не короче 4 символов</p>
                         </div>
+
                     </div>
                        
                     <div class="form-group has-feedback">                       
-                        <label for="inputPasswod1" class="col-md-2 control-label">Пароль</label>
+                        <label for="inputPasswod1" class="col-md-2 control-label">Пароль*</label>
                         <div class="col-md-10">
                             <input type="password" class="form-control" id="inputPassword1" placeholder="Пароль" required>
                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                            <p style="color: red;">Пароль должен состоять из латинских букв, цифр и быть и быть не короче 6 символов</p>                  
                         </div>
+
                     </div>
                     
                     <div class="form-group has-feedback">                       
                         <div class="col-md-10 col-md-offset-2">
                             <input type="password" class="form-control"  id="inputPassword2" placeholder="Повторите пароль" required>
                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                            <p style="color: red;">Пароли не совпадают</p>
                         </div>
                     </div>
                     
@@ -37,91 +42,92 @@
                     </div>
                     
                     <div class="form-group has-feedback">
-                        <label for="inputEmail" class="col-md-2 control-label" id="email" >Почта</label>
+                        <label for="inputEmail" class="col-md-2 control-label" id="email" >Почта*</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" id="inputEmail"  placeholder="Почта" required>
                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                             <p style="color: red;">Почта должна быть реальной</p>
                         </div>
                     </div>
                     <hr/>
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-2">            
-                            <button id="submit" type="submit" class="btn btn-default">Зарегестрироваться</button>
+                            <button type="submit" id="submit" class="btn btn-default">Зарегестрироваться</button>
                         </div>
                     </div>     
                 </fieldset>
                 </form>
-            </div>
-            </div>
-        </div>
-    </div>
-    
+                
+ 
+ 
+                        <script type="text/javascript">                       
+                        $(document).ready(function() {  
+                        
+                                $("p").hide();
+                        
+                                $("#inputLogin").isValid(new RegExp(/^[a-z0-9_-]{4,40}$/i));
+                   
+                                $("#inputPassword1").isValid(RegExp(/^[a-z0-9]{6,40}$/i));
+                   
+                                $("#inputEmail").isValid(new RegExp(/^[a-z0-9_-]+@[a-z0-9-]+\.[a-z]{2,6}$/i));
 
-    <script type="text/javascript">                       
-    $(document).ready(function() {                      
-            $("#inputLogin").isValid(new RegExp(/^[a-z0-9_-]{4,40}$/i));
-
-            $("#inputPassword1").isValid(RegExp(/^[a-z0-9]{6,40}$/i));
-
-            $("#inputEmail").isValid(new RegExp(/^[a-z0-9_-]+@[a-z0-9-]+\.[a-z]{2,6}$/i));
-
-    });    
+                        });    
 
 
-    (function($) {                        
-    $.fn.isValid = function (reg) {
-        var pattern = reg;
-        $(this).keyup(function(){                            
-         var value = $(this).val();    
-            if( value != 0)
-            {
-            if( pattern.test(value) ) {
-            $(this).parents(".form-group").addClass("has-success").removeClass('has-error');
-            $(this).next("span").addClass("glyphicon-ok").removeClass('glyphicon-remove');
-            }
-            else{
-            $(this).parents(".form-group").addClass("has-error").removeClass('has-success');
-            $(this).next("span").addClass("glyphicon-remove").removeClass('glyphicon-ok');
-            }
-            }
-            else{
-            $(this).parents(".form-group").removeClass("has-success").removeClass('has-error');
-            $(this).next("span").removeClass("glyphicon-ok").removeClass('glyphicon-remove');
-            }
-            
-            return this;
-
-        });
-    };
-    })(jQuery);                        
-    </script>
-
-    <script type="text/javascript">
-    $(document).ready(function() { 
-
-            $("#inputPassword2").keyup(function(){
-            
-            var password1 = $("#inputPassword1").val();
-            var password2 = $("#inputPassword2").val();
-
-            if(password2 != 0)
-            {
-            if( password2 == password1) {
-            $(this).parents(".form-group").addClass("has-success").removeClass('has-error');
-            $(this).next("span").addClass("glyphicon-ok").removeClass('glyphicon-remove');
-            }
-            else{
-            $(this).parents(".form-group").addClass("has-error").removeClass('has-success');
-            $(this).next("span").addClass("glyphicon-remove").removeClass('glyphicon-ok');
-            }
-            }
-            else{
-            $(this).parents(".form-group").removeClass("has-success").removeClass('has-error');
-            $(this).next("span").removeClass("glyphicon-ok").removeClass('glyphicon-remove');
-            }
-        })
-    })
-    </script>
+                        (function($) {                        
+                        $.fn.isValid = function (reg) {
+                            var pattern = reg;
+                            $(this).keyup(function(){                          
+                             var value = $(this).val();    
+                                if( value != 0)
+                                {
+                                if( pattern.test(value) ) {
+                                $(this).parents(".form-group").addClass("has-success").removeClass('has-error');
+                                $(this).next("span").addClass("glyphicon-ok").removeClass('glyphicon-remove').next("p").hide();
+                                }
+                                else{
+                                $(this).parents(".form-group").addClass("has-error").removeClass('has-success');
+                                $(this).next("span").addClass("glyphicon-remove").removeClass('glyphicon-ok').next("p").show();
+                                }
+                                }
+                                else{
+                                $(this).parents(".form-group").removeClass("has-success").removeClass('has-error');
+                                $(this).next("span").removeClass("glyphicon-ok").removeClass('glyphicon-remove').next("p").hide();
+                                }
+                                
+                                return this;
+                      
+                            });
+                        };
+                        })(jQuery);                        
+                        </script>
+                        
+                        <script type="text/javascript">
+                        $(document).ready(function() { 
+                        
+                                $("#inputPassword2").keyup(function(){
+                                
+                                var password1 = $("#inputPassword1").val();
+                                var password2 = $("#inputPassword2").val();
+  
+                                if(password2 != 0)
+                                {
+                                if( password2 == password1) {
+                                $(this).parents(".form-group").addClass("has-success").removeClass('has-error');
+                                $(this).next("span").addClass("glyphicon-ok").removeClass('glyphicon-remove').next("p").hide();;
+                                }
+                                else{
+                                $(this).parents(".form-group").addClass("has-error").removeClass('has-success');
+                                $(this).next("span").addClass("glyphicon-remove").removeClass('glyphicon-ok').next("p").show();
+                                }
+                                }
+                                else{
+                                $(this).parents(".form-group").removeClass("has-success").removeClass('has-error');
+                                $(this).next("span").removeClass("glyphicon-ok").removeClass('glyphicon-remove').next("p").hide();;
+                                }
+                            })
+                        })
+                        </script>
     
     <script type="text/javascript">
     $(document).ready(function() { 
