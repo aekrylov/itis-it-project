@@ -46,7 +46,7 @@
                     <hr/>
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-2">            
-                            <button type="submit" class="btn btn-default">Зарегестрироваться</button>
+                            <button id="submit" type="submit" class="btn btn-default">Зарегестрироваться</button>
                         </div>
                     </div>     
                 </fieldset>
@@ -120,5 +120,28 @@
             $(this).next("span").removeClass("glyphicon-ok").removeClass('glyphicon-remove');
             }
         })
+    })
+    </script>
+    
+    <script type="text/javascript">
+    $(document).ready(function() { 
+    
+        $("#submit").mouseenter(function(){
+            
+            if  ($("#inputLogin").parents(".form-group").hasClass("has-success") &&                
+            $("#inputPassword1").parents(".form-group").hasClass("has-success") &&                  
+            $("#inputEmail").parents(".form-group").hasClass("has-success") &&
+            $("#inputPassword2").parents(".form-group").hasClass("has-success")) {
+                $(this).removeClass("disabled");
+            }
+            else{
+                $(this).addClass("disabled");
+            }
+        })
+        
+        $("#submit").mouseleave(function(){
+            $(this).removeClass("disabled");
+        })                            
+
     })
     </script>
