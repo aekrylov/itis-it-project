@@ -1,3 +1,4 @@
+<#ftl encoding='utf-8'>
 <#macro display title="Название компании">
 <!DOCTYPE html>
 <html lang="en">

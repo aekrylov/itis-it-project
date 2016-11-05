@@ -1,6 +1,6 @@
 package app.models;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -8,33 +8,40 @@ import java.sql.Date;
  */
 public class Feedback extends Entity {
 
-    private int id;
-    private User author;
-    private String comment;
-    private Date date;
-    private int score;
+    int id;
+    BuySell buy_sell;
+    String comment;
+    Timestamp date;
+    int score;
 
     public int getId() {
         return id;
     }
-    public User getAuthor() {
-        return author;
-    }
     public String getComment() {
         return comment;
     }
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
     public int getScore() {
         return score;
     }
+    public BuySell getBuy_sell() {
+        return buy_sell;
+    }
 
-    public Feedback(int id, User author, String comment, Date date, int score) {
-        this.id = id;
-        this.author = author;
+    public Feedback() {}
+
+    public Feedback(BuySell buy_sell, String comment, Timestamp date, int score) {
+        this.buy_sell = buy_sell;
         this.comment = comment;
         this.date = date;
+        this.score = score;
+    }
+
+    public Feedback(BuySell buy_sell, String comment, int score) {
+        this.buy_sell = buy_sell;
+        this.comment = comment;
         this.score = score;
     }
 }

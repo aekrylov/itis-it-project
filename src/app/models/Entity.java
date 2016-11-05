@@ -6,8 +6,12 @@ import java.util.Map;
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/2/16 7:44 PM
+ *
+ * Basic entity class, used in app.models.DAO.
+ * Every field of every subclass used in DAO should have a default constructor
+ * and should represent a DB field with the same name
  */
-public abstract class Entity {
+abstract class Entity {
     public abstract int getId();
 
     public static Entity getEntity(Map<String, String> map, Class<? extends Entity> c) {

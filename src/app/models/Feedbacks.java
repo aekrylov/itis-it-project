@@ -27,13 +27,7 @@ public class Feedbacks extends DAO {
         List<Feedback> res = new ArrayList<>(rs.getFetchSize());
 
         while (rs.next()) {
-            res.add(new Feedback(
-                    rs.getInt("fid"),
-                    Users.get(rs.getInt("buyer")),
-                    rs.getString("comment"),
-                    rs.getDate("date"),
-                    rs.getInt("score")
-            ));
+            res.add(fromResultSet(rs, Feedback.class));
         }
 
         return res;

@@ -37,6 +37,7 @@ public abstract class DAO {
 
     protected static boolean create(Object instance, Class c) throws SQLException {
         Field [] fields = c.getDeclaredFields();
+        instance.getClass();
 
         if(fields[0].getName().equals("id")) {
             fields = Arrays.copyOfRange(fields, 1, fields.length);

@@ -87,7 +87,7 @@
                 <#list feedbacks as f >
                     <div class="well bs-component">
 
-                            <legend><a href="/user?id=${f.author.id}">${f.author.name}</a></legend>
+                            <legend><a href="/user?id=${f.buy_sell.buyer.id}">${f.buy_sell.buyer.name}</a></legend>
                             <p><b>Оценка: </b> ${f.score}</p>
                             <p>${f.comment}</p>
                             <#-- TODO date format -->
@@ -101,4 +101,4 @@
         </div>
 </#macro>
 
-<@display "Profile"></@display>
+<@display "${user.name} - Profile"></@display>
