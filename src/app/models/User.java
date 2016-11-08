@@ -52,6 +52,8 @@ public class User extends Entity {
         return rating;
     }
 
+    public User() {}
+
     public User(String username, String password, String name, String email) {
         this.username = username;
         this.password_raw = password;
@@ -69,6 +71,10 @@ public class User extends Entity {
 
         if(name == null || name.equals(""))
             throw new ValidationException("empty", "name");
+
+        if(email == null || !email.matches("[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+")) {
+            throw new ValidationException("invalid", "email");
+        }
 
         return true;
     }

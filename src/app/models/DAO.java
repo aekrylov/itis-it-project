@@ -1,6 +1,7 @@
 package app.models;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.Arrays;
 
@@ -95,7 +96,12 @@ public abstract class DAO {
         boolean accessible = field.isAccessible();
         field.setAccessible(true);
         try {
-            field.set(instance, value);
+            //the ony type that causes trouble
+            if(field.getType().equals(double.class) && value instanceof BigDecimal) {
+                field.set(instance, ((BigDecimal) value).doubleValue());
+            } else {
+                field.set(instance, value);
+            }
         } catch (IllegalAccessException e) {
             //should never happen
             e.printStackTrace();

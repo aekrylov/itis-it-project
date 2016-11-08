@@ -11,7 +11,7 @@
                      <div class="form-group has-feedback">
                         <label for="inputLogin" class="col-md-2 control-label">Логин*</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" id="inputLogin" placeholder="Логин" required>
+                            <input type="text" class="form-control" id="inputLogin" placeholder="Логин" name="username" required>
                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                             <p style="color: red; margin: 0px;">Логин должен состоять из латинских букв, цифр и быть не короче 4 символов</p>
                         </div>
