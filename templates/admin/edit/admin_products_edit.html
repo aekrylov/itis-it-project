@@ -1,0 +1,160 @@
+﻿
+    <div class="container">
+        <div class="row">
+        
+            <div class="col-md-10 col-md-offset-1">
+            <div class="well bs-component">
+                <form class="form-horizontal">
+                    <legend>Редактирование товара</legend>
+                    <!--
+                    <legend>Добавление товара</legend>
+                    -->
+                    <div class="row">       
+                    <div class="col-md-9">
+                            
+                        <div class="form-group">
+                            <label for="inputName" class="col-md-2 control-label">Наименование</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputName" placeholder="Введите наименование товара">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="inputCost" class="col-md-2 control-label">Стоимость</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" id="inputCost">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="inputBrand" class="col-md-2 control-label">Бренд</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputBrand" placeholder="Введите бренд">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputModel" class="col-md-2 control-label">Модель</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputModel" placeholder="Введите модель">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputProcessor" class="col-md-2 control-label">Процессор</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputProcessor" placeholder="Введите модель процессора">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCoreNumder" class="col-md-2 control-label">Число ядер</label>
+                            <div class="col-md-2">
+                                <select class="form-control" id="inputCoreNumder">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>6</option>
+                                    <option>12</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputRAM" class="col-md-2 control-label">Размер ОЗУ</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" id="inputRAM">
+                            </div>
+                            <div class="col-md-2">
+                                <h5>Гб</h5>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputVideoCard" class="col-md-2 control-label">Видеокарта</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputVideoCard" placeholder="Введите модель видеокарты">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputHD" class="col-md-2 control-label">Жесткий диск</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" id="inputHD" placeholder="Введите тип жесткого диска">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputHDVolume" class="col-md-2 control-label">Объем жесткого диска</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" id="inputHDVolume">
+                            </div>
+                            <div class="col-md-2">
+                                <h5>Гб</h5>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">                       
+                            <label for="inputText" class="col-md-2 control-label">Описание</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" id="inputText" rows="8" placeholder="Описание" required></textarea>        
+                        </div>
+                        </div>
+                        
+            
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-2">  
+                                <div class="form-group">
+                                    <h4>Выберите тип:</h4>
+                                    <div class="radio">
+                                        <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                        Настольный компьютер 
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                        Ноутбук
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                        Моноблок
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>                       
+                        </div>
+                    
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-2" style="margin-top:20px;">                         
+                                <div class="form-group">
+                                    <input type="file" multiple>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    
+                    <div class="col-md-2 col-md-offset-1">
+                            <img src="profile_photo\1.jpg" width="100%" style="margin-top: 0px;"/>
+                            <img src="profile_photo\1.jpg" width="100%"/>
+                            <img src="profile_photo\1.jpg" width="100%"/>
+                    </div>
+                    
+                    </div>
+
+                    <hr/>
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-2">            
+                            <button type="submit" class="btn btn-default">Сохранить изменения</button>
+                            <!--
+                            button type="submit" class="btn btn-default">Добавить</button>
+                            -->
+                        </div>
+                    </div> 
+                    
+                </form>
+          
+            </div>
+            </div>
+        </div>
+    </div>
+            

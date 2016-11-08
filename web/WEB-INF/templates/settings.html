@@ -3,64 +3,174 @@
         <div class="col-md-10 col-md-offset-1">
         <div class="well bs-component">
             <form class="form-horizontal">
-            <fieldset>
-                <div class="form-group">
-                    <label for="inputLogin" class="col-md-2 control-label">Р›РѕРіРёРЅ</label>
+                <div class="form-group has-feedback">
+                    <label for="inputLogin" class="col-md-2 control-label">Логин</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" id="inputLogin" placeholder="Р›РѕРіРёРЅ">
+                        <input type="text" id="inputLogin" class="form-control" id="inputLogin" placeholder="Логин"  required>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <p style="color: red; margin: 0px;">Логин должен состоять из латинских букв, цифр и быть не короче 4 символов</p>
                     </div>
                 </div>
                 
                 <div class="form-group">                       
-                    <label for="inputName" class="col-md-2 control-label">РРјСЏ</label>
+                    <label for="inputName" class="col-md-2 control-label">Имя</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="РРјСЏ">
+                        <input type="text" class="form-control" id="inputName" placeholder="Имя">
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="inputEmail" class="col-md-2 control-label">РџРѕС‡С‚Р°</label>
+                <div class="form-group has-feedback">
+                    <label for="inputEmail" class="col-md-2 control-label">Почта</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" id="inputEmail" placeholder="РџРѕС‡С‚Р°">
+                        <input type="text" class="form-control" id="inputEmail" placeholder="Почта"  required>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <p style="color: red;">Почта должна быть реальной</p>                
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-2">            
-                        <button type="submit" class="btn btn-default">CРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ</button>
+                        <button type="submit" id="submit1" class="btn btn-default">Cохранить изменения</button>
                     </div>
                 </div>     
                 <hr/>
                 
-                <div class="form-group">                       
-                    <label for="inputPasswod" class="col-md-2 control-label">РЎС‚Р°СЂС‹Р№ РїР°СЂРѕР»СЊ</label>
-                    <div class="col-md-10">
-                        <input type="password" class="form-control" id="inputOldPasswod" placeholder=" Р’РІРµРґРёС‚Рµ СЃС‚Р°СЂС‹Р№ РїР°СЂРѕР»СЊ">
-                    </div>
-                </div>
-            
+           </form>
+           <form class="form-horizontal">
                 
                 <div class="form-group">                       
-                    <label for="inputPasswod" class="col-md-2 control-label">РќРѕРІС‹Р№ РїР°СЂРѕР»СЊ</label>
+                    <label for="inputOldPasswod1" class="col-md-2 control-label">Старый пароль</label>
                     <div class="col-md-10">
-                        <input type="password" class="form-control" id="inputNewPasswod1" placeholder="Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Р№ РїР°СЂРѕР»СЊ">
+                        <input type="password" class="form-control" id="inputOldPasswod" placeholder=" Введите старый пароль" required>              
+                    </div>
+                </div>       
+                
+                <div class="form-group has-feedback">                       
+                    <label for="inputNewPassword1" class="col-md-2 control-label">Новый пароль</label>
+                    <div class="col-md-10">
+                        <input type="password" class="form-control" id="inputNewPassword1" placeholder="Введите новый пароль" required>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <p style="color: red;">Пароль должен состоять из латинских букв, цифр и быть и быть не короче 6 символов</p>  
                     </div>
                 </div>
                                 
-                <div class="form-group">                       
+                <div class="form-group has-feedback">                       
                     <div class="col-md-10 col-md-offset-2">
-                        <input type="password" class="form-control" id="inputNewPasswod2" placeholder="РџРѕРІС‚РѕСЂРёС‚Рµ РЅРѕРІС‹Р№ РїР°СЂРѕР»СЊ">
+                        <input type="password" class="form-control" id="inputNewPassword2" placeholder="Повторите новый пароль" required>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <p style="color: red;">Пароли не совпадают</p>
                     </div>
                 </div>
                 <div class="form-group">
                         <div class="col-md-6 col-md-offset-2">            
-                            <button type="submit" class="btn btn-default">РР·РјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ</button>
+                            <button type="submit" id ="submit2" class="btn btn-default">Изменить пароль</button>
                         </div>
                 </div>
-                
-            </fieldset>
             </form>
         </div>
         </div>
         </div>
         </div>
+
+
+        <script type="text/javascript">                       
+        $(document).ready(function() {  
+        
+                $("p").hide();
+        
+                $("#inputLogin").isValid(new RegExp(/^[a-z0-9_-]{4,40}$/i));
+   
+                $("#inputNewPassword1").isValid(RegExp(/^[a-z0-9]{6,40}$/i));
+   
+                $("#inputEmail").isValid(new RegExp(/^[a-z0-9_-]+@[a-z0-9-]+\.[a-z]{2,6}$/i));
+
+        });    
+
+
+        (function($) {                        
+        $.fn.isValid = function (reg) {
+            var pattern = reg;
+            $(this).keyup(function(){                          
+             var value = $(this).val();    
+                if( value != 0)
+                {
+                if( pattern.test(value) ) {
+                $(this).parents(".form-group").addClass("has-success").removeClass('has-error');
+                $(this).next("span").addClass("glyphicon-ok").removeClass('glyphicon-remove').next("p").hide();
+                }
+                else{
+                $(this).parents(".form-group").addClass("has-error").removeClass('has-success');
+                $(this).next("span").addClass("glyphicon-remove").removeClass('glyphicon-ok').next("p").show();
+                }
+                }
+                else{
+                $(this).parents(".form-group").removeClass("has-success").removeClass('has-error');
+                $(this).next("span").removeClass("glyphicon-ok").removeClass('glyphicon-remove').next("p").hide();
+                }
+                
+                return this;
+      
+            });
+        };
+        })(jQuery);                        
+        </script>
+        
+        <script type="text/javascript">
+        $(document).ready(function() { 
+        
+                $("#inputNewPassword2").keyup(function(){
+                
+                var password1 = $("#inputNewPassword1").val();
+                var password2 = $("#inputNewPassword2").val();
+
+                if(password2 != 0)
+                {
+                if( password2 == password1) {
+                $(this).parents(".form-group").addClass("has-success").removeClass('has-error');
+                $(this).next("span").addClass("glyphicon-ok").removeClass('glyphicon-remove').next("p").hide();;
+                }
+                else{
+                $(this).parents(".form-group").addClass("has-error").removeClass('has-success');
+                $(this).next("span").addClass("glyphicon-remove").removeClass('glyphicon-ok').next("p").show();
+                }
+                }
+                else{
+                $(this).parents(".form-group").removeClass("has-success").removeClass('has-error');
+                $(this).next("span").removeClass("glyphicon-ok").removeClass('glyphicon-remove').next("p").hide();;
+                }
+            })
+        })
+        </script>
+
+        <script type="text/javascript">
+        $(document).ready(function() { 
+        
+            $("#submit1").mouseenter(function(){
+                
+                if  ($("#inputLogin").parents(".form-group").hasClass("has-success") &&                                
+                $("#inputEmail").parents(".form-group").hasClass("has-success")) {
+                    $(this).removeClass("disabled");
+                }
+                else{
+                    $(this).addClass("disabled");
+                }
+            })
+     
+
+            $("#submit2").mouseenter(function(){
+                
+                if  ($("#inputNewPassword1").parents(".form-group").hasClass("has-success") &&                                
+                $("#inputNewPassword2").parents(".form-group").hasClass("has-success")) {
+                    $(this).removeClass("disabled");
+                }
+                else{
+                    $(this).addClass("disabled");
+                }
+            })
+            
+            $("button").mouseleave(function(){
+                $(this).removeClass("disabled");
+            })                              
+
+        })
+        </script>
