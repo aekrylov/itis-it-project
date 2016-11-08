@@ -1,6 +1,8 @@
 package app.models;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,11 +13,11 @@ import java.util.Map;
  * Every field of every subclass used in DAO should have a default constructor
  * and should represent a DB field with the same name
  */
-abstract class Entity {
+public abstract class Entity {
     public abstract int getId();
 
     public static Entity getEntity(Map<String, String> map, Class<? extends Entity> c) {
-        Field[] fields = c.getDeclaredFields();
+        Field[] fields = getDbFields(c);
         try {
             Object instance = c.newInstance();
             for(Field field: fields) {
@@ -32,5 +34,18 @@ abstract class Entity {
         }
 
         return null;
+    }
+
+    static Field[] getDbFields(Class<? extends Entity> c) {
+        List<Field> list = new ArrayList<>();
+
+        for (Field field: c.getDeclaredFields()) {
+            if(!field.isAnnotationPresent(OwnField.class)) {
+                //skipping
+                list.add(field);
+            }
+
+        }
+        return list.toArray(new Field[0]);
     }
 }

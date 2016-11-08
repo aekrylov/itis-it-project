@@ -6,7 +6,8 @@ import freemarker.template.TemplateExceptionHandler;
 import javax.servlet.ServletContext;
 
 /**
- * Created by ma on 07.10.2015.
+ * By Anton Krylov (anthony.kryloff@gmail.com)
+ * Date: 07.10.2015 5:19 PM
  */
 public class ConfigSingleton {
     private static Configuration cfg = null;
@@ -17,6 +18,7 @@ public class ConfigSingleton {
                     sc,
                     "/WEB-INF/templates"
             );
+            cfg.setDefaultEncoding("utf-8");
             cfg.setTemplateExceptionHandler(
                     TemplateExceptionHandler.HTML_DEBUG_HANDLER
             );

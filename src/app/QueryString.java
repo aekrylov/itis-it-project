@@ -18,7 +18,7 @@ public class QueryString {
     public static String encodeStrings(Map<String, String> map) {
         String res = "?";
         for(Map.Entry<String, String> entry: map.entrySet()) {
-            res += entry.getKey() + "=" + entry.getValue() + "&";
+            res += (entry.getKey() + "=" + entry.getValue() + "&").replaceAll(" ", "%20");
         }
 
         return res;

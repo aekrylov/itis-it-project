@@ -27,11 +27,13 @@ public abstract class BaseServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("utf-8");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("utf-8");
     }
 
     protected static void redirect(HttpServletRequest req, HttpServletResponse resp, Map<String, String> params)

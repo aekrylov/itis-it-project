@@ -9,16 +9,13 @@ import java.util.Arrays;
  * Date: 10/24/16 9:17 PM
  */
 public abstract class DAO {
-    protected static Class objectClass;
-    protected DAO(Class objectClass) {
-        this.objectClass = objectClass;
-    }
+
     protected DAO() {}
 
     protected static Connection connection = DB.getInstance().getConnection();
 
-    protected static <E> E fromResultSet(ResultSet rs, Class c) throws SQLException {
-        Field [] fields = c.getDeclaredFields();
+    protected static <E> E fromResultSet(ResultSet rs, Class<? extends Entity> c) throws SQLException {
+        Field [] fields = Entity.getDbFields(c);
 
         Object instance;
         try {
@@ -35,8 +32,8 @@ public abstract class DAO {
         }
     }
 
-    protected static boolean create(Object instance, Class c) throws SQLException {
-        Field [] fields = c.getDeclaredFields();
+    protected static boolean create(Object instance, Class<? extends Entity> c) throws SQLException {
+        Field [] fields = Entity.getDbFields(c);
         instance.getClass();
 
         if(fields[0].getName().equals("id")) {

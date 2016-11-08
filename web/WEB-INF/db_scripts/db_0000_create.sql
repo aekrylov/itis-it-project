@@ -30,7 +30,7 @@ CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
   "user" int REFERENCES users(id),
   product int REFERENCES products(id),
-  "date" datetime DEFAULT now()
+  "date" TIMESTAMP DEFAULT now()
 );
 
 CREATE TABLE buy_sells (
@@ -45,14 +45,14 @@ CREATE TABLE feedbacks (
   buy_sell INT REFERENCES buy_sells(id),
   comment TEXT,
   score int,
-  "date" datetime DEFAULT now()
+  "date" TIMESTAMP DEFAULT now()
 );
 
 CREATE TABLE favorites (
   id SERIAL PRIMARY KEY,
   product int REFERENCES products(id),
   "user" int REFERENCES users(id),
-  "date" datetime DEFAULT now()
+  "date" TIMESTAMP DEFAULT now()
 );
 
 CREATE TABLE conversations (
@@ -65,5 +65,5 @@ CREATE TABLE messages (
   id INT PRIMARY KEY ,
   "from" int REFERENCES users(id),
   "text" TEXT,
-  "date" DATEtime DEFAULT now()
+  "date" TIMESTAMP DEFAULT now()
 );

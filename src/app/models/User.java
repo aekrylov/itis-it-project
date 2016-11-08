@@ -19,6 +19,9 @@ public class User extends Entity {
     private String username;
     private String password;
 
+    @OwnField
+    private String password_raw;
+
     private String name;
     private String email;
     private String photo;
@@ -49,16 +52,10 @@ public class User extends Entity {
         return rating;
     }
 
-    public User(int id, String username, String password, String name, String email, String photo, double rating) {
-        this(username, password, name, email);
-        this.photo = photo;
-        this.rating = rating;
-        this.id = id;
-    }
-
     public User(String username, String password, String name, String email) {
         this.username = username;
-        this.password = password;
+        this.password_raw = password;
+        this.password = app.Helpers.encrypt(password);
         this.name = name;
         this.email = email;
     }
@@ -67,10 +64,10 @@ public class User extends Entity {
         if(!username.matches("^[a-zA-Z0-9]{3,}$"))
             throw new ValidationException("invalid", "username");
 
-        if(!password.matches("^[a-zA-Z0-9]{6,}$"))
+        if(!password_raw.matches("^[a-zA-Z0-9]{6,}$"))
             throw new ValidationException("invalid", "password");
 
-        if(name == null)
+        if(name == null || name.equals(""))
             throw new ValidationException("empty", "name");
 
         return true;

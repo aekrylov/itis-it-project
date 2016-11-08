@@ -4,6 +4,7 @@ import app.Helpers;
 import app.models.User;
 import app.models.Users;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -28,11 +30,7 @@ public class LoginServlet extends BaseServlet {
 
         try {
             User user = Users.get(username);
-            if(user == null) {
-                map.put("error", "username_404");
-                redirect(request, response, map);
-            }
-            else if(!user.getPassword().equals(Helpers.encrypt(password))) {
+            if(!user.getPassword().equals(Helpers.encrypt(password))) {
                 map.put("error", "password_invalid");
                 redirect(request, response, map);
             }
@@ -46,6 +44,9 @@ public class LoginServlet extends BaseServlet {
                 }
                 response.sendRedirect("/");
             }
+        } catch (NoSuchElementException e ) {
+            map.put("error", "username_404");
+            redirect(request, response, map);
         } catch (SQLException e) {
             e.printStackTrace();
             map.put("error", "db");

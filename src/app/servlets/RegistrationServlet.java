@@ -41,7 +41,7 @@ public class RegistrationServlet extends BaseServlet {
         }
 
         User user = new User(params.get("username"),
-                Helpers.encrypt(params.get("password")),
+                params.get("password"),
                 params.get("name"),
                 params.get("email"));
 

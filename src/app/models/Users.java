@@ -35,16 +35,6 @@ public class Users extends DAO {
         return create(user, User.class);
     }
 
-    public static String getPassword(String username) throws SQLException {
-        Statement st = connection.createStatement();
-        ResultSet rs = st.executeQuery("SELECT password FROM users WHERE username = "+username);
-
-        if(!rs.next())
-            return null;
-
-        return rs.getString("password");
-    }
-
     public static boolean exists(String username) throws SQLException {
         try {
             get(username);
@@ -55,7 +45,6 @@ public class Users extends DAO {
     }
 
     static User fromResultSet(ResultSet rs) throws SQLException {
-        return new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("email"),
-                rs.getString("photo"), rs.getDouble("rating"));
+        return fromResultSet(rs, User.class);
     }
 }
