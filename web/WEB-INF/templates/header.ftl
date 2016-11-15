@@ -19,7 +19,7 @@
                     </ul>
                 </li>
                 </#if>
-                <li><a href="#">Товары</a></li>
+                <li><a href="/items">Товары</a></li>
                 <li><a href="#">Рейтинг</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

@@ -1,6 +1,7 @@
 package app.models;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -12,7 +13,9 @@ public class Post extends Entity {
     private User user;
     private Timestamp timestamp;
 
-    public Post(){}
+    public Post(){
+        timestamp = Timestamp.from(Instant.now());
+    }
 
     public Post(int id, Product product, User user, Timestamp timestamp) {
         this.id = id;
@@ -22,6 +25,7 @@ public class Post extends Entity {
     }
 
     public Post(Product product, User user) {
+        this();
         this.product = product;
         this.user = user;
     }

@@ -91,4 +91,19 @@ public class Helpers {
         return null;
     }
 
+    public static Integer getInt(Map<String, String> map, String key) {
+        String str = getString(map, key);
+        if(str == null)
+            return null;
+        return Integer.parseInt(str);
+    }
+
+    public static String getString(Map<String, String> map, String key) {
+        String value = map.get(key);
+        if(value == null || value.equals(""))
+            return null;
+
+        return value;
+    }
+
 }

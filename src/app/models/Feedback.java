@@ -1,6 +1,7 @@
 package app.models;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -30,7 +31,9 @@ public class Feedback extends Entity {
         return buy_sell;
     }
 
-    public Feedback() {}
+    public Feedback() {
+        date = Timestamp.from(Instant.now());
+    }
 
     public Feedback(BuySell buy_sell, String comment, Timestamp date, int score) {
         this.buy_sell = buy_sell;
@@ -40,6 +43,7 @@ public class Feedback extends Entity {
     }
 
     public Feedback(BuySell buy_sell, String comment, int score) {
+        this();
         this.buy_sell = buy_sell;
         this.comment = comment;
         this.score = score;

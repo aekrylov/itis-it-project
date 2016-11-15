@@ -113,13 +113,13 @@
                     </div>
                 </div>
                 
-                <button class="btn btn-default" data-toggle="modal" data-target="#PhotoInputModal">Добавить фотографии</button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#PhotoInputModal">Добавить фотографии</button>
 
                 <hr/>
 
                 <div class="form-group">
-                    <h4>��������:</h4>
-                    <textarea class="form-control" id="inputText" rows="13" placeholder="��������" required></textarea>
+                    <h4>Описание:</h4>
+                    <textarea class="form-control" id="inputText" rows="13" placeholder="Описание" name="description" required></textarea>
                 </div>
 
                 <!-- Modal -->

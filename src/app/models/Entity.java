@@ -41,7 +41,6 @@ public abstract class Entity {
 
         for (Field field: c.getDeclaredFields()) {
             if(!field.isAnnotationPresent(OwnField.class)) {
-                //skipping
                 list.add(field);
             }
 

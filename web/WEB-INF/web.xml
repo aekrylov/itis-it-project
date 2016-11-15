@@ -39,6 +39,10 @@
         <servlet-name>ItemAddServlet</servlet-name>
         <servlet-class>app.servlets.ItemAddServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ItemListServlet</servlet-name>
+        <servlet-class>app.servlets.ItemListServlet</servlet-class>
+    </servlet>
 
     <servlet>
         <servlet-name>default</servlet-name>
@@ -89,6 +93,10 @@
         <servlet-name>ItemAddServlet</servlet-name>
         <url-pattern>/item/add</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ItemListServlet</servlet-name>
+        <url-pattern>/items</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -114,5 +122,6 @@
         <servlet-name>ProfileServlet</servlet-name>
         <servlet-name>ChatListServlet</servlet-name>
         <servlet-name>ChatServlet</servlet-name>
+        <servlet-name>ItemAddServlet</servlet-name>
     </filter-mapping>
 </web-app>

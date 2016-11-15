@@ -63,7 +63,7 @@
 
                 <a href="#" class="btn btn-default" align="right">Товары</a>
                 <#if owner??>
-                    <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></a>
+                    <a href="/item/add" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></a>
                 </#if>
 
             </div>

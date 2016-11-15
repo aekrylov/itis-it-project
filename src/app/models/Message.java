@@ -6,7 +6,7 @@ import java.sql.Timestamp;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/25/16 9:06 PM
  */
-public class Message extends Entity {
+public class Message {
     private int id;
     private User from;
     private User to;

@@ -3,7 +3,9 @@ package app.models;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -14,6 +16,15 @@ public abstract class DAO {
     protected DAO() {}
 
     protected static Connection connection = DB.getInstance().getConnection();
+
+    protected static <E> List<E> getList(ResultSet rs, Class<? extends Entity> c) throws SQLException {
+        List<E> list = new ArrayList<>(rs.getFetchSize());
+        while (rs.next()) {
+            list.add(fromResultSet(rs, c));
+        }
+
+        return list;
+    }
 
     protected static <E> E fromResultSet(ResultSet rs, Class<? extends Entity> c) throws SQLException {
         Field [] fields = Entity.getDbFields(c);
@@ -53,6 +64,7 @@ public abstract class DAO {
 
         Object[] values = new Object[fields.length];
 
+        //compose prepared statement
         for(int i = 0; i < fields.length; i++) {
             Field field = fields[i];
             String name = Helpers.getColumnName(field.getName());
@@ -65,10 +77,12 @@ public abstract class DAO {
             valueString = valueString + "?::"+columnType+",";
         }
 
+        //remove trailing commas
         columnString = columnString.substring(0, columnString.length()-1) + ")";
         valueString = valueString.substring(0, valueString.length()-1) + ")";
 
 
+        //prepare statement and set fields to respective values
         PreparedStatement st = connection.prepareStatement("INSERT INTO " + tableName
         + columnString + " VALUES " + valueString + " RETURNING id");
 
@@ -80,6 +94,7 @@ public abstract class DAO {
             }
         }
 
+        //execute insert query and set id attribute if it exists
         ResultSet rs = st.executeQuery();
         if(rs.next()) {
             try {
@@ -92,7 +107,16 @@ public abstract class DAO {
         return false;
     }
 
+    /**
+     * Set field of instance to specified value. This method modifies field access in process
+     * @param field
+     * @param instance
+     * @param value
+     */
     protected static void setField(Field field, Object instance, Object value) {
+        if(value == null || Entity.class.isAssignableFrom(field.getType())) { //todo entities
+            return;
+        }
         boolean accessible = field.isAccessible();
         field.setAccessible(true);
         try {
@@ -109,6 +133,12 @@ public abstract class DAO {
         field.setAccessible(accessible);
     }
 
+    /**
+     * Get value of instance's field using setAccessible (access level doesn't change after method executed)
+     * @param field
+     * @param instance
+     * @return field value
+     */
     protected static Object getField(Field field, Object instance) {
         boolean accessible = field.isAccessible();
         field.setAccessible(true);
