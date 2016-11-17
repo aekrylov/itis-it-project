@@ -6,18 +6,87 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/24/16 9:17 PM
  */
-public abstract class DAO {
-
-    protected DAO() {}
+public abstract class DAO<T extends Entity> {
 
     protected static Connection connection = DB.getInstance().getConnection();
 
-    protected static <E> List<E> getList(ResultSet rs, Class<? extends Entity> c) throws SQLException {
+    // new architecture, still WIP
+    private String tableName;
+    private Class<T> entityClass;
+
+    public DAO(String tableName, Class<T> entityClass) {
+        this.tableName = tableName;
+        this.entityClass = entityClass;
+    }
+
+    protected DAO(Class<T> entityClass) {
+        this.tableName = Helpers.toDbName(getClass().getSimpleName());
+        this.entityClass = entityClass;
+    }
+
+    public List<T> get() throws SQLException {
+        PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
+        ResultSet rs = st.executeQuery();
+
+        return getList(rs);
+    }
+
+    protected List<T> getList(ResultSet rs) throws SQLException {
+        List<T> list = new ArrayList<>(rs.getFetchSize());
+        while (rs.next()) {
+            list.add(fromResultSet(rs, entityClass));
+        }
+
+        return list;
+    }
+
+    public List<String> getColumnNames() throws SQLException {
+        PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s LIMIT 1", tableName));
+        ResultSetMetaData rsmd = st.getMetaData();
+
+        int count = rsmd.getColumnCount();
+        List<String> list = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            String columnName = rsmd.getColumnName(i+1);
+            list.add(columnName);
+        }
+        return list;
+
+    }
+
+    public List<Object[]> getTable() throws SQLException {
+        PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
+
+        ResultSet rs = st.executeQuery();
+        int columnCount = rs.getMetaData().getColumnCount();
+        List<Object[]> list = new ArrayList<>(rs.getFetchSize());
+
+
+        while (rs.next()) {
+            Object[] row = new Object[columnCount];
+            for (int i = 0; i < row.length; i++) {
+                row[i] = rs.getObject(i+1);
+            }
+            list.add(row);
+        }
+        return list;
+    }
+
+    public boolean create1(T entity) throws SQLException {
+        return create(entity, entityClass);
+    }
+
+    public boolean create1(Map<String, String> map) throws SQLException {
+        return create1((T) Entity.getEntity(map, entityClass));
+    }
+
+    private static <E> List<E> getList(ResultSet rs, Class<? extends Entity> c) throws SQLException {
         List<E> list = new ArrayList<>(rs.getFetchSize());
         while (rs.next()) {
             list.add(fromResultSet(rs, c));
@@ -33,7 +102,7 @@ public abstract class DAO {
         try {
             instance = c.newInstance();
             for (Field field : fields) {
-                String label = Helpers.getColumnName(field.getName());
+                String label = Helpers.toDbName(field.getName());
                 setField(field, instance, rs.getObject(label));
             }
             return (E) instance;
@@ -44,9 +113,8 @@ public abstract class DAO {
         }
     }
 
-    protected static boolean create(Object instance, Class<? extends Entity> c) throws SQLException {
+    public static boolean create(Object instance, Class<? extends Entity> c) throws SQLException {
         Field [] fields = Entity.getDbFields(c);
-        instance.getClass();
 
         if(fields[0].getName().equals("id")) {
             fields = Arrays.copyOfRange(fields, 1, fields.length);
@@ -67,7 +135,7 @@ public abstract class DAO {
         //compose prepared statement
         for(int i = 0; i < fields.length; i++) {
             Field field = fields[i];
-            String name = Helpers.getColumnName(field.getName());
+            String name = Helpers.toDbName(field.getName());
             values[i] = getField(field, instance);
 
             int index = columns.findColumn(name);
@@ -108,17 +176,14 @@ public abstract class DAO {
     }
 
     /**
-     * Set field of instance to specified value. This method modifies field access in process
-     * @param field
-     * @param instance
-     * @param value
+     * Set field of instance to specified value
      */
     protected static void setField(Field field, Object instance, Object value) {
         if(value == null || Entity.class.isAssignableFrom(field.getType())) { //todo entities
             return;
         }
-        boolean accessible = field.isAccessible();
-        field.setAccessible(true);
+        //boolean accessible = field.isAccessible();
+        //field.setAccessible(true);
         try {
             //the ony type that causes trouble
             if(field.getType().equals(double.class) && value instanceof BigDecimal) {
@@ -130,18 +195,15 @@ public abstract class DAO {
             //should never happen
             e.printStackTrace();
         }
-        field.setAccessible(accessible);
+        //field.setAccessible(accessible);
     }
 
     /**
-     * Get value of instance's field using setAccessible (access level doesn't change after method executed)
-     * @param field
-     * @param instance
-     * @return field value
+     * Get value of instance's field
      */
     protected static Object getField(Field field, Object instance) {
-        boolean accessible = field.isAccessible();
-        field.setAccessible(true);
+        //boolean accessible = field.isAccessible();
+        //field.setAccessible(true);
         Object obj = null;
         try {
             obj = field.get(instance);
@@ -149,7 +211,7 @@ public abstract class DAO {
             //should never happen
             e.printStackTrace();
         }
-        field.setAccessible(accessible);
+        //field.setAccessible(accessible);
 
         return obj;
     }

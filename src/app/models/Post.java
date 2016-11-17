@@ -8,10 +8,10 @@ import java.time.Instant;
  * Date: 11/1/16 10:29 PM
  */
 public class Post extends Entity {
-    private int id;
-    private Product product;
-    private User user;
-    private Timestamp timestamp;
+    int id;
+    Product product;
+    User user;
+    Timestamp timestamp;
 
     public Post(){
         timestamp = Timestamp.from(Instant.now());

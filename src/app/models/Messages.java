@@ -1,5 +1,6 @@
 package app.models;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +12,9 @@ import java.util.NoSuchElementException;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/25/16 9:02 PM
  */
-public class Messages extends DAO {
+public class Messages {
+
+    private static Connection connection = DB.getInstance().getConnection();
 
     public static Message get(int id) throws SQLException {
         PreparedStatement st = connection.prepareStatement(

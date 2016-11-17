@@ -2,7 +2,7 @@ package app;
 
 import app.models.Messages;
 import app.models.User;
-import app.models.Users;
+import app.services.UserService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -47,7 +47,7 @@ public class Helpers {
                 dataModel = new HashMap<>();
 
             try {
-                User user = Users.get((String) request.getSession().getAttribute("username"));
+                User user = getCurrentUser(request);
                 dataModel.put("current_user", user);
                 dataModel.put("unread_count", Messages.getUnreadCount(user));
             } catch (SQLException e) {
@@ -76,7 +76,7 @@ public class Helpers {
     }
 
     public static User getCurrentUser(HttpServletRequest req) throws SQLException {
-        return Users.get((String) req.getSession().getAttribute("username"));
+        return UserService.getInstance().get((String) req.getSession().getAttribute("username"));
     }
 
     public static String encrypt(String str) {

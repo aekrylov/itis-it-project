@@ -1,9 +1,7 @@
 package app.servlets;
 
 import app.Helpers;
-import app.models.Post;
-import app.models.Posts;
-import app.models.Users;
+import app.models.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,25 +13,28 @@ import java.util.Map;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
- * Date: 11/1/16 10:36 PM
+ * Date: 11/15/16 6:53 PM
  */
-public class ItemServlet extends BaseServlet {
+public class SettingsServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
-        int id = Integer.parseInt(req.getParameter("id"));
-
+        //display settings
         try {
-            Post post = Posts.get(id);
+            User user = Helpers.getCurrentUser(req);
             Map<String, Object> dataModel = new HashMap<>();
-            dataModel.put("isSeller", post.getUser().getId() == Helpers.getCurrentUser(req).getId());
-            dataModel.put("post", post);
-            dataModel.put("product", post.getProduct());
+            dataModel.put("user", user);
 
-            Helpers.render(getServletContext(), req, resp, "product.ftl", dataModel);
+            Helpers.render(getServletContext(), req, resp, "settings.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
+        //todo process changes
     }
 }

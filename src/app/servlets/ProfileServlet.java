@@ -5,6 +5,7 @@ import app.models.Feedbacks;
 import app.models.Posts;
 import app.models.User;
 import app.models.Users;
+import app.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,9 +27,9 @@ public class ProfileServlet extends HttpServlet {
         try {
             User user;
             if(request.getParameter("id") == null) {
-                user = Users.get(Helpers.getUsername(request));
+                user = Helpers.getCurrentUser(request);
             } else {
-                user = Users.get(Integer.parseInt(request.getParameter("id")));
+                user = UserService.getInstance().get(Integer.parseInt(request.getParameter("id")));
             }
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("post_count", Posts.countPosts(user));

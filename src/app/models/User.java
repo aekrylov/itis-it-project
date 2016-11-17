@@ -15,18 +15,20 @@ import app.misc.ValidationException;
  * Task 
  */
 public class User extends Entity {
-    private int id;
-    private String username;
-    private String password;
+    int id;
+    String username;
+    String password;
 
     @OwnField
     private String password_raw;
 
-    private String name;
-    private String email;
-    private String photo;
+    String name;
+    String email;
+    String photo;
 
-    private double rating;
+    double rating;
+
+    String role = "user";
 
     public int getId() {
         return id;
@@ -50,6 +52,9 @@ public class User extends Entity {
 
     public double getRating() {
         return rating;
+    }
+    public String getRole() {
+        return role;
     }
 
     public User() {}

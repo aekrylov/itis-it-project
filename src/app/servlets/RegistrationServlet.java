@@ -4,6 +4,7 @@ import app.Helpers;
 import app.misc.ValidationException;
 import app.models.User;
 import app.models.Users;
+import app.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +57,7 @@ public class RegistrationServlet extends BaseServlet {
         }
 
         try {
-            if(Users.create(user)) {
+            if(UserService.getInstance().create(user)) {
                 Map<String, String> pass = new HashMap<>();
                 pass.put("success", "1");
                 pass.put("username", params.get("username"));

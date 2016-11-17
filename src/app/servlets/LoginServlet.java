@@ -3,6 +3,7 @@ package app.servlets;
 import app.Helpers;
 import app.models.User;
 import app.models.Users;
+import app.services.UserService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,8 +30,7 @@ public class LoginServlet extends BaseServlet {
         String password = request.getParameter("password");
 
         try {
-            User user = Users.get(username);
-            if(!user.getPassword().equals(Helpers.encrypt(password))) {
+            if(!UserService.getInstance().checkCredentials(username, password)) {
                 map.put("error", "password_invalid");
                 redirect(request, response, map);
             }

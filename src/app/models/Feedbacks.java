@@ -10,7 +10,11 @@ import java.util.List;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/24/16 9:26 PM
  */
-public class Feedbacks extends DAO {
+public class Feedbacks extends DAO<Feedback> {
+
+    public Feedbacks() {
+        super("feedbacks", Feedback.class);
+    }
 
     public static List<Feedback> getRecentFeedbacks(User seller, int limit) throws SQLException {
         PreparedStatement st = connection.prepareStatement(

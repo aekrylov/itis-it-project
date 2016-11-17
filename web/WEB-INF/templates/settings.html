@@ -2,68 +2,70 @@
         <div class="row">
         <div class="col-md-10 col-md-offset-1">
         <div class="well bs-component">
-            <form class="form-horizontal">
+            <form class="form-horizontal" method="post">
+                <input type="hidden" name="act" value="info">
                 <div class="form-group has-feedback">
-                    <label for="inputLogin" class="col-md-2 control-label">Логин</label>
+                    <label for="inputLogin" class="col-md-2 control-label">Р›РѕРіРёРЅ</label>
                     <div class="col-md-10">
-                        <input type="text" id="inputLogin" class="form-control" id="inputLogin" placeholder="Логин"  required>
+                        <input type="text" id="inputLogin" class="form-control" id="inputLogin" placeholder="Р›РѕРіРёРЅ" name="username" required>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                        <p style="color: red; margin: 0px;">Логин должен состоять из латинских букв, цифр и быть не короче 4 символов</p>
+                        <p style="color: red; margin: 0px;">Р›РѕРіРёРЅ РґРѕР»Р¶РµРЅ СЃРѕСЃС‚РѕСЏС‚СЊ РёР· Р»Р°С‚РёРЅСЃРєРёС… Р±СѓРєРІ, С†РёС„СЂ Рё Р±С‹С‚СЊ РЅРµ РєРѕСЂРѕС‡Рµ 4 СЃРёРјРІРѕР»РѕРІ</p>
                     </div>
                 </div>
                 
                 <div class="form-group">                       
-                    <label for="inputName" class="col-md-2 control-label">Имя</label>
+                    <label for="inputName" class="col-md-2 control-label">РРјСЏ</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="Имя">
+                        <input type="text" class="form-control" id="inputName" placeholder="РРјСЏ" name="name">
                     </div>
                 </div>
                 
                 <div class="form-group has-feedback">
-                    <label for="inputEmail" class="col-md-2 control-label">Почта</label>
+                    <label for="inputEmail" class="col-md-2 control-label">РџРѕС‡С‚Р°</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" id="inputEmail" placeholder="Почта"  required>
+                        <input type="text" class="form-control" id="inputEmail" placeholder="РџРѕС‡С‚Р°" name="email" required>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                        <p style="color: red;">Почта должна быть реальной</p>                
+                        <p style="color: red;">РџРѕС‡С‚Р° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ СЂРµР°Р»СЊРЅРѕР№</p>                
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-2">            
-                        <button type="submit" id="submit1" class="btn btn-default">Cохранить изменения</button>
+                        <button type="submit" id="submit1" class="btn btn-default">CРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ</button>
                     </div>
                 </div>     
                 <hr/>
                 
            </form>
            <form class="form-horizontal">
+               <input type="hidden" name="act" value="password">
                 
                 <div class="form-group">                       
-                    <label for="inputOldPasswod1" class="col-md-2 control-label">Старый пароль</label>
+                    <label for="inputOldPasswod1" class="col-md-2 control-label">РЎС‚Р°СЂС‹Р№ РїР°СЂРѕР»СЊ</label>
                     <div class="col-md-10">
-                        <input type="password" class="form-control" id="inputOldPasswod" placeholder=" Введите старый пароль" required>              
+                        <input type="password" class="form-control" id="inputOldPasswod" placeholder=" Р’РІРµРґРёС‚Рµ СЃС‚Р°СЂС‹Р№ РїР°СЂРѕР»СЊ" name="password_old" required>
                     </div>
                 </div>       
                 
                 <div class="form-group has-feedback">                       
-                    <label for="inputNewPassword1" class="col-md-2 control-label">Новый пароль</label>
+                    <label for="inputNewPassword1" class="col-md-2 control-label">РќРѕРІС‹Р№ РїР°СЂРѕР»СЊ</label>
                     <div class="col-md-10">
-                        <input type="password" class="form-control" id="inputNewPassword1" placeholder="Введите новый пароль" required>
+                        <input type="password" class="form-control" id="inputNewPassword1" placeholder="Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Р№ РїР°СЂРѕР»СЊ" name="password_new" required>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                        <p style="color: red;">Пароль должен состоять из латинских букв, цифр и быть и быть не короче 6 символов</p>  
+                        <p style="color: red;">РџР°СЂРѕР»СЊ РґРѕР»Р¶РµРЅ СЃРѕСЃС‚РѕСЏС‚СЊ РёР· Р»Р°С‚РёРЅСЃРєРёС… Р±СѓРєРІ, С†РёС„СЂ Рё Р±С‹С‚СЊ Рё Р±С‹С‚СЊ РЅРµ РєРѕСЂРѕС‡Рµ 6 СЃРёРјРІРѕР»РѕРІ</p>  
                     </div>
                 </div>
                                 
                 <div class="form-group has-feedback">                       
                     <div class="col-md-10 col-md-offset-2">
-                        <input type="password" class="form-control" id="inputNewPassword2" placeholder="Повторите новый пароль" required>
+                        <input type="password" class="form-control" id="inputNewPassword2" placeholder="РџРѕРІС‚РѕСЂРёС‚Рµ РЅРѕРІС‹Р№ РїР°СЂРѕР»СЊ" name="password_new2" required>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                        <p style="color: red;">Пароли не совпадают</p>
+                        <p style="color: red;">РџР°СЂРѕР»Рё РЅРµ СЃРѕРІРїР°РґР°СЋС‚</p>
                     </div>
                 </div>
                 <div class="form-group">
                         <div class="col-md-6 col-md-offset-2">            
-                            <button type="submit" id ="submit2" class="btn btn-default">Изменить пароль</button>
+                            <button type="submit" id ="submit2" class="btn btn-default">РР·РјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ</button>
                         </div>
                 </div>
             </form>

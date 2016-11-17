@@ -5,6 +5,8 @@ import app.models.Message;
 import app.models.Messages;
 import app.models.User;
 import app.models.Users;
+import app.services.ChatService;
+import app.services.UserService;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -30,7 +32,7 @@ public class ChatServlet extends BaseServlet {
 
         JSONObject object = new JSONObject();
         try {
-            Message message = new Message(Users.get(Helpers.getUsername(request)), Users.get(to),
+            Message message = new Message(Helpers.getCurrentUser(request), Users.get(to),
                     text, Timestamp.from(Instant.now()));
 
             String status = Messages.create(message) ? "OK" : "ERROR";
@@ -47,10 +49,10 @@ public class ChatServlet extends BaseServlet {
         int uid = Integer.parseInt(request.getParameter("uid"));
 
         try {
-            User thisUser = Users.get(Helpers.getUsername(request));
-            User thatUser = Users.get(uid);
+            User thisUser = Helpers.getCurrentUser(request);
+            User thatUser = UserService.getInstance().get(uid);
 
-            List<Message> messages = Messages.getConversation(thisUser, thatUser);
+            List<Message> messages = ChatService.getInstance().getConversation(thisUser, thatUser);
             Map<String, Object> dataModel = new HashMap<>();
 
             dataModel.put("user1", thisUser);

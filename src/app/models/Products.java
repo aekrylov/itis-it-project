@@ -8,7 +8,11 @@ import java.sql.SQLException;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/1/16 10:28 PM
  */
-public class Products extends DAO {
+public class Products extends DAO<Product> {
+
+    public Products() {
+        super("products", Product.class);
+    }
 
     public static Product fromResultSet(ResultSet rs) throws SQLException {
         return fromResultSet(rs, Product.class);

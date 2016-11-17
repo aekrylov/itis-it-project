@@ -12,7 +12,11 @@ import java.util.List;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/24/16 9:16 PM
  */
-public class Posts extends DAO {
+public class Posts extends DAO<Post> {
+
+    public Posts() {
+        super("posts", Post.class);
+    }
 
     public static int countPosts(User user) throws SQLException {
         PreparedStatement st = connection.prepareStatement("SELECT count(1) FROM posts WHERE \"user\" = ?");
