@@ -36,8 +36,15 @@
                         <#assign value = (field!'')?string?trim>
                         <td><#if value?length < 20>${value}<#else >${value[0..*20]}...</#if></td>
                         </#list>
-                        <td><a href="" ><span class="glyphicon glyphicon-pencil"></span></a></td>
-                        <td><a href=""><span class="glyphicon glyphicon-remove"></span></a></td>
+                        <td><a href="/admin/edit?table=${tablename}&id=${row[0]}" ><span class="glyphicon glyphicon-pencil"></span></a></td>
+                        <td>
+                            <form action="/admin/delete" method="post">
+                                <input type="hidden" name="table" value="${tablename}">
+                                <input type="hidden" name="id" value="${row[0]}">
+                                <button type="submit">
+                                    <span class="glyphicon glyphicon-remove"></span></button>
+                            </form>
+                        </td>
                     </tr>
                     </#list>
                     </tbody>

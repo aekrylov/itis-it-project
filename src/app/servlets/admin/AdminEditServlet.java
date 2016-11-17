@@ -1,6 +1,7 @@
 package app.servlets.admin;
 
 import app.models.DAO;
+import app.models.Entity;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,9 +13,9 @@ import java.util.Map;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
- * Date: 11/17/16 5:15 PM
+ * Date: 11/17/16 8:44 PM
  */
-public class AdminСreateServlet extends BaseServlet {
+public class AdminEditServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,12 +24,20 @@ public class AdminСreateServlet extends BaseServlet {
 
         Map<String, String> params = getParameterMap(req);
         String tableName = params.get("table");
+        int id = Integer.parseInt(params.get("id"));
 
         DAO dao = Helpers.getDao(tableName);
+        Map<String, Object> dataModel = new HashMap<>();
+
         try {
-            Map<String, Object> dataModel = new HashMap<>();
+            if(!params.containsKey("edited")) {
+                Entity entity = dao.get(id);
+                dataModel.put("values", entity);
+            } else {
+                dataModel.put("values", params);
+            }
+
             dataModel.put("columns", dao.getColumnNames());
-            dataModel.put("values", params);
             dataModel.put("tablename", tableName);
             if(params.containsKey("error")) {
                 dataModel.put("error", params.get("error"));
@@ -49,17 +58,18 @@ public class AdminСreateServlet extends BaseServlet {
         DAO dao = Helpers.getDao(table);
 
         try {
-            if(!dao.create(params)) {
-                redirect(req, resp, params);
-            } else {
+            if(dao.update(params)) {
                 resp.sendRedirect("/admin/?table="+table);
                 return;
+            } else {
+                params.put("error", "0 rows updated");
             }
         } catch (SQLException e) {
             e.printStackTrace();
             params.put("error", e.getMessage());
-            redirect(req, resp, params);
         }
 
+        params.put("edited", "true");
+        redirect(req, resp, params);
     }
 }
