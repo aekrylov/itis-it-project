@@ -22,7 +22,7 @@ public class UserService {
     }
 
     public boolean create(User user) throws SQLException {
-        return users.create1(user);
+        return users.create(user);
     }
 
     public boolean checkCredentials(String username, String password) throws SQLException {
@@ -38,5 +38,9 @@ public class UserService {
 
     public User get(int id) throws SQLException {
         return users.get(id);
+    }
+
+    public boolean exists(String username) throws SQLException {
+        return users.get(username) != null;
     }
 }

@@ -3,7 +3,7 @@ package app.servlets;
 import app.Helpers;
 import app.models.Post;
 import app.models.Posts;
-import app.models.Users;
+import app.services.PostService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,13 +19,15 @@ import java.util.Map;
  */
 public class ItemServlet extends BaseServlet {
 
+    private PostService postService = PostService.getInstance();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
         int id = Integer.parseInt(req.getParameter("id"));
 
         try {
-            Post post = Posts.get(id);
+            Post post = postService.getPost(id);
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("isSeller", post.getUser().getId() == Helpers.getCurrentUser(req).getId());
             dataModel.put("post", post);

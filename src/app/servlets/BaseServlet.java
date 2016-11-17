@@ -7,6 +7,10 @@
 package app.servlets;
 
 import app.QueryString;
+import app.services.ChatService;
+import app.services.FeedbackService;
+import app.services.PostService;
+import app.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,6 +27,11 @@ import java.util.Map;
  * Task 
  */
 public abstract class BaseServlet extends HttpServlet {
+
+    protected UserService userService = UserService.getInstance();
+    protected ChatService chatService = ChatService.getInstance();
+    protected PostService postService = PostService.getInstance();
+    protected FeedbackService feedbackService = FeedbackService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

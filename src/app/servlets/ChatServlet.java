@@ -25,6 +25,9 @@ import java.util.Map;
  * Date: 10/25/16 10:28 PM
  */
 public class ChatServlet extends BaseServlet {
+    private UserService userService = UserService.getInstance();
+    private ChatService chatService = ChatService.getInstance();
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         super.doPost(request, response);
         String text = request.getParameter("text");
@@ -32,7 +35,7 @@ public class ChatServlet extends BaseServlet {
 
         JSONObject object = new JSONObject();
         try {
-            Message message = new Message(Helpers.getCurrentUser(request), Users.get(to),
+            Message message = new Message(Helpers.getCurrentUser(request), userService.get(to),
                     text, Timestamp.from(Instant.now()));
 
             String status = Messages.create(message) ? "OK" : "ERROR";
@@ -50,9 +53,9 @@ public class ChatServlet extends BaseServlet {
 
         try {
             User thisUser = Helpers.getCurrentUser(request);
-            User thatUser = UserService.getInstance().get(uid);
+            User thatUser = userService.get(uid);
 
-            List<Message> messages = ChatService.getInstance().getConversation(thisUser, thatUser);
+            List<Message> messages = chatService.getConversation(thisUser, thatUser);
             Map<String, Object> dataModel = new HashMap<>();
 
             dataModel.put("user1", thisUser);

@@ -1,7 +1,6 @@
 package app.models;
 
 import java.sql.*;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -16,7 +15,7 @@ public class Users extends DAO<User> {
         super("users", User.class);
     }
 
-    public static User get(String username) throws SQLException, NoSuchElementException {
+    public User get(String username) throws SQLException, NoSuchElementException {
         PreparedStatement st = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
         st.setString(1, username);
         ResultSet rs = st.executeQuery();
@@ -24,25 +23,6 @@ public class Users extends DAO<User> {
             throw new NoSuchElementException("User not found");
 
         return fromResultSet(rs);
-    }
-
-    public static User get(int id) throws SQLException {
-        PreparedStatement st = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
-        st.setInt(1, id);
-        ResultSet rs = st.executeQuery();
-        if(!rs.next())
-            throw new NoSuchElementException("User not found");
-
-        return fromResultSet(rs);
-    }
-
-    public static boolean exists(String username) throws SQLException {
-        try {
-            get(username);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
     }
 
     static User fromResultSet(ResultSet rs) throws SQLException {

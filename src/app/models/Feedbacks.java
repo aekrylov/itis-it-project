@@ -16,7 +16,7 @@ public class Feedbacks extends DAO<Feedback> {
         super("feedbacks", Feedback.class);
     }
 
-    public static List<Feedback> getRecentFeedbacks(User seller, int limit) throws SQLException {
+    public List<Feedback> getRecentFeedbacks(User seller, int limit) throws SQLException {
         PreparedStatement st = connection.prepareStatement(
                 "SELECT feedbacks.id as id, comment, score, feedbacks.date as \"date\", buyer, buy_sells.id as buy_sell " +
                 "from feedbacks " +
@@ -32,7 +32,6 @@ public class Feedbacks extends DAO<Feedback> {
 
         while (rs.next()) {
             Feedback feedback = fromResultSet(rs, Feedback.class);
-            feedback.buy_sell = BuySells.get(rs.getInt("buy_sell"));
             res.add(feedback);
         }
 

@@ -66,11 +66,11 @@ public class LoginServlet extends BaseServlet {
 
         String error = request.getParameter("error");
 
-        Map<String, String> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
         data.put("username", oldUsername);
         if(error != null)
             data.put("error", Helpers.getErrorMessage(error));
 
-        Helpers.render(getServletContext(), response, "login.ftl", data);
+        Helpers.render(getServletContext(), request, response, "login.ftl", data);
     }
 }

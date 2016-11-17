@@ -1,7 +1,6 @@
 package app.servlets.admin;
 
 import app.models.DAO;
-import app.servlets.BaseServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

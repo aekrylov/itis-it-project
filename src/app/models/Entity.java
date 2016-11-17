@@ -1,6 +1,7 @@
 package app.models;
 
 import java.lang.reflect.Field;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,15 +17,14 @@ import java.util.Map;
 public abstract class Entity {
     public abstract int getId();
 
-    public static Entity getEntity(Map<String, String> map, Class<? extends Entity> c) {
+    public static Entity getEntity(Map<String, String> map, Class<? extends Entity> c) throws SQLException {
         Field[] fields = getDbFields(c);
         try {
             Object instance = c.newInstance();
             for(Field field: fields) {
-                String key = field.getName().replaceAll("(A-Z)", "_$1").toLowerCase();
+                String key = Helpers.toDbName(field.getName());
                 if(map.containsKey(key) && !map.get(key).equals("")) {
-                    DAO.setField(field, instance, field.getType().isAssignableFrom(int.class) ?
-                            Integer.parseInt(map.get(key)) : map.get(key));
+                    DAO.setField(field, instance, Helpers.parseString(field.getType(), map.get(key)));
                 }
             }
 
@@ -47,4 +47,17 @@ public abstract class Entity {
         }
         return list.toArray(new Field[0]);
     }
+
+    static Field[] getDbFieldsWithoutId(Class<? extends Entity> c) {
+        List<Field> list = new ArrayList<>();
+
+        for (Field field: c.getDeclaredFields()) {
+            if(!(field.isAnnotationPresent(OwnField.class) || field.getName().equals("id"))) {
+                list.add(field);
+            }
+
+        }
+        return list.toArray(new Field[0]);
+    }
+
 }

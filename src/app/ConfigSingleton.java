@@ -13,7 +13,7 @@ public class ConfigSingleton {
     private static Configuration cfg = null;
     public static Configuration getConfig(ServletContext sc) {
         if (cfg == null){
-            cfg = new Configuration(Configuration.VERSION_2_3_23);
+            cfg = new Configuration(Configuration.VERSION_2_3_25);
             cfg.setServletContextForTemplateLoading(
                     sc,
                     "/WEB-INF/templates"

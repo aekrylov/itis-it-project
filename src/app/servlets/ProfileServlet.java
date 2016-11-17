@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/24/16 12:18 PM
  */
-public class ProfileServlet extends HttpServlet {
+public class ProfileServlet extends BaseServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -29,11 +29,11 @@ public class ProfileServlet extends HttpServlet {
             if(request.getParameter("id") == null) {
                 user = Helpers.getCurrentUser(request);
             } else {
-                user = UserService.getInstance().get(Integer.parseInt(request.getParameter("id")));
+                user = userService.get(Integer.parseInt(request.getParameter("id")));
             }
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("post_count", Posts.countPosts(user));
-            dataModel.put("feedbacks", Feedbacks.getRecentFeedbacks(user, 5));
+            dataModel.put("feedbacks", feedbackService.getRecentFeedbacks(user, 5));
             dataModel.put("user", user);
 
             if(user.getUsername().equals(request.getSession().getAttribute("username"))) {

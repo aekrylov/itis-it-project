@@ -58,7 +58,7 @@ public class Helpers {
         render(sc, response, templateName, dataModel);
     }
 
-    public static void render(ServletContext sc, HttpServletResponse resp,
+    private static void render(ServletContext sc, HttpServletResponse resp,
                               String templateName, Object dataModel) throws IOException {
         Template tmpl = ConfigSingleton.getConfig(sc).getTemplate(templateName);
         try {
@@ -68,11 +68,6 @@ public class Helpers {
             e.printStackTrace();
         }
 
-    }
-
-    //TODO migrate to basic servlet?
-    public static String getUsername(HttpServletRequest req) {
-        return (String) req.getSession().getAttribute("username");
     }
 
     public static User getCurrentUser(HttpServletRequest req) throws SQLException {

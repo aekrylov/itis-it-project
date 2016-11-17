@@ -16,28 +16,29 @@ public class DAOTest {
         product.setName("TEst1");
         product.setPrice(1750);
 
-        Products.create(product);
+        Products.createPost(product);
 */
 
 /*
         long time = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++) {
             User user = new User(0, "foo", "bar", "baz", "beee", "link", 4.5);
-            Users.create(user);
+            Users.createPost(user);
         }
-        System.out.println("Users.create: " + (System.currentTimeMillis() - time));
+        System.out.println("Users.createPost: " + (System.currentTimeMillis() - time));
 
         time = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++) {
             User user = new User(0, "foo", "bar", "baz", "beee", "link", 4.5);
-            Users.create(user);
+            Users.createPost(user);
         }
-        System.out.println("Users.create: " + (System.currentTimeMillis() - time));
+        System.out.println("Users.createPost: " + (System.currentTimeMillis() - time));
 */
+        test1();
 
     }
 
     public static void test1() {
-
+        System.out.println(int.class.isAssignableFrom(Integer.class));
     }
 }

@@ -1,7 +1,6 @@
 package app.servlets.admin;
 
 import app.models.DAO;
-import app.servlets.BaseServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +34,7 @@ public class AdminСreateServlet extends BaseServlet {
                 dataModel.put("error", params.get("error"));
             }
 
-            app.Helpers.render(getServletContext(), req, resp, "admin/create.ftl", dataModel);
+            app.Helpers.render(getServletContext(), req, resp, "admin/createOld.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -50,7 +49,7 @@ public class AdminСreateServlet extends BaseServlet {
         DAO dao = Helpers.getDao(table);
 
         try {
-            if(!dao.create1(params)) {
+            if(!dao.create(params)) {
                 redirect(req, resp, params);
             } else {
                 resp.sendRedirect("/admin/?table="+table);

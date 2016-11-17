@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -15,6 +14,7 @@ import java.util.NoSuchElementException;
 public class Messages {
 
     private static Connection connection = DB.getInstance().getConnection();
+    private static Users users = new Users();
 
     public static Message get(int id) throws SQLException {
         PreparedStatement st = connection.prepareStatement(
@@ -30,7 +30,7 @@ public class Messages {
             if(from == to)
                 to = rs.getInt("user2");
 
-            return new Message(id, Users.get(from), Users.get(to),
+            return new Message(id, users.get(from), users.get(to),
                     rs.getString("text"), rs.getTimestamp("date"), rs.getBoolean("read"));
         }
         return null;
@@ -138,12 +138,11 @@ public class Messages {
         PreparedStatement st = connection.prepareStatement(
                 "SELECT count(1) FROM messages " +
                         "JOIN conversations ON messages.conversation = conversations.id " +
-                        "WHERE conversations.user1 = ? or conversations.user2 = ? AND \"from\" != ? " +
+                        "WHERE ? in (conversations.user1, conversations.user2) AND \"from\" != ? " +
                         "AND messages.read = FALSE "
         );
         st.setInt(1, user.getId());
         st.setInt(2, user.getId());
-        st.setInt(3, user.getId());
 
         ResultSet rs = st.executeQuery();
         if(rs.next())

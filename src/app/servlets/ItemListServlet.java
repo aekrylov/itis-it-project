@@ -36,7 +36,7 @@ public class ItemListServlet extends BaseServlet {
         }
 
         try {
-            List<Post> posts = Posts.get(filter);
+            List<Post> posts = postService.getPost(filter);
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("posts", posts);
 

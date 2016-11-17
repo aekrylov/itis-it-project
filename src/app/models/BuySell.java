@@ -36,16 +36,4 @@ public class BuySell extends Entity {
 
     public BuySell() {}
 
-    public BuySell(User buyer, User seller, Product product, Timestamp date) {
-        this.buyer = buyer;
-        this.seller = seller;
-        this.product = product;
-        this.date = date;
-    }
-
-    public BuySell(User buyer, User seller, Product product) {
-        this.buyer = buyer;
-        this.seller = seller;
-        this.product = product;
-    }
 }

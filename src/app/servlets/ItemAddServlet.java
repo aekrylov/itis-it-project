@@ -28,11 +28,12 @@ public class ItemAddServlet extends BaseServlet {
         super.doPost(req, resp);
         //add product and redirect to its page
         Map<String, String> map = getParameterMap(req);
-        Product product = (Product) Entity.getEntity(map, Product.class);
+
         try {
-            Products.create(product);
+            Product product = postService.toProduct(map);
+            postService.createProduct(product);
             Post post = new Post(product, Helpers.getCurrentUser(req));
-            Posts.create(post);
+            postService.createPost(post);
 
             resp.sendRedirect("/item?id="+post.getId());
         } catch (SQLException e) {

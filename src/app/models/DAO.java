@@ -3,16 +3,13 @@ package app.models;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/24/16 9:17 PM
  */
-public abstract class DAO<T extends Entity> {
+public class DAO<T extends Entity> implements IDao<T> {
 
     protected static Connection connection = DB.getInstance().getConnection();
 
@@ -26,10 +23,11 @@ public abstract class DAO<T extends Entity> {
     }
 
     protected DAO(Class<T> entityClass) {
-        this.tableName = Helpers.toDbName(getClass().getSimpleName());
+        this.tableName = Helpers.toDbName(entityClass.getSimpleName()) + "s";
         this.entityClass = entityClass;
     }
 
+    @Override
     public List<T> get() throws SQLException {
         PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
         ResultSet rs = st.executeQuery();
@@ -37,7 +35,47 @@ public abstract class DAO<T extends Entity> {
         return getList(rs);
     }
 
-    protected List<T> getList(ResultSet rs) throws SQLException {
+    @Override
+    public T get(int id ) throws SQLException {
+        PreparedStatement st = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE id = ?");
+        st.setInt(1, id);
+
+        ResultSet rs = st.executeQuery();
+        if(rs.next()) {
+            return fromResultSet(rs, entityClass);
+        }
+        throw new NoSuchElementException(entityClass.getSimpleName() + " not found");
+    }
+
+    @Override
+    public boolean update(T instance) throws SQLException {
+        Field [] fields = Entity.getDbFieldsWithoutId(instance.getClass());
+        Object [] values = new Object[fields.length];
+        String set = "";
+
+        for (int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            set += String.format(" \"%s\" = ?,", Helpers.toDbName(field.getName()));
+            values[i] = getField(field, instance);
+        }
+
+        PreparedStatement st = connection.prepareStatement("UPDATE "+tableName+" SET "+set.substring(0, set.length()-1)
+            +" WHERE id = ?");
+
+        int i;
+        for (i = 0; i < fields.length; i++) {
+            st.setObject(i+1, values[i]);
+        }
+        st.setInt(i+1, instance.getId());
+
+        return st.executeUpdate() > 0;
+    }
+
+    public boolean update(Map<String, String> map) throws SQLException {
+        return update((T) Entity.getEntity(map, entityClass));
+    }
+
+    private List<T> getList(ResultSet rs) throws SQLException {
         List<T> list = new ArrayList<>(rs.getFetchSize());
         while (rs.next()) {
             list.add(fromResultSet(rs, entityClass));
@@ -78,21 +116,76 @@ public abstract class DAO<T extends Entity> {
         return list;
     }
 
-    public boolean create1(T entity) throws SQLException {
-        return create(entity, entityClass);
+    public boolean create(Map<String, String> map) throws SQLException {
+        return create((T) Entity.getEntity(map, entityClass));
     }
 
-    public boolean create1(Map<String, String> map) throws SQLException {
-        return create1((T) Entity.getEntity(map, entityClass));
-    }
+    @Override
+    public boolean create(T instance) throws SQLException {
+        Field [] fields = Entity.getDbFieldsWithoutId(entityClass);
 
-    private static <E> List<E> getList(ResultSet rs, Class<? extends Entity> c) throws SQLException {
-        List<E> list = new ArrayList<>(rs.getFetchSize());
-        while (rs.next()) {
-            list.add(fromResultSet(rs, c));
+        String columnString = "(";
+        String valueString = "(";
+
+        //get table schema
+        ResultSet columns = connection
+                .createStatement()
+                .executeQuery("SELECT * FROM "+tableName+" WHERE FALSE ");
+        ResultSetMetaData metaData = columns.getMetaData();
+
+        Object[] values = new Object[fields.length];
+
+        //compose prepared statement
+        for(int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            String columnName = Helpers.toDbName(field.getName());
+            values[i] = getField(field, instance);
+
+            int index = columns.findColumn(columnName);
+            String columnType = metaData.getColumnTypeName(index);
+
+            columnString = columnString + "\"" + columnName + "\",";
+            valueString = valueString + "?::"+columnType+",";
         }
 
-        return list;
+        //remove trailing commas
+        columnString = columnString.substring(0, columnString.length()-1) + ")";
+        valueString = valueString.substring(0, valueString.length()-1) + ")";
+
+        //prepare statement and set fields to respective values
+        PreparedStatement st = connection.prepareStatement("INSERT INTO " + tableName
+        + columnString + " VALUES " + valueString + " RETURNING id");
+
+        for (int i = 0; i < fields.length; i++) {
+            if(values[i] instanceof Entity) {
+                st.setInt(i+1, ((Entity)values[i]).getId());
+            } else {
+                st.setObject(i+1, values[i]);
+            }
+        }
+
+        //execute insert query and set id attribute if it exists
+        ResultSet rs = st.executeQuery();
+        if(rs.next()) {
+            try {
+                setField(entityClass.getDeclaredField("id"), instance, rs.getInt(1));
+            } catch (NoSuchFieldException ignored) { }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(T object) throws SQLException {
+        return delete(object.getId());
+    }
+
+    @Override
+    public boolean delete(int id) throws SQLException {
+        PreparedStatement st = connection.prepareStatement("DELETE FROM "+tableName+" WHERE id = ?");
+        st.setInt(1, id);
+
+        return st.executeUpdate() > 0;
     }
 
     protected static <E> E fromResultSet(ResultSet rs, Class<? extends Entity> c) throws SQLException {
@@ -113,75 +206,21 @@ public abstract class DAO<T extends Entity> {
         }
     }
 
-    public static boolean create(Object instance, Class<? extends Entity> c) throws SQLException {
-        Field [] fields = Entity.getDbFields(c);
-
-        if(fields[0].getName().equals("id")) {
-            fields = Arrays.copyOfRange(fields, 1, fields.length);
-        }
-
-        String columnString = "(";
-        String valueString = "(";
-        String tableName = c.getSimpleName().toLowerCase() + "s";
-
-        //get table schema
-        ResultSet columns = connection
-                .createStatement()
-                .executeQuery("SELECT * FROM "+tableName+" WHERE FALSE ");
-        ResultSetMetaData metaData = columns.getMetaData();
-
-        Object[] values = new Object[fields.length];
-
-        //compose prepared statement
-        for(int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-            String name = Helpers.toDbName(field.getName());
-            values[i] = getField(field, instance);
-
-            int index = columns.findColumn(name);
-            String columnType = metaData.getColumnTypeName(index);
-
-            columnString = columnString + "\"" + name + "\",";
-            valueString = valueString + "?::"+columnType+",";
-        }
-
-        //remove trailing commas
-        columnString = columnString.substring(0, columnString.length()-1) + ")";
-        valueString = valueString.substring(0, valueString.length()-1) + ")";
-
-
-        //prepare statement and set fields to respective values
-        PreparedStatement st = connection.prepareStatement("INSERT INTO " + tableName
-        + columnString + " VALUES " + valueString + " RETURNING id");
-
-        for (int i = 0; i < fields.length; i++) {
-            if(values[i] instanceof Entity) {
-                st.setInt(i+1, ((Entity)values[i]).getId());
-            } else {
-                st.setObject(i+1, values[i]);
-            }
-        }
-
-        //execute insert query and set id attribute if it exists
-        ResultSet rs = st.executeQuery();
-        if(rs.next()) {
-            try {
-                setField(c.getDeclaredField("id"), instance, rs.getInt(1));
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Set field of instance to specified value
      */
-    protected static void setField(Field field, Object instance, Object value) {
-        if(value == null || Entity.class.isAssignableFrom(field.getType())) { //todo entities
+    protected static void setField(Field field, Object instance, Object value) throws SQLException {
+        if(value == null) {
             return;
         }
+
+        //for entity, get it by id
+        if(Entity.class.isAssignableFrom(field.getType()) &&
+                (int.class.isAssignableFrom(value.getClass()) || Integer.class.isAssignableFrom(value.getClass())) ) {
+            DAO dao = new DAO(field.getType());
+            value = dao.get((Integer) value);
+        }
+
         //boolean accessible = field.isAccessible();
         //field.setAccessible(true);
         try {

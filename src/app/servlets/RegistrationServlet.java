@@ -21,6 +21,8 @@ import java.util.Map;
  * Registration
  */
 public class RegistrationServlet extends BaseServlet {
+    private UserService service = UserService.getInstance();
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         super.doPost(request, response);
 
@@ -29,7 +31,7 @@ public class RegistrationServlet extends BaseServlet {
             params.put("error", "password_match");
         } else {
             try {
-                if(Users.exists(params.get("username")))
+                if(service.exists(params.get("username")))
                     params.put("error", "username_taken");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -57,7 +59,7 @@ public class RegistrationServlet extends BaseServlet {
         }
 
         try {
-            if(UserService.getInstance().create(user)) {
+            if(service.create(user)) {
                 Map<String, String> pass = new HashMap<>();
                 pass.put("success", "1");
                 pass.put("username", params.get("username"));
