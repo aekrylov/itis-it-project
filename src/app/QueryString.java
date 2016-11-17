@@ -6,6 +6,7 @@
  */
 package app;
 
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -18,7 +19,7 @@ public class QueryString {
     public static String encodeStrings(Map<String, String> map) {
         String res = "?";
         for(Map.Entry<String, String> entry: map.entrySet()) {
-            res += (entry.getKey() + "=" + entry.getValue() + "&").replaceAll(" ", "%20");
+            res += entry.getKey() + "=" + URLEncoder.encode( entry.getValue()).replaceAll("\\+", "%20") + "&";
         }
 
         return res;

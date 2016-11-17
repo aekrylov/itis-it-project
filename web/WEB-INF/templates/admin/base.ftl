@@ -1,18 +1,20 @@
-﻿<!DOCTYPE html>
+﻿<#ftl encoding='utf-8'>
+<#macro display title="Админка">
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
 
         <title>Название компании</title>
 
-        <link href="static/css/bootstrap.min.css" rel="stylesheet">
-        <link href="static/css/style.css" rel="stylesheet">
-        <link rel="stylesheet" href="static/datetimepicker/bootstrap-datetimepicker.min.css" /> 
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet">
+        <link rel="stylesheet" href="/datetimepicker/bootstrap-datetimepicker.min.css" />
  
-        <script type="text/javascript" src="static/jquery/jquery-3.1.1.min.js"></script>
-        <script type="text/javascript" src="static/datetimepicker/moment/moment.min.js"></script>
-        <script type="text/javascript" src="static/datetimepicker/moment/ru.js"></script>
-        <script type="text/javascript" src="static/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="/js/jquery/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="/datetimepicker/moment/moment.min.js"></script>
+        <script type="text/javascript" src="/datetimepicker/moment/ru.js"></script>
+        <script type="text/javascript" src="/datetimepicker/bootstrap-datetimepicker.min.js"></script>
     
     </head>
     
@@ -38,14 +40,20 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="login.html">Выход</a></li>
+                    <li><a href="/logout">Выход</a></li>
                 </ul>
             </div>
         </div>   
     </nav>
             
      <!--content-->
+    <div class="container">
+        <@body>
+                Admin body
+        </@body>
+    </div>
      
-    <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
   </body>
 </html>
+</#macro>

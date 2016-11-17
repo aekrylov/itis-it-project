@@ -45,6 +45,15 @@
     </servlet>
 
     <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>app.servlets.admin.AdminServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminCreateServlet</servlet-name>
+        <servlet-class>app.servlets.admin.AdminСreateServlet</servlet-class>
+    </servlet>
+
+    <servlet>
         <servlet-name>default</servlet-name>
         <servlet-class>
             org.apache.catalina.servlets.DefaultServlet
@@ -99,6 +108,15 @@
     </servlet-mapping>
 
     <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/admin/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminCreateServlet</servlet-name>
+        <url-pattern>/admin/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/static/*</url-pattern>
     </servlet-mapping>
@@ -110,6 +128,10 @@
     <filter>
         <filter-name>AuthFilter</filter-name>
         <filter-class>app.filters.AuthFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>app.filters.AdminFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -123,5 +145,9 @@
         <servlet-name>ChatListServlet</servlet-name>
         <servlet-name>ChatServlet</servlet-name>
         <servlet-name>ItemAddServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
 </web-app>
