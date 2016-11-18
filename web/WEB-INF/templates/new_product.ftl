@@ -3,7 +3,7 @@
 <#macro body>
 <div class="container">
         <div class="well bs-component">
-            <form class="form-horizontal" method="post">
+            <form class="form-horizontal" method="post" enctype="multipart/form-data">
 
             <div class="row">
 
@@ -45,12 +45,9 @@
                     <label for="inputCoreNumder" class="col-md-4 control-label">Число ядер</label>
                     <div class="col-md-2">
                         <select class="form-control" id="inputCoreNumder" name="cpu_cores"  required>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>6</option>
-                            <option>12</option>
+                            <#list [1, 2, 4, 6,8,10,12,16] as i>
+                                <option value="${i}">${i}</option>
+                            </#list>
                         </select>
                     </div>
                 </div>
@@ -84,8 +81,6 @@
                         <h5>Гб</h5>
                     </div>
                 </div>
-   
-
             </div>
 
             
@@ -132,7 +127,7 @@
                       </div>
                       <div class="modal-body">
                         <div class="form-group">
-                            <input type="file" multiple>
+                            <input type="file" name="image">
                         </div>
                       </div>
                       <div class="modal-footer">

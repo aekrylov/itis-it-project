@@ -1,5 +1,8 @@
 package app.services;
 
+import app.entities.BuySell;
+import app.entities.Feedback;
+import app.entities.User;
 import app.models.*;
 
 import java.sql.SQLException;
@@ -19,6 +22,7 @@ public class FeedbackService {
 
     private Feedbacks feedbacks = new Feedbacks();
     private DAO<BuySell> buySells = new DAO<>(BuySell.class);
+    private Users users = new Users();
 
     public List<BuySell> getRecentSells(User seller) throws SQLException {
         return feedbacks.getRecentSells(seller);
@@ -36,6 +40,10 @@ public class FeedbackService {
 
     public boolean leaveFeedback(int bsid, int score, String text) throws SQLException {
         BuySell bs = buySells.get(bsid);
+        User user = bs.getSeller();
+        user.addRating(score);
+        users.update(user);
+
         Feedback feedback = new Feedback(text, score);
         feedbacks.create(feedback);
         bs.setFeedback(feedback);

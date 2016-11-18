@@ -1,5 +1,7 @@
 package app.servlets.admin;
 
+import app.entities.BuySell;
+import app.entities.Product;
 import app.models.*;
 
 import java.util.HashMap;
@@ -16,16 +18,23 @@ public class Helpers {
 
     static {
         daoMap.put("users", new Users());
-        daoMap.put("products", new DAO<Product>(Product.class));
-        //daoMap.put("messages", new Messages());
+        daoMap.put("products", new DAO<>(Product.class));
+        daoMap.put("messages", new Messages());
         daoMap.put("feedbacks", new Feedbacks());
         daoMap.put("posts", new Posts());
+        daoMap.put("buy_sells", new DAO<>(BuySell.class));
+        //daoMap.put("conversations", new DAO<>(Conversation.class));
+        //daoMap.put("favorites", "Избранное");
+
 
         tableTitles.put("users", "Пользователи");
         tableTitles.put("products", "Товары");
-        //tableTitles.put("messages", "Сообщения");
+        tableTitles.put("messages", "Сообщения");
         tableTitles.put("feedbacks", "Отзывы");
         tableTitles.put("posts", "Публикации");
+        tableTitles.put("buy_sells", "Купля-продажа");
+        //tableTitles.put("conversations", "Чаты");
+        //tableTitles.put("favorites", "Избранное");
     }
 
     public static Map<String, String> getTableTitles() {

@@ -4,7 +4,7 @@
  * 11-501
  * Task
  */
-package app.models;
+package app.entities;
 
 import app.misc.ValidationException;
 
@@ -27,6 +27,7 @@ public class User extends Entity {
     String photo;
 
     double rating;
+    int rate_count = 0;
 
     String role = "user";
 
@@ -53,8 +54,15 @@ public class User extends Entity {
     public double getRating() {
         return rating;
     }
+    public int getRate_count() {
+        return rate_count;
+    }
     public String getRole() {
         return role;
+    }
+
+    public void addRating(int score) {
+        rating = (rating*rate_count + score) / ++rate_count;
     }
 
     public User() {}

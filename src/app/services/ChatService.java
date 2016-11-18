@@ -1,10 +1,9 @@
 package app.services;
 
-import app.Helpers;
-import app.models.Message;
-import app.models.Messages;
-import app.models.User;
-import app.models.Users;
+import app.entities.Conversation;
+import app.entities.Message;
+import app.entities.User;
+import app.models.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -26,5 +25,13 @@ public class ChatService {
     public List<Message> getConversation(User thisUser, User thatUser) throws SQLException {
         return messages.getConversation(thisUser, thatUser);
 
+    }
+
+    public boolean sendMessage(Message message) throws SQLException {
+        return messages.create(message);
+    }
+
+    public List<Conversation> getConversations(User user)throws SQLException {
+        return messages.getConversations(user);
     }
 }

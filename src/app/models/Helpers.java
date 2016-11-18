@@ -6,11 +6,7 @@ package app.models;
  */
 public class Helpers {
 
-    public static String toDbName(String name) {
-        return name.replaceAll("(.)([A-Z])", "$1_$2").toLowerCase();
-    }
-
-    static Object parseString(Class type, String str) {
+    public static Object parseString(Class type, String str) {
         if(type.equals(String.class))
             return str;
 

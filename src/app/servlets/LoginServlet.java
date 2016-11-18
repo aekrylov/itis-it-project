@@ -1,11 +1,8 @@
 package app.servlets;
 
 import app.Helpers;
-import app.models.User;
-import app.models.Users;
 import app.services.UserService;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

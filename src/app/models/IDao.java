@@ -1,5 +1,7 @@
 package app.models;
 
+import app.entities.Entity;
+
 import java.sql.SQLException;
 import java.util.List;
 

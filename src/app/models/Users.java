@@ -1,5 +1,8 @@
 package app.models;
 
+import app.entities.User;
+import app.misc.ReflectiveHelpers;
+
 import java.sql.*;
 import java.util.NoSuchElementException;
 
@@ -18,6 +21,6 @@ public class Users extends DAO<User> {
         if(!rs.next())
             throw new NoSuchElementException("User not found");
 
-        return fromResultSet(rs, User.class);
+        return ReflectiveHelpers.fromResultSet(rs, User.class);
     }
 }

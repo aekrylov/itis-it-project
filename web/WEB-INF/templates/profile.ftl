@@ -5,12 +5,13 @@
             <div class="col-md-4">
 
                 <h3>${user.name}</h3>
-                <img src="${user.photo!}" width="250" height="375" />
+                <img src="/files/users/${user.id}" width="250" height="375" />
 
                 <#if owner??>
                     <button class="btn btn-default" data-toggle="modal" data-target="#PhotoEditModal">Изменить фотографию</button>
                     <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-cog"></span></a>
                     <!-- Modal -->
+                <form method="post" enctype="multipart/form-data">
                     <div class="modal fade" id="PhotoEditModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -20,15 +21,16 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <input type="file">
+                                        <input type="file" name="image">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" >Сохранить изменения</button>
+                                    <button type="submit" class="btn btn-primary" >Сохранить изменения</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </form>
 
                 <#else>
                     <a href="#" class="btn btn-default">Написать сообщение</a>
@@ -61,7 +63,7 @@
                 <p><b>Логин: </b> ${user.username}</p>
                 <p><b>Товаров: </b> ${post_count}</p>
 
-                <a href="#" class="btn btn-default" align="right">Товары</a>
+                <a href="/items?author=${user.id}" class="btn btn-default" align="right">Товары</a>
                 <#if owner??>
                     <a href="/item/add" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></a>
                 </#if>

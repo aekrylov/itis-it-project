@@ -1,4 +1,4 @@
-package app.models;
+package app.entities;
 
 import java.sql.Timestamp;
 
@@ -6,15 +6,17 @@ import java.sql.Timestamp;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/25/16 9:06 PM
  */
-public class Message {
-    private int id;
-    private User from;
-    private User to;
+public class Message extends Entity {
+    int id;
+     User from;
+     User to;
 
-    private String text;
-    private Timestamp timestamp;
+     String text;
+     Timestamp timestamp;
 
-    private boolean read = false;
+     boolean read = false;
+
+    public Message(){}
 
     public Message(User from, User to, String text, Timestamp timestamp) {
         this.from = from;

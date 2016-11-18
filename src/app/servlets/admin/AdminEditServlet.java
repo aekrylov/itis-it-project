@@ -1,7 +1,6 @@
 package app.servlets.admin;
 
 import app.models.DAO;
-import app.models.Entity;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +52,9 @@ public class AdminEditServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPost(req, resp);
         Map<String, String> params = getParameterMap(req);
+        for(String key: params.keySet()) {
+            params.put(key, app.Helpers.getString(params, key));
+        }
         String table = params.get("table");
 
         DAO dao = Helpers.getDao(table);

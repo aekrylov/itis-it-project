@@ -1,4 +1,4 @@
-package app.models;
+package app.entities;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)

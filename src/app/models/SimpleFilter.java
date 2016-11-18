@@ -16,8 +16,8 @@ public class SimpleFilter {
     public void addLikeClause(String field, String pattern) {
         if(pattern == null)
             return;
-        whereClauses.add(String.format(" \"%s\" LIKE ?", field));
-        params.add("%"+pattern+"%");
+        whereClauses.add(String.format(" LOWER(\"%s\") LIKE ?", field));
+        params.add("%"+pattern.toLowerCase()+"%");
     }
 
     public void addSignClause(String field, String sign, Object value) {
@@ -29,6 +29,16 @@ public class SimpleFilter {
 
     public void addNotNullClause(String field) {
         whereClauses.add(String.format(" \"%s\" IS NOT NULL ", field));
+    }
+
+    public void addInClause(String field, Object... params) {
+        String str = String.format(" \"%s\" IN (", field);
+        for(Object param: params) {
+            str += " ?,";
+            this.params.add(param);
+        }
+
+        whereClauses.add(str.substring(0, str.length()-1) + ") ");
     }
 
     public void setOrderBy(String field, boolean asc) {

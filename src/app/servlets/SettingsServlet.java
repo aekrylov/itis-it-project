@@ -1,7 +1,7 @@
 package app.servlets;
 
 import app.Helpers;
-import app.models.User;
+import app.entities.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

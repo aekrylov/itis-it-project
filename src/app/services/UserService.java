@@ -1,6 +1,6 @@
 package app.services;
 
-import app.models.User;
+import app.entities.User;
 import app.models.Users;
 
 import java.sql.SQLException;

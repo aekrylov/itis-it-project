@@ -1,9 +1,12 @@
 package app.models;
 
+import app.entities.Entity;
+import app.misc.DbHelpers;
+import app.misc.ReflectiveHelpers;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
 
@@ -26,7 +29,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     public DAO(Class<T> entityClass) {
-        this.tableName = Helpers.toDbName(entityClass.getSimpleName()) + "s";
+        this.tableName = DbHelpers.toDbName(entityClass.getSimpleName()) + "s";
         this.entityClass = entityClass;
     }
 
@@ -37,7 +40,7 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     protected DAO() {
         this.entityClass = getTypeParameter(this);
-        this.tableName = Helpers.toDbName(entityClass.getSimpleName()) + "s";;
+        this.tableName = DbHelpers.toDbName(entityClass.getSimpleName()) + "s";;
     }
 
     // This magic works for subclasses only
@@ -61,7 +64,7 @@ public class DAO<T extends Entity> implements IDao<T> {
 
         ResultSet rs = st.executeQuery();
         if(rs.next()) {
-            return fromResultSet(rs, entityClass);
+            return ReflectiveHelpers.fromResultSet(rs, entityClass);
         }
         throw new NoSuchElementException(entityClass.getSimpleName() + " not found");
     }
@@ -101,8 +104,8 @@ public class DAO<T extends Entity> implements IDao<T> {
 
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
-            set += String.format(" \"%s\" = ?,", Helpers.toDbName(field.getName()));
-            values[i] = getField(field, instance);
+            set += String.format(" \"%s\" = ?,", DbHelpers.toDbName(field.getName()));
+            values[i] = ReflectiveHelpers.getField(field, instance);
             if(values[i] instanceof Entity) {
                 values[i] = ((Entity)values[i]).getId();
             }
@@ -132,7 +135,7 @@ public class DAO<T extends Entity> implements IDao<T> {
         for (int i = 0; i < rsmd.getColumnCount(); i++) {
             String columnName = rsmd.getColumnName(i+1);
             sqlTypes[i] = rsmd.getColumnType(i+1);
-            values[i] = map.get(columnName);
+            values[i] = app.Helpers.getString(map, columnName);
 
             set += String.format(" \"%s\" = ?,", columnName);
         }
@@ -150,7 +153,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     protected List<T> getList(ResultSet rs) throws SQLException {
         List<T> list = new ArrayList<>(rs.getFetchSize());
         while (rs.next()) {
-            list.add(fromResultSet(rs, entityClass));
+            list.add(ReflectiveHelpers.fromResultSet(rs, entityClass));
         }
 
         return list;
@@ -180,14 +183,18 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     public List<Object[]> getTable() throws SQLException {
+        return getTableStatic(tableName);
+    }
+
+    public static List<Object[]> getTableStatic(String tableName) throws SQLException {
         PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
 
         ResultSet rs = st.executeQuery();
-        return getTable(rs);
+        return getTableStatic(tableName, rs);
     }
 
-    private List<Object[]> getTable(ResultSet rs) throws SQLException {
-        int columnCount = getTableMetaData().getColumnCount();
+    private static List<Object[]> getTableStatic(String tableName, ResultSet rs) throws SQLException {
+        int columnCount = getTableMetaData(tableName).getColumnCount();
         List<Object[]> list = new ArrayList<>(rs.getFetchSize());
 
         while (rs.next()) {
@@ -198,6 +205,10 @@ public class DAO<T extends Entity> implements IDao<T> {
             list.add(row);
         }
         return list;
+    }
+
+    private List<Object[]> getTable(ResultSet rs) throws SQLException {
+        return getTableStatic(tableName, rs);
     }
 
     public boolean create(Map<String, String> map) throws SQLException {
@@ -222,8 +233,8 @@ public class DAO<T extends Entity> implements IDao<T> {
         //compose prepared statement
         for(int i = 0; i < fields.length; i++) {
             Field field = fields[i];
-            String columnName = Helpers.toDbName(field.getName());
-            values[i] = getField(field, instance);
+            String columnName = DbHelpers.toDbName(field.getName());
+            values[i] = ReflectiveHelpers.getField(field, instance);
 
             int index = columns.findColumn(columnName);
             String columnType = metaData.getColumnTypeName(index);
@@ -252,7 +263,7 @@ public class DAO<T extends Entity> implements IDao<T> {
         ResultSet rs = st.executeQuery();
         if(rs.next()) {
             try {
-                setField(entityClass.getDeclaredField("id"), instance, rs.getInt(1));
+                ReflectiveHelpers.setField(entityClass.getDeclaredField("id"), instance, rs.getInt(1));
             } catch (NoSuchFieldException ignored) { }
             return true;
         }
@@ -272,31 +283,13 @@ public class DAO<T extends Entity> implements IDao<T> {
         return st.executeUpdate() > 0;
     }
 
-    protected static <E extends Entity> E fromResultSet(ResultSet rs, Class<E> entityClass) throws SQLException {
-        Field [] fields = Entity.getDbFields(entityClass);
-
-        E instance;
-        try {
-            instance = entityClass.newInstance();
-            for (Field field : fields) {
-                String label = Helpers.toDbName(field.getName());
-                setField(field, instance, rs.getObject(label));
-            }
-            return instance;
-
-        } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     protected Map<String, String> toStringMap(ResultSet rs) throws SQLException {
         Field [] fields = Entity.getDbFields(entityClass);
 
         Map<String, String> map = new HashMap<>();
 
         for (Field field : fields) {
-            String label = Helpers.toDbName(field.getName());
+            String label = DbHelpers.toDbName(field.getName());
             map.put(label, rs.getString(label));
         }
         return map;
@@ -304,49 +297,12 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     protected ResultSetMetaData getTableMetaData() throws SQLException {
         if(rsmd == null)
-            rsmd = connection.createStatement().executeQuery("SELECT * FROM "+tableName+" WHERE FALSE").getMetaData();
+            rsmd = getTableMetaData(tableName);
         return rsmd;
     }
 
-    /**
-     * Set field of instance to specified value
-     */
-    protected static void setField(Field field, Object instance, Object value) throws SQLException {
-        if(value == null) {
-            return;
-        }
-
-        //for entity, get it by id
-        if(Entity.class.isAssignableFrom(field.getType()) &&
-                (int.class.isAssignableFrom(value.getClass()) || Integer.class.isAssignableFrom(value.getClass())) ) {
-            DAO dao = new DAO(field.getType());
-            value = dao.get((Integer) value);
-        }
-
-        try {
-            //the ony type that causes trouble
-            if(field.getType().equals(double.class) && value instanceof BigDecimal) {
-                field.set(instance, ((BigDecimal) value).doubleValue());
-            } else {
-                field.set(instance, value);
-            }
-        } catch (IllegalAccessException e) {
-            //should never happen
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Get value of instance's field
-     */
-    protected static Object getField(Field field, Object instance) {
-        try {
-            return field.get(instance);
-        } catch (IllegalAccessException e) {
-            //should never happen
-            e.printStackTrace();
-            return null;
-        }
+    protected static ResultSetMetaData getTableMetaData(String tableName) throws SQLException {
+        return connection.createStatement().executeQuery("SELECT * FROM "+tableName+" WHERE FALSE").getMetaData();
     }
 
 }

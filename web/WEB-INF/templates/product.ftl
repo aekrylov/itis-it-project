@@ -15,9 +15,9 @@
 
             <#-- TODO -->
             <div class="fotorama">
-                <img src="product_photo\1.jpg">
-                <img src="product_photo\2.jpg">
-                <img src="product_photo\3.jpg">
+                <img src="/files/products/${product.id}/1">
+                <img src="/files/products/${product.id}/2">
+                <img src="/files/products/${product.id}/3">
             </div>
 
             <h4>Описание:</h4>
@@ -81,7 +81,7 @@
                 </div>
             <#else>
                 <button class="btn btn-default btn-block">Добавить избранное</button>
-                <button class="btn btn-default btn-block">Связаться с продавцом</button>
+                <a href="/user/chat?uid=${post.user.id}" class="btn btn-default btn-block">Связаться с продавцом</a>
             </#if>
         </div>
 

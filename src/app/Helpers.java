@@ -1,7 +1,7 @@
 package app;
 
 import app.models.Messages;
-import app.models.User;
+import app.entities.User;
 import app.services.UserService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -10,12 +10,16 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -33,6 +37,24 @@ public class Helpers {
 
         errors.put("db", "Database error");
     }
+
+    private static Path imageDir = Paths.get("/media/d/www/tmp/img/").toAbsolutePath();
+
+    public static void saveImage(Path name, InputStream stream) throws IOException {
+        Path absolutePath = imageDir.resolve(name);
+        Files.createDirectories(absolutePath.getParent());
+        Files.copy(stream, absolutePath, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    public static File getImage(Path name) {
+        return imageDir.resolve(name).toAbsolutePath().toFile();
+    }
+
+/*
+    public static String readImage(Path name) {
+        Files.rea
+    }
+*/
 
     public static String getErrorMessage(String errorCode) {
         return errors.get(errorCode);
@@ -95,7 +117,7 @@ public class Helpers {
 
     public static String getString(Map<String, String> map, String key) {
         String value = map.get(key);
-        if(value == null || value.equals(""))
+        if(value == null || value.trim().equals(""))
             return null;
 
         return value;

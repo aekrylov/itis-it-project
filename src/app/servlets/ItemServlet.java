@@ -1,7 +1,8 @@
 package app.servlets;
 
 import app.Helpers;
-import app.models.*;
+import app.entities.Post;
+import app.entities.User;
 import app.services.PostService;
 
 import javax.servlet.ServletException;

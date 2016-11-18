@@ -19,6 +19,7 @@ public class QueryString {
     public static String encodeStrings(Map<String, String> map) {
         String res = "?";
         for(Map.Entry<String, String> entry: map.entrySet()) {
+            if(entry.getValue() == null) continue;
             res += entry.getKey() + "=" + URLEncoder.encode( entry.getValue()).replaceAll("\\+", "%20") + "&";
         }
 

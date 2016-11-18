@@ -139,7 +139,7 @@
 
                        <div class="row">
                            <div class="col-md-4">
-                               <img src="product_photo\1.jpg" width="100%" style="margin-top:0px;"/>
+                               <img src="/files/products/${p.product.id}/1" width="100%" style="margin-top:0px;"/>
                            </div>
 
                            <div class="col-md-8">

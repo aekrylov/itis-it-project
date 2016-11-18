@@ -1,14 +1,13 @@
 package app.filters;
 
 import app.Helpers;
-import app.models.User;
+import app.entities.User;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.NoSuchElementException;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)

@@ -1,12 +1,9 @@
 package app.servlets;
 
 import app.Helpers;
-import app.models.Conversation;
-import app.models.Messages;
-import app.models.Users;
+import app.entities.Conversation;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,12 +16,12 @@ import java.util.Map;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/24/16 11:44 PM
  */
-public class ChatListServlet extends HttpServlet {
+public class ChatListServlet extends BaseServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         //TODO pagination
         try {
-            List<Conversation> conversations = Messages.getConversations(Helpers.getCurrentUser(request));
+            List<Conversation> conversations = chatService.getConversations(Helpers.getCurrentUser(request));
             Map<String, Object> dataModel = new HashMap<>();
 
             dataModel.put("conversations", conversations);

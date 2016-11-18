@@ -1,8 +1,7 @@
 package app.servlets;
 
 import app.Helpers;
-import app.models.Post;
-import app.models.Posts;
+import app.entities.Post;
 import app.models.SimpleFilter;
 
 import javax.servlet.ServletException;
@@ -44,7 +43,7 @@ public class ItemListServlet extends BaseServlet {
         }
 
         try {
-            List<Post> posts = postService.getPost(filter);
+            List<Post> posts = postService.getPosts(filter);
             dataModel.put("posts", posts);
             dataModel.put("params", map);
 

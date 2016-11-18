@@ -37,7 +37,7 @@ class DB {
         }
         try {
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/db1_it_project_v2",
+                    "jdbc:postgresql://localhost:5432/db1_it_project",
                     "postgres",
                     "postgres"
             );

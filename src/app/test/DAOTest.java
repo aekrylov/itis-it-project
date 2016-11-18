@@ -1,8 +1,5 @@
 package app.test;
 
-import app.models.User;
-import app.models.Users;
-
 import java.sql.SQLException;
 
 /**

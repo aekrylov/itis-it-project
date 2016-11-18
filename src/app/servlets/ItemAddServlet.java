@@ -1,12 +1,16 @@
 package app.servlets;
 
 import app.Helpers;
-import app.models.*;
+import app.entities.Post;
+import app.entities.Product;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -14,6 +18,7 @@ import java.util.Map;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/2/16 11:04 AM
  */
+@MultipartConfig
 public class ItemAddServlet extends BaseServlet {
 
     @Override
@@ -34,6 +39,10 @@ public class ItemAddServlet extends BaseServlet {
             postService.createProduct(product);
             Post post = new Post(product, Helpers.getCurrentUser(req));
             postService.createPost(post);
+
+            Part image = req.getPart("image");
+            Helpers.saveImage(Paths.get("products", String.valueOf(product.getId()), "1"),
+                    image.getInputStream());
 
             resp.sendRedirect("/item?id="+post.getId());
         } catch (SQLException e) {

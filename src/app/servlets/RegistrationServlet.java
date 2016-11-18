@@ -2,8 +2,7 @@ package app.servlets;
 
 import app.Helpers;
 import app.misc.ValidationException;
-import app.models.User;
-import app.models.Users;
+import app.entities.User;
 import app.services.UserService;
 
 import javax.servlet.ServletException;

@@ -14,16 +14,23 @@
                         <li><a href="/items?author=${current_user.id}">Мои товары</a></li>
                         <li><a href="/user/chats">Сообщения <span class="badge">${unread_count}</span></a></li>
                         <li><a href="/user/history">История</a></li>
+<#--
                         <li><a href="#">Избранное</a></li>
+-->
 
                     </ul>
                 </li>
                 </#if>
                 <li><a href="/items">Товары</a></li>
+<#--
                 <li><a href="#">Рейтинг</a></li>
+-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <#if current_user??>
+                    <#if current_user.role = 'admin'>
+                        <li><a href="/admin/">Админка</a> </li>
+                    </#if>
                     <li><a href="/logout">Выход</a></li>
                 <#else>
                     <li><a href="/login">Вход</a></li>

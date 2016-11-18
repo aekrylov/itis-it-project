@@ -1,9 +1,10 @@
 package app.models;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import app.entities.BuySell;
+import app.entities.Feedback;
+import app.entities.User;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

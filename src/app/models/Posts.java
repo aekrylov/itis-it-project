@@ -1,5 +1,10 @@
 package app.models;
 
+import app.entities.Post;
+import app.entities.Product;
+import app.entities.User;
+import app.misc.ReflectiveHelpers;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,7 +47,7 @@ public class Posts extends DAO<Post> {
         ResultSet rs = st.executeQuery();
         List<Post> list = new ArrayList<>(rs.getFetchSize());
         while (rs.next()) {
-            list.add(new Post(rs.getInt("pid"), fromResultSet(rs, Product.class),
+            list.add(new Post(rs.getInt("pid"), ReflectiveHelpers.fromResultSet(rs, Product.class),
                     users.get(rs.getInt("user")), rs.getTimestamp("timestamp")));
         }
         return list;

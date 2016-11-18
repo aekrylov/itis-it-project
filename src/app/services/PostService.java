@@ -1,9 +1,9 @@
 package app.services;
 
+import app.entities.*;
 import app.models.*;
 
 import java.sql.SQLException;
-import java.sql.SQLWarning;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +44,8 @@ public class PostService {
         return posts.get(id);
     }
 
-    public List<Post> getPost(SimpleFilter filter) throws SQLException {
+    public List<Post> getPosts(SimpleFilter filter) throws SQLException {
+        filter.setOrderBy("timestamp", false);
         return posts.get(filter);
     }
 

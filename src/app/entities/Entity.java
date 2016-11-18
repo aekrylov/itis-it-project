@@ -1,4 +1,8 @@
-package app.models;
+package app.entities;
+
+import app.misc.DbHelpers;
+import app.misc.ReflectiveHelpers;
+import app.models.Helpers;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
@@ -22,9 +26,9 @@ public abstract class Entity {
         try {
             E instance = c.newInstance();
             for(Field field: fields) {
-                String key = Helpers.toDbName(field.getName());
+                String key = DbHelpers.toDbName(field.getName());
                 if(map.containsKey(key) && !map.get(key).equals("")) {
-                    DAO.setField(field, instance, Helpers.parseString(field.getType(), map.get(key)));
+                    ReflectiveHelpers.setField(field, instance, Helpers.parseString(field.getType(), map.get(key)));
                 }
             }
 
@@ -36,7 +40,7 @@ public abstract class Entity {
         return null;
     }
 
-    static Field[] getDbFields(Class<? extends Entity> c) {
+    public static Field[] getDbFields(Class<? extends Entity> c) {
         List<Field> list = new ArrayList<>();
 
         for (Field field: c.getDeclaredFields()) {
@@ -48,7 +52,7 @@ public abstract class Entity {
         return list.toArray(new Field[0]);
     }
 
-    static Field[] getDbFieldsWithoutId(Class<? extends Entity> c) {
+    public static Field[] getDbFieldsWithoutId(Class<? extends Entity> c) {
         List<Field> list = new ArrayList<>();
 
         for (Field field: c.getDeclaredFields()) {
