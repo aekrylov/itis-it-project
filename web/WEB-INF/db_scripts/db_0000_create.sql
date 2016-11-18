@@ -65,5 +65,5 @@ CREATE TABLE messages (
   id INT PRIMARY KEY ,
   "from" int REFERENCES users(id),
   "text" TEXT,
-  "date" TIMESTAMP DEFAULT now()
+  "date" DATEtime DEFAULT now()
 );

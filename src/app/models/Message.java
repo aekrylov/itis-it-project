@@ -12,7 +12,7 @@ public class Message {
     private User to;
 
     private String text;
-    private Timestamp date;
+    private Timestamp timestamp;
 
     private boolean read = false;
 
@@ -20,7 +20,7 @@ public class Message {
         this.from = from;
         this.to = to;
         this.text = text;
-        this.date = timestamp;
+        this.timestamp = timestamp;
     }
 
     public Message(int id, User from, User to, String text, Timestamp date, boolean read) {
@@ -28,7 +28,7 @@ public class Message {
         this.from = from;
         this.to = to;
         this.text = text;
-        this.date = date;
+        this.timestamp = date;
         this.read = read;
     }
 
@@ -42,7 +42,7 @@ public class Message {
         return text;
     }
     public Timestamp getTimestamp() {
-        return date;
+        return timestamp;
     }
     public int getId() {
         return id;
