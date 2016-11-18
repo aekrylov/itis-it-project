@@ -43,6 +43,10 @@
         <servlet-name>ItemListServlet</servlet-name>
         <servlet-class>app.servlets.ItemListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HistoryServlet</servlet-name>
+        <servlet-class>app.servlets.HistoryServlet</servlet-class>
+    </servlet>
 
     <servlet>
         <servlet-name>AdminServlet</servlet-name>
@@ -113,6 +117,10 @@
     <servlet-mapping>
         <servlet-name>ItemListServlet</servlet-name>
         <url-pattern>/items</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HistoryServlet</servlet-name>
+        <url-pattern>/user/history</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
