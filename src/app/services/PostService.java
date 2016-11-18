@@ -19,7 +19,8 @@ public class PostService {
     }
 
     private Posts posts = new Posts();
-    private Products products = new Products();
+    private DAO<Product> products = new DAO<>(Product.class);
+    private DAO<BuySell> buySells = new DAO<>(BuySell.class);
 
     private PostService() {
     }
@@ -36,7 +37,7 @@ public class PostService {
         return products.create(product);
     }
     public Product toProduct(Map<String, String> map) throws SQLException {
-        return (Product) Entity.getEntity(map, Product.class);
+        return Entity.getEntity(map, Product.class);
     }
 
     public Post getPost(int id) throws SQLException {
@@ -46,4 +47,18 @@ public class PostService {
     public List<Post> getPost(SimpleFilter filter) throws SQLException {
         return posts.get(filter);
     }
+
+    public boolean sellProduct(User seller, User buyer, int post_id) throws SQLException {
+        Post post = getPost(post_id);
+        Product product = post.getProduct();
+
+        BuySell bs = new BuySell(buyer, seller, product);
+        return buySells.create(bs) && posts.delete(post_id);
+    }
+
+    public boolean deletePost(int post_id) throws SQLException {
+        return posts.delete(post_id);
+    }
+
+
 }

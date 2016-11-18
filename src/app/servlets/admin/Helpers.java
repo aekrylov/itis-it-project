@@ -11,12 +11,12 @@ import java.util.Map;
  */
 public class Helpers {
 
-    private static Map<String, DAO> daoMap = new HashMap<>();
+    private static Map<String, DAO<?>> daoMap = new HashMap<>();
     private static Map<String, String> tableTitles = new HashMap<>();
 
     static {
         daoMap.put("users", new Users());
-        daoMap.put("products", new Products());
+        daoMap.put("products", new DAO<Product>(Product.class));
         //daoMap.put("messages", new Messages());
         daoMap.put("feedbacks", new Feedbacks());
         daoMap.put("posts", new Posts());
@@ -36,7 +36,7 @@ public class Helpers {
         return tableTitles.get(tableName);
     }
 
-    public static DAO getDao(String table) {
+    public static DAO<?> getDao(String table) {
         return daoMap.get(table);
     }
 

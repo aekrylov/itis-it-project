@@ -11,9 +11,9 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Личный кабинет<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/user">Профиль</a></li>
-                        <li><a href="#">Мои товары</a></li>
+                        <li><a href="/items?author=${current_user.id}">Мои товары</a></li>
                         <li><a href="/user/chats">Сообщения <span class="badge">${unread_count}</span></a></li>
-                        <li><a href="#">История</a></li>
+                        <li><a href="/user/history">История</a></li>
                         <li><a href="#">Избранное</a></li>
 
                     </ul>

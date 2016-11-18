@@ -14,10 +14,6 @@ public class Posts extends DAO<Post> {
 
     private Users users = new Users();
 
-    public Posts() {
-        super("posts", Post.class);
-    }
-
     public static int countPosts(User user) throws SQLException {
         PreparedStatement st = connection.prepareStatement("SELECT count(1) FROM posts WHERE \"user\" = ?");
         st.setInt(1, user.getId());
@@ -35,7 +31,7 @@ public class Posts extends DAO<Post> {
         String sql = "SELECT posts.id pid, \"timestamp\", \"user\", products.* FROM posts " +
                 "JOIN products on product = products.id ";
 
-        sql += filter.getWhere();
+        sql += filter.getWhere() + filter.getOrderBy();
         PreparedStatement st = connection.prepareStatement(sql);
 
         List<Object> params = filter.getParams();

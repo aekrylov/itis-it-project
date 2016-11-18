@@ -11,30 +11,20 @@ import java.util.List;
  * Date: 10/24/16 9:26 PM
  */
 public class Feedbacks extends DAO<Feedback> {
+    private DAO<BuySell> buySellDAO = new DAO<>(BuySell.class);
 
-    public Feedbacks() {
-        super("feedbacks", Feedback.class);
+    public List<BuySell> getRecentSells(User seller) throws SQLException {
+        return getRecentSells(seller, false);
     }
 
-    public List<Feedback> getRecentFeedbacks(User seller, int limit) throws SQLException {
-        PreparedStatement st = connection.prepareStatement(
-                "SELECT feedbacks.id as id, comment, score, feedbacks.date as \"date\", buyer, buy_sells.id as buy_sell " +
-                "from feedbacks " +
-                "JOIN buy_sells on feedbacks.buy_sell = buy_sells.id " +
-                "WHERE seller = ? " +
-                "ORDER BY feedbacks.date DESC " +
-                "LIMIT ?");
-        st.setInt(1, seller.getId());
-        st.setInt(2, limit);
+    public List<BuySell> getRecentSells(User seller, boolean feedbackExists) throws SQLException {
+        SimpleFilter filter = new SimpleFilter();
+        filter.addSignClause("seller", "=", seller.getId());
+        if(feedbackExists)
+            filter.addNotNullClause("feedback");
 
-        ResultSet rs = st.executeQuery();
-        List<Feedback> res = new ArrayList<>(rs.getFetchSize());
+        filter.setOrderBy("timestamp", false);
 
-        while (rs.next()) {
-            Feedback feedback = fromResultSet(rs, Feedback.class);
-            res.add(feedback);
-        }
-
-        return res;
+        return buySellDAO.get(filter);
     }
 }

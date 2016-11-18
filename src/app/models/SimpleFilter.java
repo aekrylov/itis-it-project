@@ -10,6 +10,7 @@ import java.util.List;
 public class SimpleFilter {
 
     private List<String> whereClauses = new LinkedList<>();
+    private String orderBy;
     private List<Object> params = new LinkedList<>();
 
     public void addLikeClause(String field, String pattern) {
@@ -24,6 +25,20 @@ public class SimpleFilter {
             return;
         whereClauses.add(String.format(" \"%s\" %s ?", field, sign));
         params.add(value);
+    }
+
+    public void addNotNullClause(String field) {
+        whereClauses.add(String.format(" \"%s\" IS NOT NULL ", field));
+    }
+
+    public void setOrderBy(String field, boolean asc) {
+        this.orderBy = String.format(" ORDER BY \"%s\" %s ", field, asc ? "ASC": "DESC");
+    }
+
+    String getOrderBy() {
+        if (orderBy == null)
+            return "";
+        return orderBy;
     }
 
     String getWhere() {

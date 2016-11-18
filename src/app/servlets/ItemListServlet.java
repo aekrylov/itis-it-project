@@ -26,19 +26,27 @@ public class ItemListServlet extends BaseServlet {
 
         SimpleFilter filter = new SimpleFilter();
         Map<String, String > map = getParameterMap(req);
+        Map<String, Object> dataModel = new HashMap<>();
+
         if(map.get("filtered") != null) {
             //todo more filters
+            dataModel.put("filtered", true);
+            filter.addSignClause("type", "=", Helpers.getString(map, "type"));
             filter.addLikeClause("brand", Helpers.getString(map, "brand"));
             filter.addLikeClause("model", Helpers.getString(map, "model"));
             filter.addSignClause("price", ">", Helpers.getInt(map, "price_low"));
             filter.addSignClause("price", "<", Helpers.getInt(map, "price_high"));
             filter.addSignClause("cores", "=", Helpers.getInt(map, "cores"));
         }
+        if(map.get("author") != null) {
+            dataModel.put("filtered", true);
+            filter.addSignClause("user", "=", Integer.parseInt(map.get("author")));
+        }
 
         try {
             List<Post> posts = postService.getPost(filter);
-            Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("posts", posts);
+            dataModel.put("params", map);
 
             Helpers.render(getServletContext(), req, resp, "product_list.ftl", dataModel);
 

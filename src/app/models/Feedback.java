@@ -10,7 +10,6 @@ import java.time.Instant;
 public class Feedback extends Entity {
 
     int id;
-    BuySell buy_sell;
     String comment;
     Timestamp date;
     int score;
@@ -27,24 +26,19 @@ public class Feedback extends Entity {
     public int getScore() {
         return score;
     }
-    public BuySell getBuy_sell() {
-        return buy_sell;
-    }
 
     public Feedback() {
         date = Timestamp.from(Instant.now());
     }
 
-    public Feedback(BuySell buy_sell, String comment, Timestamp date, int score) {
-        this.buy_sell = buy_sell;
+    public Feedback(String comment, Timestamp date, int score) {
         this.comment = comment;
         this.date = date;
         this.score = score;
     }
 
-    public Feedback(BuySell buy_sell, String comment, int score) {
+    public Feedback(String comment, int score) {
         this();
-        this.buy_sell = buy_sell;
         this.comment = comment;
         this.score = score;
     }

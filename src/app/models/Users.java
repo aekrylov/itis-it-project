@@ -11,10 +11,6 @@ import java.util.NoSuchElementException;
  */
 public class Users extends DAO<User> {
 
-    public Users() {
-        super("users", User.class);
-    }
-
     public User get(String username) throws SQLException, NoSuchElementException {
         PreparedStatement st = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
         st.setString(1, username);
@@ -22,10 +18,6 @@ public class Users extends DAO<User> {
         if(!rs.next())
             throw new NoSuchElementException("User not found");
 
-        return fromResultSet(rs);
-    }
-
-    static User fromResultSet(ResultSet rs) throws SQLException {
         return fromResultSet(rs, User.class);
     }
 }

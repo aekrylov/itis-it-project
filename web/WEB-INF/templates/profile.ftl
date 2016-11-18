@@ -36,7 +36,7 @@
                 <hr/>
 
                 <if user.rating??>
-                    <p><b>Рейтинг: </b><span id="user-rating">${user.rating?string["0.#"]}</span> от ${feedbacks?size} пользователей </p>
+                    <p><b>Рейтинг: </b><span id="user-rating">${user.rating?string["0.#"]}</span> от ${buy_sells?size} пользователей </p>
 
                     <div class="row">
                         <div class="col-md-12">
@@ -84,14 +84,14 @@
                 </div>
 
 
-                <#list feedbacks as f >
+                <#list buy_sells as bs >
                     <div class="well bs-component">
 
-                            <legend><a href="/user?id=${f.buy_sell.buyer.id}">${f.buy_sell.buyer.name}</a></legend>
-                            <p><b>Оценка: </b> ${f.score}</p>
-                            <p>${f.comment}</p>
+                            <legend><a href="/user?id=${bs.buyer.id}">${bs.buyer.name}</a></legend>
+                            <p><b>Оценка: </b> ${bs.feedback.score}</p>
+                            <p>${bs.feedback.comment}</p>
                             <#-- TODO date format -->
-                            <p align="right">${f.date}</p>
+                            <p align="right">${bs.timestamp}</p>
 
                     </div>
 

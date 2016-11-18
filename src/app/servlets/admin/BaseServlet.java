@@ -13,6 +13,11 @@ import java.util.Map;
  */
 public class BaseServlet extends app.servlets.BaseServlet {
 
+    protected void addPathInfo(Map<String, String> map, HttpServletRequest req) {
+        String pathInfo = req.getPathInfo();
+    }
+
+
     protected static void redirect(HttpServletRequest req, HttpServletResponse resp, Map<String, String> params)
             throws IOException {
         resp.sendRedirect(req.getServletPath() + QueryString.encodeStrings(params));

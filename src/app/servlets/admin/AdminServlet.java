@@ -20,10 +20,13 @@ public class AdminServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
+
         //get table and display it
         //todo ordering and pagination
+        Map<String, String> params = getParameterMap(req);
+        addPathInfo(params, req);
 
-        String tablename = req.getParameter("table");
+        String tablename = params.get("table");
         if(tablename == null || tablename.equals("")) {
             //display main page
             Map<String, String> tables = Helpers.getTableTitles();
@@ -33,14 +36,15 @@ public class AdminServlet extends BaseServlet {
             return;
         }
 
-        DAO dao = Helpers.getDao(tablename);
+        DAO<?> dao = Helpers.getDao(tablename);
         try {
-            List<Object[]> list = dao.getTable();
+            List<Object[]> list = params.containsKey("q") ? dao.getTable(params.get("q")) : dao.getTable();
             Map<String, Object> dataModel = new HashMap<>();
 
             dataModel.put("tablename", tablename);
             dataModel.put("rows", list);
             dataModel.put("columns", dao.getColumnNames());
+            dataModel.put("q", params.get("q"));
 
             app.Helpers.render(getServletContext(), req, resp, "admin/table.ftl", dataModel);
         } catch (SQLException e) {

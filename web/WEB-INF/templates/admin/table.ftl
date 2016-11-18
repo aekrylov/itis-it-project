@@ -58,15 +58,24 @@
                 <a href="/admin/create?table=${tablename}" class="btn btn-default btn-block">
                     <span class="glyphicon glyphicon-plus">Добавить</span></a>
                 <hr/>
-                <form class="form-horizontal">
+                <form class="form-horizontal" method="get">
+                    <input type="hidden" name="table" value="${tablename}">
                     <div class="row">  
                         <div class="col-md-9">
-                            <input type="text" class="form-control" placeholder="поиск...">                 
+                            <input type="text" class="form-control" placeholder="поиск..." name="q" value="${q!''}">
                         </div>
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                         </div>
                     </div>
+                    <#if q??>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="/admin/?table=${tablename}" class="btn btn-default btn-block">Сбросить поиск</a>
+                            </div>
+                        </div>
+                    </#if>
                 </form>
                 
                 <hr/>

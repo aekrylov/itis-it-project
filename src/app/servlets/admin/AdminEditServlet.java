@@ -26,13 +26,13 @@ public class AdminEditServlet extends BaseServlet {
         String tableName = params.get("table");
         int id = Integer.parseInt(params.get("id"));
 
-        DAO dao = Helpers.getDao(tableName);
+        DAO<?> dao = Helpers.getDao(tableName);
         Map<String, Object> dataModel = new HashMap<>();
 
         try {
             if(!params.containsKey("edited")) {
-                Entity entity = dao.get(id);
-                dataModel.put("values", entity);
+                Map<String, String> entityMap = dao.getMap(id);
+                dataModel.put("values", entityMap);
             } else {
                 dataModel.put("values", params);
             }

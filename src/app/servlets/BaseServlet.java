@@ -11,6 +11,7 @@ import app.services.ChatService;
 import app.services.FeedbackService;
 import app.services.PostService;
 import app.services.UserService;
+import com.sun.istack.internal.NotNull;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -50,7 +51,10 @@ public abstract class BaseServlet extends HttpServlet {
         params.remove("password");
         params.remove("password_repeat");
         resp.sendRedirect(req.getServletPath() + QueryString.encodeStrings(params));
+    }
 
+    protected static void redirect(HttpServletRequest req, HttpServletResponse response) throws IOException {
+        response.sendRedirect(req.getServletPath());
     }
 
     protected static Map<String, String> getParameterMap(HttpServletRequest req) {

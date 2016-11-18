@@ -48,7 +48,11 @@
 
             <#if isSeller>
                 <button class="btn btn-default btn-block" data-toggle="modal" data-target="#SellModal">Продать товар</button>
-                <a href="#" class="btn btn-default btn-block">Удалить</a>
+                <form method="post">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="post_id" value="${post.id}">
+                    <button class="btn btn-default btn-block">Удалить</button>
+                </form>
 
 
                 <!-- Modal -->
@@ -59,15 +63,19 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                 <h4 class="modal-title" id="myModalLabel">Выберите покупателя</h4>
                             </div>
+                            <form method="post">
+                                <input type="hidden" name="action" value="sell">
+                                <input type="hidden" name="post_id" value="${post.id}">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Введите логин">
+                                    <input type="text" class="form-control" placeholder="Введите логин" name="buyer">
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <#-- TODO -->
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Продать</button>
+                                <button type="submit" class="btn btn-primary">Продать</button>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -12,7 +12,8 @@ public class BuySell extends Entity {
     User buyer;
     User seller;
     Product product;
-    Timestamp date;
+    Timestamp timestamp;
+    Feedback feedback;
 
     public int getId() {
         return id;
@@ -30,10 +31,23 @@ public class BuySell extends Entity {
         return product;
     }
 
-    public Timestamp getDate() {
-        return date;
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public Feedback getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(Feedback feedback) {
+        this.feedback = feedback;
     }
 
     public BuySell() {}
 
+    public BuySell(User buyer, User seller, Product product) {
+        this.buyer = buyer;
+        this.seller = seller;
+        this.product = product;
+    }
 }

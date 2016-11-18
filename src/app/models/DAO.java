@@ -1,6 +1,8 @@
 package app.models;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
@@ -13,7 +15,8 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     protected static Connection connection = DB.getInstance().getConnection();
 
-    // new architecture, still WIP
+    private ResultSetMetaData rsmd;
+
     private String tableName;
     private Class<T> entityClass;
 
@@ -22,9 +25,25 @@ public class DAO<T extends Entity> implements IDao<T> {
         this.entityClass = entityClass;
     }
 
-    protected DAO(Class<T> entityClass) {
+    public DAO(Class<T> entityClass) {
         this.tableName = Helpers.toDbName(entityClass.getSimpleName()) + "s";
         this.entityClass = entityClass;
+    }
+
+    protected DAO(String tableName) {
+        this.tableName = tableName;
+        this.entityClass = getTypeParameter(this);
+    }
+
+    protected DAO() {
+        this.entityClass = getTypeParameter(this);
+        this.tableName = Helpers.toDbName(entityClass.getSimpleName()) + "s";;
+    }
+
+    // This magic works for subclasses only
+    private static Class getTypeParameter(Object instance) {
+        Type superclass =  instance.getClass().getGenericSuperclass();
+        return (Class) ((ParameterizedType) superclass).getActualTypeArguments()[0];
     }
 
     @Override
@@ -47,6 +66,33 @@ public class DAO<T extends Entity> implements IDao<T> {
         throw new NoSuchElementException(entityClass.getSimpleName() + " not found");
     }
 
+    public List<T> get(SimpleFilter filter) throws SQLException {
+        String sql = "SELECT * FROM "+tableName+" ";
+
+        sql += filter.getWhere() + filter.getOrderBy();
+        PreparedStatement st = connection.prepareStatement(sql);
+
+        List<Object> params = filter.getParams();
+        for (int i = 0; i < params.size(); i++) {
+            st.setObject(i+1, params.get(i));
+        }
+
+        ResultSet rs = st.executeQuery();
+        return getList(rs);
+
+    }
+
+    public Map<String, String> getMap(int id) throws SQLException {
+        PreparedStatement st = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE id = ?");
+        st.setInt(1, id);
+
+        ResultSet rs = st.executeQuery();
+        if(rs.next()) {
+            return toStringMap(rs);
+        }
+        throw new NoSuchElementException(entityClass.getSimpleName() + " not found");
+    }
+
     @Override
     public boolean update(T instance) throws SQLException {
         Field [] fields = Entity.getDbFieldsWithoutId(instance.getClass());
@@ -57,6 +103,9 @@ public class DAO<T extends Entity> implements IDao<T> {
             Field field = fields[i];
             set += String.format(" \"%s\" = ?,", Helpers.toDbName(field.getName()));
             values[i] = getField(field, instance);
+            if(values[i] instanceof Entity) {
+                values[i] = ((Entity)values[i]).getId();
+            }
         }
 
         PreparedStatement st = connection.prepareStatement("UPDATE "+tableName+" SET "+set.substring(0, set.length()-1)
@@ -72,10 +121,33 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     public boolean update(Map<String, String> map) throws SQLException {
-        return update((T) Entity.getEntity(map, entityClass));
+        //return update((T) Entity.getEntity(map, entityClass));
+        int id = Integer.parseInt(map.get("id"));
+
+        ResultSetMetaData rsmd = getTableMetaData();
+        int [] sqlTypes = new int[rsmd.getColumnCount()];
+        Object [] values = new Object[rsmd.getColumnCount()];
+
+        String set = "";
+        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+            String columnName = rsmd.getColumnName(i+1);
+            sqlTypes[i] = rsmd.getColumnType(i+1);
+            values[i] = map.get(columnName);
+
+            set += String.format(" \"%s\" = ?,", columnName);
+        }
+
+        PreparedStatement st = connection.prepareStatement(
+                "UPDATE "+tableName+" SET "+set.substring(0, set.length()-1)+" WHERE id = ?");
+        for (int i = 0; i < sqlTypes.length; i++) {
+            st.setObject(i+1, values[i], sqlTypes[i]);
+        }
+        st.setInt(values.length+1, id);
+
+        return st.executeUpdate() > 0;
     }
 
-    private List<T> getList(ResultSet rs) throws SQLException {
+    protected List<T> getList(ResultSet rs) throws SQLException {
         List<T> list = new ArrayList<>(rs.getFetchSize());
         while (rs.next()) {
             list.add(fromResultSet(rs, entityClass));
@@ -85,8 +157,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     public List<String> getColumnNames() throws SQLException {
-        PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s LIMIT 1", tableName));
-        ResultSetMetaData rsmd = st.getMetaData();
+        ResultSetMetaData rsmd = getTableMetaData();
 
         int count = rsmd.getColumnCount();
         List<String> list = new ArrayList<>(count);
@@ -95,21 +166,34 @@ public class DAO<T extends Entity> implements IDao<T> {
             list.add(columnName);
         }
         return list;
+    }
 
+    public List<Object[]> getTable(String str) throws SQLException {
+        if(str == null || str.equals(""))
+            return getTable();
+
+        PreparedStatement st = connection.prepareStatement(
+                "SELECT * FROM "+tableName+" WHERE lower(concat_ws(', ', "+tableName+".*)) LIKE ?");
+        st.setString(1, "%"+str.toLowerCase()+"%");
+
+        return getTable(st.executeQuery());
     }
 
     public List<Object[]> getTable() throws SQLException {
         PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
 
         ResultSet rs = st.executeQuery();
-        int columnCount = rs.getMetaData().getColumnCount();
-        List<Object[]> list = new ArrayList<>(rs.getFetchSize());
+        return getTable(rs);
+    }
 
+    private List<Object[]> getTable(ResultSet rs) throws SQLException {
+        int columnCount = getTableMetaData().getColumnCount();
+        List<Object[]> list = new ArrayList<>(rs.getFetchSize());
 
         while (rs.next()) {
             Object[] row = new Object[columnCount];
             for (int i = 0; i < row.length; i++) {
-                row[i] = rs.getObject(i+1);
+                row[i] = rs.getString(i+1);
             }
             list.add(row);
         }
@@ -117,7 +201,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     public boolean create(Map<String, String> map) throws SQLException {
-        return create((T) Entity.getEntity(map, entityClass));
+        return create(Entity.getEntity(map, entityClass));
     }
 
     @Override
@@ -131,7 +215,7 @@ public class DAO<T extends Entity> implements IDao<T> {
         ResultSet columns = connection
                 .createStatement()
                 .executeQuery("SELECT * FROM "+tableName+" WHERE FALSE ");
-        ResultSetMetaData metaData = columns.getMetaData();
+        ResultSetMetaData metaData = getTableMetaData();
 
         Object[] values = new Object[fields.length];
 
@@ -188,22 +272,40 @@ public class DAO<T extends Entity> implements IDao<T> {
         return st.executeUpdate() > 0;
     }
 
-    protected static <E> E fromResultSet(ResultSet rs, Class<? extends Entity> c) throws SQLException {
-        Field [] fields = Entity.getDbFields(c);
+    protected static <E extends Entity> E fromResultSet(ResultSet rs, Class<E> entityClass) throws SQLException {
+        Field [] fields = Entity.getDbFields(entityClass);
 
-        Object instance;
+        E instance;
         try {
-            instance = c.newInstance();
+            instance = entityClass.newInstance();
             for (Field field : fields) {
                 String label = Helpers.toDbName(field.getName());
                 setField(field, instance, rs.getObject(label));
             }
-            return (E) instance;
+            return instance;
 
         } catch (ReflectiveOperationException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    protected Map<String, String> toStringMap(ResultSet rs) throws SQLException {
+        Field [] fields = Entity.getDbFields(entityClass);
+
+        Map<String, String> map = new HashMap<>();
+
+        for (Field field : fields) {
+            String label = Helpers.toDbName(field.getName());
+            map.put(label, rs.getString(label));
+        }
+        return map;
+    }
+
+    protected ResultSetMetaData getTableMetaData() throws SQLException {
+        if(rsmd == null)
+            rsmd = connection.createStatement().executeQuery("SELECT * FROM "+tableName+" WHERE FALSE").getMetaData();
+        return rsmd;
     }
 
     /**
@@ -221,8 +323,6 @@ public class DAO<T extends Entity> implements IDao<T> {
             value = dao.get((Integer) value);
         }
 
-        //boolean accessible = field.isAccessible();
-        //field.setAccessible(true);
         try {
             //the ony type that causes trouble
             if(field.getType().equals(double.class) && value instanceof BigDecimal) {
@@ -234,25 +334,19 @@ public class DAO<T extends Entity> implements IDao<T> {
             //should never happen
             e.printStackTrace();
         }
-        //field.setAccessible(accessible);
     }
 
     /**
      * Get value of instance's field
      */
     protected static Object getField(Field field, Object instance) {
-        //boolean accessible = field.isAccessible();
-        //field.setAccessible(true);
-        Object obj = null;
         try {
-            obj = field.get(instance);
+            return field.get(instance);
         } catch (IllegalAccessException e) {
             //should never happen
             e.printStackTrace();
+            return null;
         }
-        //field.setAccessible(accessible);
-
-        return obj;
     }
 
 }

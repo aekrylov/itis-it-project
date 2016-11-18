@@ -11,34 +11,16 @@ import java.sql.SQLException;
  */
 public class DAOTest {
     public static void main(String[] args) throws SQLException {
-/*
-        Product product = new Product();
-        product.setName("TEst1");
-        product.setPrice(1750);
 
-        Products.createPost(product);
-*/
-
-/*
-        long time = System.currentTimeMillis();
-        for (int i = 0; i < 10000; i++) {
-            User user = new User(0, "foo", "bar", "baz", "beee", "link", 4.5);
-            Users.createPost(user);
-        }
-        System.out.println("Users.createPost: " + (System.currentTimeMillis() - time));
-
-        time = System.currentTimeMillis();
-        for (int i = 0; i < 10000; i++) {
-            User user = new User(0, "foo", "bar", "baz", "beee", "link", 4.5);
-            Users.createPost(user);
-        }
-        System.out.println("Users.createPost: " + (System.currentTimeMillis() - time));
-*/
         test1();
 
     }
 
     public static void test1() {
-        System.out.println(int.class.isAssignableFrom(Integer.class));
+        Integer value = 3;
+        System.out.println(Integer.class.isAssignableFrom(value.getClass()));
+        System.out.println(Integer.class.isInstance(value));
+        System.out.println(Integer.class.isInstance(3));
+        System.out.println(int.class.isInstance(value));
     }
 }

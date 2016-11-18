@@ -1,8 +1,6 @@
 package app.services;
 
-import app.models.Feedback;
-import app.models.Feedbacks;
-import app.models.User;
+import app.models.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -19,9 +17,28 @@ public class FeedbackService {
     }
     private FeedbackService() {}
 
-    private static Feedbacks feedbacks = new Feedbacks();
+    private Feedbacks feedbacks = new Feedbacks();
+    private DAO<BuySell> buySells = new DAO<>(BuySell.class);
 
-    public List<Feedback> getRecentFeedbacks(User seller, int limit) throws SQLException {
-        return feedbacks.getRecentFeedbacks(seller, limit);
+    public List<BuySell> getRecentSells(User seller) throws SQLException {
+        return feedbacks.getRecentSells(seller);
+    }
+
+    public List<BuySell> getRecentBuys(User buyer) throws SQLException {
+        SimpleFilter filter = new SimpleFilter();
+        filter.addSignClause("buyer", "=", buyer.getId());
+        return buySells.get(filter);
+    }
+
+    public List<BuySell> getRecentFeedbacks(User seller) throws SQLException {
+        return feedbacks.getRecentSells(seller, true);
+    }
+
+    public boolean leaveFeedback(int bsid, int score, String text) throws SQLException {
+        BuySell bs = buySells.get(bsid);
+        Feedback feedback = new Feedback(text, score);
+        feedbacks.create(feedback);
+        bs.setFeedback(feedback);
+        return buySells.update(bs);
     }
 }

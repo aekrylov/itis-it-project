@@ -1,8 +1,7 @@
 package app.servlets;
 
 import app.Helpers;
-import app.models.Post;
-import app.models.Posts;
+import app.models.*;
 import app.services.PostService;
 
 import javax.servlet.ServletException;
@@ -36,6 +35,38 @@ public class ItemServlet extends BaseServlet {
             Helpers.render(getServletContext(), req, resp, "product.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
+        Map<String, String> map = getParameterMap(req);
+        String action = map.get("action");
+
+        int postId = Integer.parseInt(map.get("post_id"));
+
+        try {
+            switch (action) {
+                case "sell":
+                    User buyer = userService.get(map.get("buyer"));
+                    User seller = Helpers.getCurrentUser(req);
+
+                    postService.sellProduct(seller, buyer, postId);
+                    resp.sendRedirect("/items");
+                    return;
+
+                case "delete":
+                    if(postService.deletePost(postId)) {
+                        resp.sendRedirect("/items");
+                    } else {
+                        redirect(req, resp);
+                    }
+                    break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            redirect(req, resp);
         }
     }
 }

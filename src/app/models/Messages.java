@@ -127,7 +127,7 @@ public class Messages {
         List<Conversation> list = new ArrayList<>(rs.getFetchSize());
 
         while (rs.next()) {
-            User user2 = Users.fromResultSet(rs);
+            User user2 = DAO.fromResultSet(rs, User.class);
             list.add(new Conversation(rs.getInt("conv_id"), user, user2, rs.getInt("c"), Messages.get(rs.getInt("mid"))));
         }
 

@@ -4,7 +4,7 @@ Used computers marketplace
 
 - [x] Authorization
 - [x] Profile
-- [ ] Items
-- [ ] Search
-- [ ] Reviews
-- [ ] Messages
+- [x] Items
+- [x] Search
+- [x] Reviews
+- [x] Messages

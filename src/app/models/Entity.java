@@ -17,10 +17,10 @@ import java.util.Map;
 public abstract class Entity {
     public abstract int getId();
 
-    public static Entity getEntity(Map<String, String> map, Class<? extends Entity> c) throws SQLException {
+    public static <E extends Entity> E getEntity(Map<String, String> map, Class<E> c) throws SQLException {
         Field[] fields = getDbFields(c);
         try {
-            Object instance = c.newInstance();
+            E instance = c.newInstance();
             for(Field field: fields) {
                 String key = Helpers.toDbName(field.getName());
                 if(map.containsKey(key) && !map.get(key).equals("")) {
@@ -28,7 +28,7 @@ public abstract class Entity {
                 }
             }
 
-            return (Entity) instance;
+            return instance;
         } catch (ReflectiveOperationException e) {
             e.printStackTrace();
         }

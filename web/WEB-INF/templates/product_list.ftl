@@ -4,6 +4,9 @@
     <div class="container">
         <div class="row">  
             <div class="col-md-3">
+                <#if filtered??>
+
+                </#if>
 
                 <form class="form-horizontal" method="get">
                     <input type="hidden" name="filtered" value="yes">
@@ -12,19 +15,19 @@
                         <h5>Тип:</h5>
                         <div class="checkbox">
                         <label>
-                              <input type="checkbox" name="type" value="laptop">
+                              <input type="checkbox" name="type" value="laptop" <#if (params.type!'') = 'laptop'>checked</#if>>
                               Ноутбуки
                               </label>
                         </div>
                         <div class="checkbox">
                         <label>
-                              <input type="checkbox" name="type" value="desktop">
+                              <input type="checkbox" name="type" value="desktop" <#if (params.type!'') = 'desktop'>checked</#if>>
                               Настольные компьютеры
                               </label>
                         </div>
                         <div class="checkbox">
                         <label>
-                              <input type="checkbox" name="type" value="aio">
+                              <input type="checkbox" name="type" value="aio" <#if (params.type!'') = 'aio'>checked</#if>>
                               Моноблоки
                               </label>
                         </div>
@@ -37,12 +40,14 @@
                                 <h5>Стоимость:</h5>
                                 <label for="inputFrom" class="col-md-4 control-label">от:</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control input-sm" id="inputFrom" name="price_low">
+                                    <input type="text" class="form-control input-sm" id="inputFrom" name="price_low"
+                                    value="${params.price_low!}">
                                 </div>
 
                                 <label for="inputTo" class="col-md-4 control-label">до:</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control input-sm" id="inputTo" name="price_high">
+                                    <input type="text" class="form-control input-sm" id="inputTo" name="price_high"
+                                    value="${params.price_high!}">
                                  </div>
                            </div>
                  
@@ -54,9 +59,10 @@
                
                       <div class="form-group">
                          <h5>Бренд:</h5>
-                          <input type="text" name="brand" class="form-control" placeholder="leno">
+                          <input type="text" name="brand" class="form-control" placeholder="leno" value="${params.brand!}">
                          <h5>Модель:</h5>
-                          <input type="text" name="model" class="form-control">
+                          <input type="text" name="model" class="form-control" value="${params.model!}">
+<#--TODO
                          <h5>Процессор:</h5>
                           <select class="form-control input-sm">
                             <option>1</option>
@@ -97,6 +103,7 @@
                             <option>2</option>
                             <option>3</option>
                          </select>
+-->
                       </div>
 
                  
@@ -156,6 +163,10 @@
                            </div>
                        </div>
                    </div>
+               <#else >
+                <div class="jumbotron"><p>Ничего не найдено.</p>
+                    <a href="/items" class="btn btn-primary">Сбросить поиск</a>
+                </div>
                </#list>
 
            </div> 
