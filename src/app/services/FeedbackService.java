@@ -3,6 +3,7 @@ package app.services;
 import app.entities.BuySell;
 import app.entities.Feedback;
 import app.entities.User;
+import app.misc.NotFoundException;
 import app.models.*;
 
 import java.sql.SQLException;
@@ -39,7 +40,12 @@ public class FeedbackService {
     }
 
     public boolean leaveFeedback(int bsid, int score, String text) throws SQLException {
-        BuySell bs = buySells.get(bsid);
+        BuySell bs;
+        try {
+            bs = buySells.get(bsid);
+        } catch (NotFoundException e) {
+            return false;
+        }
         User user = bs.getSeller();
         user.addRating(score);
         users.update(user);

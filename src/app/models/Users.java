@@ -1,6 +1,7 @@
 package app.models;
 
 import app.entities.User;
+import app.misc.NotFoundException;
 import app.misc.ReflectiveHelpers;
 
 import java.sql.*;
@@ -14,12 +15,12 @@ import java.util.NoSuchElementException;
  */
 public class Users extends DAO<User> {
 
-    public User get(String username) throws SQLException, NoSuchElementException {
+    public User get(String username) throws SQLException, NotFoundException {
         PreparedStatement st = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
         st.setString(1, username);
         ResultSet rs = st.executeQuery();
         if(!rs.next())
-            throw new NoSuchElementException("User not found");
+            throw new NotFoundException("User not found");
 
         return ReflectiveHelpers.fromResultSet(rs, User.class);
     }

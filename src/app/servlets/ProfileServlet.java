@@ -1,6 +1,7 @@
 package app.servlets;
 
 import app.Helpers;
+import app.misc.NotFoundException;
 import app.models.Posts;
 import app.entities.User;
 
@@ -43,9 +44,9 @@ public class ProfileServlet extends BaseServlet {
             Helpers.render(getServletContext(), request, response, "profile.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (NoSuchElementException e) {
-            //todo 404
-            e.printStackTrace();
+            response.sendError(500);
+        } catch (NotFoundException e) {
+            response.sendError(404);
         }
     }
 

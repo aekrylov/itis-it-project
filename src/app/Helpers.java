@@ -1,5 +1,6 @@
 package app;
 
+import app.misc.NotFoundException;
 import app.models.Messages;
 import app.entities.User;
 import app.services.UserService;
@@ -93,7 +94,11 @@ public class Helpers {
     }
 
     public static User getCurrentUser(HttpServletRequest req) throws SQLException {
-        return UserService.getInstance().get((String) req.getSession().getAttribute("username"));
+        try {
+            return UserService.getInstance().get((String) req.getSession().getAttribute("username"));
+        } catch (NotFoundException e) {
+            return null;
+        }
     }
 
     public static String encrypt(String str) {

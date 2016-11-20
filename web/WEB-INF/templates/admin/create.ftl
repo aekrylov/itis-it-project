@@ -10,7 +10,7 @@
                             ${error}
                         </p>
                 </#if>
-                <form class="form-horizontal" method="post">
+                <form class="form-horizontal" method="post" action="/admin/${action}">
                     <input type="hidden" name="table" value="${tablename}">
 
                     <#list columns as column>

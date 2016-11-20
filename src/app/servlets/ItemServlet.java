@@ -3,6 +3,7 @@ package app.servlets;
 import app.Helpers;
 import app.entities.Post;
 import app.entities.User;
+import app.misc.NotFoundException;
 import app.services.PostService;
 
 import javax.servlet.ServletException;
@@ -36,6 +37,9 @@ public class ItemServlet extends BaseServlet {
             Helpers.render(getServletContext(), req, resp, "product.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            resp.sendError(404);
         }
     }
 
@@ -65,7 +69,7 @@ public class ItemServlet extends BaseServlet {
                     }
                     break;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             redirect(req, resp);
         }

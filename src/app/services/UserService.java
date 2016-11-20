@@ -1,9 +1,11 @@
 package app.services;
 
 import app.entities.User;
+import app.misc.NotFoundException;
 import app.models.Users;
 
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -28,19 +30,26 @@ public class UserService {
     public boolean checkCredentials(String username, String password) throws SQLException {
         String passwordHash = app.Helpers.encrypt(password);
 
-        User user = users.get(username);
+        User user = null;
+        try {
+            user = users.get(username);
+        } catch (NotFoundException ignored) { }
         return user != null && user.getPassword().equals(passwordHash);
     }
 
-    public User get(String username) throws SQLException {
+    public User get(String username) throws SQLException, NotFoundException {
         return users.get(username);
     }
 
-    public User get(int id) throws SQLException {
+    public User get(int id) throws SQLException, NotFoundException {
         return users.get(id);
     }
 
     public boolean exists(String username) throws SQLException {
-        return users.get(username) != null;
+        try{
+            return users.get(username) != null;
+        } catch (NotFoundException e) {
+            return false;
+        }
     }
 }

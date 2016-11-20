@@ -24,10 +24,15 @@ public abstract class ReflectiveHelpers {
         }
 
         //for entity, get it by id
+        //if not found, set to null
         if(Entity.class.isAssignableFrom(field.getType()) &&
                 (int.class.isAssignableFrom(value.getClass()) || Integer.class.isAssignableFrom(value.getClass())) ) {
             DAO<?> dao = new DAO(field.getType());
-            value = dao.get((Integer) value);
+            try {
+                value = dao.get((Integer) value);
+            } catch (NotFoundException e) {
+                value = null;
+            }
         }
 
         boolean accessible = field.isAccessible();
@@ -79,5 +84,29 @@ public abstract class ReflectiveHelpers {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Converts str to desired type
+     * @param type desired type (int, double, chat and String supported)
+     * @param str string to convert
+     * @return converted Object, or null if type is not supported
+     */
+    public static Object parseString(Class type, String str) {
+        if(type.equals(String.class))
+            return str;
+
+        Object value = null;
+        //todo entities
+
+        if (double.class.isAssignableFrom(type)) {
+            value = Double.valueOf(str);
+        } else if(int.class.isAssignableFrom(type)) {
+            value = Integer.parseInt(str);
+        } else if(char.class.isAssignableFrom(type)) {
+            value = str.charAt(0);
+        }
+
+        return value;
     }
 }

@@ -42,6 +42,7 @@ public class AdminEditServlet extends BaseServlet {
                 dataModel.put("error", params.get("error"));
             }
 
+            dataModel.put("action", "edit");
             app.Helpers.render(getServletContext(), req, resp, "admin/create.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();

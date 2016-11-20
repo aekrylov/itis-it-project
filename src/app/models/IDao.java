@@ -1,6 +1,7 @@
 package app.models;
 
 import app.entities.Entity;
+import app.misc.NotFoundException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -13,7 +14,7 @@ public interface IDao<T extends Entity> {
 
     List<T> get() throws SQLException;
 
-    T get(int id) throws SQLException;
+    T get(int id) throws SQLException, NotFoundException;
 
     boolean create(T instance) throws SQLException;
 

@@ -2,7 +2,6 @@ package app.entities;
 
 import app.misc.DbHelpers;
 import app.misc.ReflectiveHelpers;
-import app.models.Helpers;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
@@ -28,7 +27,7 @@ public abstract class Entity {
             for(Field field: fields) {
                 String key = DbHelpers.toDbName(field.getName());
                 if(map.containsKey(key) && !map.get(key).equals("")) {
-                    ReflectiveHelpers.setField(field, instance, Helpers.parseString(field.getType(), map.get(key)));
+                    ReflectiveHelpers.setField(field, instance, ReflectiveHelpers.parseString(field.getType(), map.get(key)));
                 }
             }
 

@@ -3,6 +3,7 @@ package app.models;
 import app.entities.Post;
 import app.entities.Product;
 import app.entities.User;
+import app.misc.NotFoundException;
 import app.misc.ReflectiveHelpers;
 
 import java.sql.PreparedStatement;
@@ -47,8 +48,10 @@ public class Posts extends DAO<Post> {
         ResultSet rs = st.executeQuery();
         List<Post> list = new ArrayList<>(rs.getFetchSize());
         while (rs.next()) {
-            list.add(new Post(rs.getInt("pid"), ReflectiveHelpers.fromResultSet(rs, Product.class),
-                    users.get(rs.getInt("user")), rs.getTimestamp("timestamp")));
+            try {
+                list.add(new Post(rs.getInt("pid"), ReflectiveHelpers.fromResultSet(rs, Product.class),
+                        users.get(rs.getInt("user")), rs.getTimestamp("timestamp")));
+            } catch (NotFoundException ignored) { }
         }
         return list;
     }

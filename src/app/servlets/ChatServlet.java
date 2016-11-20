@@ -2,6 +2,7 @@ package app.servlets;
 
 import app.Helpers;
 import app.entities.Message;
+import app.misc.NotFoundException;
 import app.models.Messages;
 import app.entities.User;
 import org.json.JSONObject;
@@ -32,10 +33,7 @@ public class ChatServlet extends BaseServlet {
 
         JSONObject object = new JSONObject();
         try {
-            Message message = new Message(Helpers.getCurrentUser(request), userService.get(to),
-                    text, Timestamp.from(Instant.now()));
-
-            String status = chatService.sendMessage(message) ? "OK" : "ERROR";
+            String status = chatService.sendMessage(Helpers.getCurrentUser(request), to, text) ? "OK" : "ERROR";
             object.put("status", status);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,6 +64,8 @@ public class ChatServlet extends BaseServlet {
             this.messages.markRead(thisUser, thatUser);
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (NotFoundException e) {
+            response.sendError(404);
         }
     }
 }

@@ -1,6 +1,7 @@
 package app.entities;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -49,5 +50,6 @@ public class BuySell extends Entity {
         this.buyer = buyer;
         this.seller = seller;
         this.product = product;
+        this.timestamp = Timestamp.from(Instant.now());
     }
 }

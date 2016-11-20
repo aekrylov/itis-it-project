@@ -3,9 +3,12 @@ package app.services;
 import app.entities.Conversation;
 import app.entities.Message;
 import app.entities.User;
+import app.misc.NotFoundException;
 import app.models.*;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -21,14 +24,19 @@ public class ChatService {
     }
 
     private Messages messages  = new Messages();
+    private Users users = new Users();
 
     public List<Message> getConversation(User thisUser, User thatUser) throws SQLException {
         return messages.getConversation(thisUser, thatUser);
 
     }
 
-    public boolean sendMessage(Message message) throws SQLException {
-        return messages.create(message);
+    public boolean sendMessage(User from, int to, String text) throws SQLException {
+        try {
+            return messages.create(new Message(from, users.get(to), text, Timestamp.from(Instant.now())));
+        } catch (NotFoundException e) {
+            return false;
+        }
     }
 
     public List<Conversation> getConversations(User user)throws SQLException {

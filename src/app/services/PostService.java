@@ -1,6 +1,7 @@
 package app.services;
 
 import app.entities.*;
+import app.misc.NotFoundException;
 import app.models.*;
 
 import java.sql.SQLException;
@@ -40,7 +41,7 @@ public class PostService {
         return Entity.getEntity(map, Product.class);
     }
 
-    public Post getPost(int id) throws SQLException {
+    public Post getPost(int id) throws SQLException, NotFoundException {
         return posts.get(id);
     }
 
@@ -49,7 +50,7 @@ public class PostService {
         return posts.get(filter);
     }
 
-    public boolean sellProduct(User seller, User buyer, int post_id) throws SQLException {
+    public boolean sellProduct(User seller, User buyer, int post_id) throws SQLException, NotFoundException {
         Post post = getPost(post_id);
         Product product = post.getProduct();
 

@@ -2,6 +2,7 @@ package app.models;
 
 import app.entities.Entity;
 import app.misc.DbHelpers;
+import app.misc.NotFoundException;
 import app.misc.ReflectiveHelpers;
 
 import java.lang.reflect.Field;
@@ -58,7 +59,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     @Override
-    public T get(int id ) throws SQLException {
+    public T get(int id ) throws SQLException, NotFoundException {
         PreparedStatement st = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE id = ?");
         st.setInt(1, id);
 
@@ -66,7 +67,7 @@ public class DAO<T extends Entity> implements IDao<T> {
         if(rs.next()) {
             return ReflectiveHelpers.fromResultSet(rs, entityClass);
         }
-        throw new NoSuchElementException(entityClass.getSimpleName() + " not found");
+        throw new NotFoundException(entityClass.getSimpleName() + " not found");
     }
 
     public List<T> get(SimpleFilter filter) throws SQLException {
