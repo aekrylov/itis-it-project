@@ -5,64 +5,64 @@
          version="3.1">
     <servlet>
         <servlet-name>MainServlet</servlet-name>
-        <servlet-class>app.servlets.MainServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.MainServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>app.servlets.LoginServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>app.servlets.LogoutServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegistrationServlet</servlet-name>
-        <servlet-class>app.servlets.RegistrationServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.RegistrationServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProfileServlet</servlet-name>
-        <servlet-class>app.servlets.ProfileServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ProfileServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChatListServlet</servlet-name>
-        <servlet-class>app.servlets.ChatListServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ChatListServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChatServlet</servlet-name>
-        <servlet-class>app.servlets.ChatServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ChatServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ItemServlet</servlet-name>
-        <servlet-class>app.servlets.ItemServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ItemAddServlet</servlet-name>
-        <servlet-class>app.servlets.ItemAddServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ItemAddServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ItemListServlet</servlet-name>
-        <servlet-class>app.servlets.ItemListServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ItemListServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>HistoryServlet</servlet-name>
-        <servlet-class>app.servlets.HistoryServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.HistoryServlet</servlet-class>
     </servlet>
 
     <servlet>
         <servlet-name>AdminServlet</servlet-name>
-        <servlet-class>app.servlets.admin.AdminServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin.AdminServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminCreateServlet</servlet-name>
-        <servlet-class>app.servlets.admin.AdminСreateServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin.AdminСreateServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminEditServlet</servlet-name>
-        <servlet-class>app.servlets.admin.AdminEditServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin.AdminEditServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminDeleteServlet</servlet-name>
-        <servlet-class>app.servlets.admin.AdminDeleteServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin.AdminDeleteServlet</servlet-class>
     </servlet>
 
     <servlet>
@@ -147,15 +147,15 @@
 
     <filter>
         <filter-name>CookieFilter</filter-name>
-        <filter-class>app.filters.CookieFilter</filter-class>
+        <filter-class>ru.kpfu.itis.group501.krylov.db1_it_project.filters.CookieFilter</filter-class>
     </filter>
     <filter>
         <filter-name>AuthFilter</filter-name>
-        <filter-class>app.filters.AuthFilter</filter-class>
+        <filter-class>ru.kpfu.itis.group501.krylov.db1_it_project.filters.AuthFilter</filter-class>
     </filter>
     <filter>
         <filter-name>AdminFilter</filter-name>
-        <filter-class>app.filters.AdminFilter</filter-class>
+        <filter-class>ru.kpfu.itis.group501.krylov.db1_it_project.filters.AdminFilter</filter-class>
     </filter>
 
     <filter-mapping>
