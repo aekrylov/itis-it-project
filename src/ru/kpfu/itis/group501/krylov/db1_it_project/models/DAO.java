@@ -75,7 +75,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     public List<T> get(SimpleFilter filter) throws SQLException {
         String sql = "SELECT * FROM "+tableName+" ";
 
-        sql += filter.getWhere() + filter.getOrderBy();
+        sql += filter.getSQL();
         PreparedStatement st = connection.prepareStatement(sql);
 
         List<Object> params = filter.getParams();
@@ -177,24 +177,30 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     @Override
-    public List<Object[]> getTable(String str) throws SQLException {
-        if(str == null || str.equals(""))
-            return getTable();
-
-        PreparedStatement st = connection.prepareStatement(
-                "SELECT * FROM "+tableName+" WHERE lower(concat_ws(', ', "+tableName+".*)) LIKE ?");
-        st.setString(1, "%"+str.toLowerCase()+"%");
-
-        return getTable(st.executeQuery());
-    }
-
-    @Override
     public List<Object[]> getTable() throws SQLException {
         return getTableStatic(tableName);
     }
 
+    @Override
+    public List<Object[]> getTable(SimpleFilter filter) throws SQLException {
+        return getTableStatic(tableName, filter);
+    }
+
     public static List<Object[]> getTableStatic(String tableName) throws SQLException {
         PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
+
+        ResultSet rs = st.executeQuery();
+        return getTableStatic(tableName, rs);
+    }
+
+    public static List<Object[]> getTableStatic(String tableName, SimpleFilter filter) throws SQLException {
+        PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s %s",
+                tableName, filter.getSQL()));
+        List<Object> params = filter.getParams();
+        for (int i = 0; i < params.size(); i++) {
+            Object value = params.get(i);
+            st.setObject(i + 1, value);
+        }
 
         ResultSet rs = st.executeQuery();
         return getTableStatic(tableName, rs);
@@ -212,10 +218,6 @@ public class DAO<T extends Entity> implements IDao<T> {
             list.add(row);
         }
         return list;
-    }
-
-    private List<Object[]> getTable(ResultSet rs) throws SQLException {
-        return getTableStatic(tableName, rs);
     }
 
     @Override

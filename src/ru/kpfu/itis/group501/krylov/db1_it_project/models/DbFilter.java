@@ -14,4 +14,6 @@ public interface DbFilter {
     void addInClause(String field, Object... params);
 
     void setOrder(String field, boolean asc);
+
+    String getSQL();
 }

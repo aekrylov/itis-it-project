@@ -1,5 +1,6 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.models;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,6 +13,17 @@ public class SimpleFilter implements DbFilter {
     private List<String> whereClauses = new LinkedList<>();
     private String orderBy;
     private List<Object> params = new LinkedList<>();
+
+    private int limit = -1;
+    private int offset = 0;
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
 
     @Override
     public void addLikeClause(String field, String pattern) {
@@ -45,9 +57,29 @@ public class SimpleFilter implements DbFilter {
         whereClauses.add(str.substring(0, str.length()-1) + ") ");
     }
 
+    public void addAnyFieldLikeClause(String tableName, String like) {
+        whereClauses.add(" lower(concat_ws(', ', "+tableName+".*)) LIKE ? ");
+        params.add("%"+like.toLowerCase()+"%");
+    }
+
+    public void addSimpleClause(String clause, Object... params) {
+        whereClauses.add(clause);
+        Collections.addAll(this.params, params);
+    }
+
     @Override
     public void setOrder(String field, boolean asc) {
         this.orderBy = String.format(" ORDER BY \"%s\" %s ", field, asc ? "ASC": "DESC");
+    }
+
+    @Override
+    public String getSQL() {
+        String str = getWhere() + getOrderBy();
+        if (limit >= 0)
+            str += " LIMIT "+limit+" ";
+        if(offset > 0)
+            str += " OFFSET "+offset+" ";
+        return str;
     }
 
     String getOrderBy() {
@@ -57,7 +89,7 @@ public class SimpleFilter implements DbFilter {
     }
 
     String getWhere() {
-        String str = "WHERE ";
+        String str = " WHERE ";
         for (String clause: whereClauses) {
             str += clause + " AND ";
         }

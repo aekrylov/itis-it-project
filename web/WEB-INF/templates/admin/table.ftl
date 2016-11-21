@@ -1,5 +1,6 @@
 ﻿<#include '../base.ftl'>
 <#macro body>
+<#assign page = (params.page!1)?number>
     <div class="container-fluid">
             
                             
@@ -12,13 +13,16 @@
                      </div>
                      <div class="col-md-6">
                         <ul class="pager" style="float: right">
-                            <li><a href="#">&larr; Назад</a></li>
-                            <li><a href="#">Вперед &rarr;</a></li>
+                            <#if 1 < page>
+                            <#-- TODO freaking links -->
+                                <li><a href="?table=${tablename}&page=${page-1}&sort=${params.sort!''}<#if params.sort_desc??>&sort_desc=true</#if>&q=${params.q!''}">&larr; Назад</a></li>
+                            </#if>
+                            <li><a href="?table=${tablename}&page=${page+1}&sort=${params.sort!''}<#if params.sort_desc??>&sort_desc=true</#if>&q=${params.q!''}">Вперед &rarr;</a></li>
                         </ul>
                      </div>
                  </div> 
                         
-                <div class="well bs-component">
+                <div class="well bs-component table-container">
                   <table class="table table-striped table-bordered">
                     <thead>
                       <tr>
@@ -61,14 +65,33 @@
                 <form class="form-horizontal" method="get">
                     <input type="hidden" name="table" value="${tablename}">
                     <div class="row">  
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" placeholder="поиск..." name="q" value="${q!''}">
-                        </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" placeholder="поиск..." name="q" value="${params.q!''}">
                         </div>
                     </div>
-                    <#if q??>
+                <hr/>
+                <p>Отсортировать по:</p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <select class="form-control" name="sort">
+                                <#list columns as column>
+                                    <option <#if column=params.sort!''>selected</#if>>${column}</option>
+                                </#list>
+                            </select>
+                            <div class="checkbox">
+                              <label>
+                                <input type="checkbox" name="sort_desc"> Обратный порядок
+                              </label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="submit" class="btn btn-default btn-block" value="Поиск">
+                        </div>
+                    </div>
+                    <#if params.q??>
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
@@ -76,33 +99,9 @@
                             </div>
                         </div>
                     </#if>
-                </form>
-                
-                <hr/>
-<#--            TODO sorting
-                <p>Отсортировать по:</p>
-                <form class="form-horizontal">
-                    <div class="row">  
-                        <div class="col-md-9">
-                            <select class="form-control">
-                                <option>Логину</option>
-                                <option>Почте</option>
-                                <option>Имени</option>
-                                <option>Рейтингу</option>
-                                <option>Роли</option>
-                            </select>
-                            <div class="checkbox">
-                              <label>
-                                <input type="checkbox"> Обратный порядок
-                              </label>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span></button>
-                        </div>
-                    </div> 
+
+
                 </form>             
--->
             </div>
         
         </div>

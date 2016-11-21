@@ -1,7 +1,9 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin;
 
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ParameterMap;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.DAO;
+import ru.kpfu.itis.group501.krylov.db1_it_project.models.SimpleFilter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +26,7 @@ public class AdminServlet extends BaseServlet {
 
         //get table and display it
         //todo ordering and pagination
-        Map<String, String> params = getParameterMap(req);
+        ParameterMap params = getParameterMap(req);
         addPathInfo(params, req);
 
         String tablename = params.get("table");
@@ -39,13 +41,25 @@ public class AdminServlet extends BaseServlet {
 
         DAO<?> dao = Helpers.getDao(tablename);
         try {
-            List<Object[]> list = params.containsKey("q") ? dao.getTable(params.get("q")) : dao.getTable();
+            SimpleFilter filter = new SimpleFilter();
+            filter.setLimit(10);
+            if(params.containsKey("q"))
+                filter.addAnyFieldLikeClause(tablename, params.get("q"));
+            if(params.containsKey("sort")) {
+                String key = params.get("sort");
+                boolean desc = params.containsKey("sort_desc");
+                filter.setOrder(key, !desc);
+            }
+            if(params.containsKey("page")) {
+                filter.setOffset(params.getInt("page")*10-10);
+            }
+            List<Object[]> list = dao.getTable(filter);
             Map<String, Object> dataModel = new HashMap<>();
 
             dataModel.put("tablename", tablename);
             dataModel.put("rows", list);
             dataModel.put("columns", dao.getColumnNames());
-            dataModel.put("q", params.get("q"));
+            dataModel.put("params", params);
 
             CommonHelpers.render(getServletContext(), req, resp, "admin/table.ftl", dataModel);
         } catch (SQLException e) {

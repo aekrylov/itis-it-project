@@ -51,3 +51,7 @@ a {
 .msg-sent button {
     float: left !important;
 }
+
+.table-container {
+    overflow-x: scroll;
+}

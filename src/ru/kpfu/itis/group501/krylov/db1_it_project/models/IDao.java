@@ -19,8 +19,8 @@ public interface IDao<T extends Entity> {
     T get(int id) throws SQLException, NotFoundException;
     Map<String, String> getMap(int id) throws SQLException;
 
-    List<Object[]> getTable(String str) throws SQLException;
     List<Object[]> getTable() throws SQLException;
+    List<Object[]> getTable(SimpleFilter filter) throws SQLException;
 
     boolean create(Map<String, String> map) throws SQLException;
     boolean create(T instance) throws SQLException;
