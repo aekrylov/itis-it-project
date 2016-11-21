@@ -1,6 +1,6 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +16,6 @@ import java.io.IOException;
 public class MainServlet extends BaseServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         super.doGet(request, response);
-        Helpers.render(getServletContext(), request, response, "main.ftl", null);
+        CommonHelpers.render(getServletContext(), request, response, "main.ftl", null);
     }
 }

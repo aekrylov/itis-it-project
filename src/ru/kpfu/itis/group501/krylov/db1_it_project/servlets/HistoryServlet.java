@@ -1,7 +1,8 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ParameterMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,13 +22,13 @@ public class HistoryServlet extends BaseServlet {
         super.doGet(req, resp);
         //get recent buy_sells
         try {
-            User user = Helpers.getCurrentUser(req);
+            User user = CommonHelpers.getCurrentUser(req);
 
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("sells", feedbackService.getRecentSells(user));
             dataModel.put("buys", feedbackService.getRecentBuys(user));
 
-            Helpers.render(getServletContext(), req, resp, "history.ftl", dataModel);
+            CommonHelpers.render(getServletContext(), req, resp, "history.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -36,10 +37,10 @@ public class HistoryServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPost(req, resp);
-        Map<String, String> map = getParameterMap(req);
+        ParameterMap map = getParameterMap(req);
         int id = Integer.parseInt(map.get("id"));
         String text = map.get("text");
-        int rating = Integer.parseInt(map.get("rating"));
+        int rating = map.getInt("rating");
 
         try {
             feedbackService.leaveFeedback(id, rating, text);

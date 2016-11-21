@@ -1,6 +1,6 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Post;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.NotFoundException;
@@ -30,11 +30,11 @@ public class ItemServlet extends BaseServlet {
         try {
             Post post = postService.getPost(id);
             Map<String, Object> dataModel = new HashMap<>();
-            dataModel.put("isSeller", post.getUser().getId() == Helpers.getCurrentUser(req).getId());
+            dataModel.put("isSeller", post.getUser().getId() == CommonHelpers.getCurrentUser(req).getId());
             dataModel.put("post", post);
             dataModel.put("product", post.getProduct());
 
-            Helpers.render(getServletContext(), req, resp, "product.ftl", dataModel);
+            CommonHelpers.render(getServletContext(), req, resp, "product.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NotFoundException e) {
@@ -55,7 +55,7 @@ public class ItemServlet extends BaseServlet {
             switch (action) {
                 case "sell":
                     User buyer = userService.get(map.get("buyer"));
-                    User seller = Helpers.getCurrentUser(req);
+                    User seller = CommonHelpers.getCurrentUser(req);
 
                     postService.sellProduct(seller, buyer, postId);
                     resp.sendRedirect("/items");

@@ -1,5 +1,6 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin;
 
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.DAO;
 
 import javax.servlet.ServletException;
@@ -32,7 +33,7 @@ public class AdminServlet extends BaseServlet {
             Map<String, String> tables = Helpers.getTableTitles();
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("tables", tables);
-            ru.kpfu.itis.group501.krylov.db1_it_project.Helpers.render(getServletContext(), req, resp, "admin/main.ftl", dataModel);
+            CommonHelpers.render(getServletContext(), req, resp, "admin/main.ftl", dataModel);
             return;
         }
 
@@ -46,7 +47,7 @@ public class AdminServlet extends BaseServlet {
             dataModel.put("columns", dao.getColumnNames());
             dataModel.put("q", params.get("q"));
 
-            ru.kpfu.itis.group501.krylov.db1_it_project.Helpers.render(getServletContext(), req, resp, "admin/table.ftl", dataModel);
+            CommonHelpers.render(getServletContext(), req, resp, "admin/table.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
         }

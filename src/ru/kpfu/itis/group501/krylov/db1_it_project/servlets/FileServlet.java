@@ -1,6 +1,6 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +25,7 @@ public class FileServlet extends HttpServlet {
             throws ServletException, IOException
     {
         String filename = URLDecoder.decode(request.getPathInfo().substring(1), "UTF-8");
-        File file = Helpers.getImage(Paths.get(filename));
+        File file = CommonHelpers.getImage(Paths.get(filename));
         response.setHeader("Content-Type", getServletContext().getMimeType(filename));
         response.setHeader("Content-Length", String.valueOf(file.length()));
         response.setHeader("Content-Disposition", "inline; filename=\"" + file.getName() + "\"");

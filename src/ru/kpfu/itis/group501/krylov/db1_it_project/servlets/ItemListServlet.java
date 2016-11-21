@@ -1,7 +1,8 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Post;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ParameterMap;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.SimpleFilter;
 
 import javax.servlet.ServletException;
@@ -24,22 +25,22 @@ public class ItemListServlet extends BaseServlet {
         super.doGet(req, resp);
 
         SimpleFilter filter = new SimpleFilter();
-        Map<String, String > map = getParameterMap(req);
+        ParameterMap map = getParameterMap(req);
         Map<String, Object> dataModel = new HashMap<>();
 
         if(map.get("filtered") != null) {
             //todo more filters
             dataModel.put("filtered", true);
-            filter.addSignClause("type", "=", Helpers.getString(map, "type"));
-            filter.addLikeClause("brand", Helpers.getString(map, "brand"));
-            filter.addLikeClause("model", Helpers.getString(map, "model"));
-            filter.addSignClause("price", ">", Helpers.getInt(map, "price_low"));
-            filter.addSignClause("price", "<", Helpers.getInt(map, "price_high"));
-            filter.addSignClause("cores", "=", Helpers.getInt(map, "cores"));
+            filter.addSignClause("type", "=", map.get("type"));
+            filter.addLikeClause("brand", map.get("brand"));
+            filter.addLikeClause("model", map.get("model"));
+            filter.addSignClause("price", ">", map.getInt("price_low"));
+            filter.addSignClause("price", "<", map.getInt("price_high"));
+            filter.addSignClause("cores", "=", map.getInt("cores"));
         }
         if(map.get("author") != null) {
             dataModel.put("filtered", true);
-            filter.addSignClause("user", "=", Integer.parseInt(map.get("author")));
+            filter.addSignClause("user", "=", map.getInt("author"));
         }
 
         try {
@@ -47,7 +48,7 @@ public class ItemListServlet extends BaseServlet {
             dataModel.put("posts", posts);
             dataModel.put("params", map);
 
-            Helpers.render(getServletContext(), req, resp, "product_list.ftl", dataModel);
+            CommonHelpers.render(getServletContext(), req, resp, "product_list.ftl", dataModel);
 
         } catch (SQLException e) {
             //todo

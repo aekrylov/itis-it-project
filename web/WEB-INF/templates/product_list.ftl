@@ -68,17 +68,15 @@
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
-                         </select> 
-                         <h5>Число ядер:</h5>
-                         <select class="form-control input-sm">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>4</option>
-                            <option>6</option>
-                            <option>8</option>
-                            <option>4</option>
-                            <option>4</option>
                          </select>
+                         -->
+                         <h5>Число ядер:</h5>
+                         <select class="form-control input-sm" name="cores">
+                             <#list [1, 2, 4, 6,8,10,12,16] as i>
+                                 <option value="${i}">${i}</option>
+                             </#list>
+                         </select>
+                          <#-- TODO
                          <h5>Размер ОЗУ:</h5>
                          <select class="form-control input-sm">
                             <option>1</option>

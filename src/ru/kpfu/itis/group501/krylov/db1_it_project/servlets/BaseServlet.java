@@ -6,7 +6,8 @@
  */
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.QueryString;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.QueryString;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ParameterMap;
 import ru.kpfu.itis.group501.krylov.db1_it_project.services.ChatService;
 import ru.kpfu.itis.group501.krylov.db1_it_project.services.FeedbackService;
 import ru.kpfu.itis.group501.krylov.db1_it_project.services.PostService;
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -56,9 +56,9 @@ public abstract class BaseServlet extends HttpServlet {
         response.sendRedirect(req.getServletPath());
     }
 
-    protected static Map<String, String> getParameterMap(HttpServletRequest req) {
+    protected static ParameterMap getParameterMap(HttpServletRequest req) {
         Map<String, String[]> map = req.getParameterMap();
-        Map<String, String> result = new HashMap<>();
+        ParameterMap result = new ParameterMap();
         for(Map.Entry<String, String[]> entry: map.entrySet()) {
             result.put(entry.getKey(), entry.getValue()[0]);
         }

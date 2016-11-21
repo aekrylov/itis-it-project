@@ -4,7 +4,7 @@
  * 11-501
  * Task
  */
-package ru.kpfu.itis.group501.krylov.db1_it_project;
+package ru.kpfu.itis.group501.krylov.db1_it_project.misc;
 
 import java.net.URLEncoder;
 import java.util.Map;

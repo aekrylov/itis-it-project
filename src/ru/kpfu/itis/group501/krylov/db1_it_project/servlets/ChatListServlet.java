@@ -1,6 +1,6 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Conversation;
 
 import javax.servlet.ServletException;
@@ -21,11 +21,11 @@ public class ChatListServlet extends BaseServlet {
 
         //TODO pagination
         try {
-            List<Conversation> conversations = chatService.getConversations(Helpers.getCurrentUser(request));
+            List<Conversation> conversations = chatService.getConversations(CommonHelpers.getCurrentUser(request));
             Map<String, Object> dataModel = new HashMap<>();
 
             dataModel.put("conversations", conversations);
-            Helpers.render(getServletContext(), request, response, "messages.ftl", dataModel);
+            CommonHelpers.render(getServletContext(), request, response, "messages.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
         }

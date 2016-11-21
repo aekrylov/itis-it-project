@@ -1,5 +1,6 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin;
 
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.DAO;
 
 import javax.servlet.ServletException;
@@ -35,7 +36,7 @@ public class AdminСreateServlet extends BaseServlet {
             }
 
             dataModel.put("action", "create");
-            ru.kpfu.itis.group501.krylov.db1_it_project.Helpers.render(getServletContext(), req, resp, "admin/create.ftl", dataModel);
+            CommonHelpers.render(getServletContext(), req, resp, "admin/create.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
         }

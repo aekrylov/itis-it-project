@@ -1,8 +1,10 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.services;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.NotFoundException;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ParameterMap;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ValidationException;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.Users;
 
 import java.sql.SQLException;
@@ -27,8 +29,14 @@ public class UserService {
         return users.create(user);
     }
 
+    public boolean create(ParameterMap map) throws ValidationException, SQLException {
+        User user = new User(map.get("username"), map.get("password"), map.get("name"), map.get("email"));
+        user.validate(true);
+        return users.create(user);
+    }
+
     public boolean checkCredentials(String username, String password) throws SQLException {
-        String passwordHash = Helpers.encrypt(password);
+        String passwordHash = CommonHelpers.encrypt(password);
 
         User user = null;
         try {
@@ -51,5 +59,14 @@ public class UserService {
         } catch (NotFoundException e) {
             return false;
         }
+    }
+
+    public boolean updateInfo(User user) throws SQLException {
+        return users.update(user);
+    }
+
+    public boolean updatePassword(User user, String newPassword) throws SQLException {
+        user.setPassword(CommonHelpers.encrypt(newPassword));
+        return users.update(user);
     }
 }

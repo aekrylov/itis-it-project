@@ -1,6 +1,6 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.NotFoundException;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.Posts;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
@@ -27,7 +27,7 @@ public class ProfileServlet extends BaseServlet {
         try {
             User user;
             if(request.getParameter("id") == null) {
-                user = Helpers.getCurrentUser(request);
+                user = CommonHelpers.getCurrentUser(request);
             } else {
                 user = userService.get(Integer.parseInt(request.getParameter("id")));
             }
@@ -40,7 +40,7 @@ public class ProfileServlet extends BaseServlet {
                 dataModel.put("owner", true);
             }
 
-            Helpers.render(getServletContext(), request, response, "profile.ftl", dataModel);
+            CommonHelpers.render(getServletContext(), request, response, "profile.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(500);
@@ -55,7 +55,7 @@ public class ProfileServlet extends BaseServlet {
         //todo process image
         Part image = req.getPart("image");
         try {
-            Helpers.saveImage(Paths.get("users", String.valueOf(Helpers.getCurrentUser(req).getId())),
+            CommonHelpers.saveImage(Paths.get("users", String.valueOf(CommonHelpers.getCurrentUser(req).getId())),
                     image.getInputStream());
         } catch (SQLException e) {
             e.printStackTrace();

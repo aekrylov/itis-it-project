@@ -6,7 +6,7 @@
  */
 package ru.kpfu.itis.group501.krylov.db1_it_project.entities;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ValidationException;
 
 /**
@@ -66,21 +66,34 @@ public class User extends Entity {
         rating = (rating*rate_count + score) / ++rate_count;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public User() {}
 
     public User(String username, String password, String name, String email) {
         this.username = username;
         this.password_raw = password;
-        this.password = Helpers.encrypt(password);
+        this.password = CommonHelpers.encrypt(password);
         this.name = name;
         this.email = email;
     }
 
-    public boolean validate() throws ValidationException {
+    public boolean validate(boolean checkPassword) throws ValidationException {
         if(!username.matches("^[a-zA-Z0-9]{3,}$"))
             throw new ValidationException("invalid", "username");
 
-        if(!password_raw.matches("^[a-zA-Z0-9]{6,}$"))
+        if(checkPassword && !password_raw.matches("^[a-zA-Z0-9]{6,}$"))
             throw new ValidationException("invalid", "password");
 
         if(name == null || name.equals(""))

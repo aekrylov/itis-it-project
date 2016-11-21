@@ -1,4 +1,4 @@
-package ru.kpfu.itis.group501.krylov.db1_it_project;
+package ru.kpfu.itis.group501.krylov.db1_it_project.misc;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;

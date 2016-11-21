@@ -1,6 +1,6 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.services.UserService;
 
 import javax.servlet.ServletException;
@@ -66,8 +66,8 @@ public class LoginServlet extends BaseServlet {
         Map<String, Object> data = new HashMap<>();
         data.put("username", oldUsername);
         if(error != null)
-            data.put("error", Helpers.getErrorMessage(error));
+            data.put("error", CommonHelpers.getErrorMessage(error));
 
-        Helpers.render(getServletContext(), request, response, "login.ftl", data);
+        CommonHelpers.render(getServletContext(), request, response, "login.ftl", data);
     }
 }

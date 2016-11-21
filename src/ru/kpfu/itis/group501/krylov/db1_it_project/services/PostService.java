@@ -32,10 +32,6 @@ public class PostService {
         return posts.create(post);
     }
 
-    public boolean createPost(Map<String, String> map) throws SQLException {
-        return posts.create(map);
-    }
-
     public boolean createProduct(Product product) throws SQLException {
         return products.create(product);
     }

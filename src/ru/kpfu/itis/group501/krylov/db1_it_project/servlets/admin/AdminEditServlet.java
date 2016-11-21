@@ -1,5 +1,7 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin;
 
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ParameterMap;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.DAO;
 
 import javax.servlet.ServletException;
@@ -43,7 +45,7 @@ public class AdminEditServlet extends BaseServlet {
             }
 
             dataModel.put("action", "edit");
-            ru.kpfu.itis.group501.krylov.db1_it_project.Helpers.render(getServletContext(), req, resp, "admin/create.ftl", dataModel);
+            CommonHelpers.render(getServletContext(), req, resp, "admin/create.ftl", dataModel);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,10 +54,7 @@ public class AdminEditServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPost(req, resp);
-        Map<String, String> params = getParameterMap(req);
-        for(String key: params.keySet()) {
-            params.put(key, ru.kpfu.itis.group501.krylov.db1_it_project.Helpers.getString(params, key));
-        }
+        ParameterMap params = getParameterMap(req);
         String table = params.get("table");
 
         DAO dao = Helpers.getDao(table);

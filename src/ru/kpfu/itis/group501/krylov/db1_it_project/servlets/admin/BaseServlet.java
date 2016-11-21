@@ -1,6 +1,6 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.QueryString;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.QueryString;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

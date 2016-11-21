@@ -1,9 +1,8 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ParameterMap;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ValidationException;
-import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
-import ru.kpfu.itis.group501.krylov.db1_it_project.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,50 +19,32 @@ import java.util.Map;
  * Registration
  */
 public class RegistrationServlet extends BaseServlet {
-    private UserService service = UserService.getInstance();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         super.doPost(request, response);
 
-        Map<String, String> params = getParameterMap(request);
-        if(!params.get("password").equals(params.get("password_repeat"))) {
-            params.put("error", "password_match");
-        } else {
-            try {
-                if(service.exists(params.get("username")))
-                    params.put("error", "username_taken");
-            } catch (SQLException e) {
-                e.printStackTrace();
-                params.put("error", "db");
-            }
-        }
-        if(params.containsKey("error")) {
-            redirect(request, response, params);
-            return;
-        }
-
-        User user = new User(params.get("username"),
-                params.get("password"),
-                params.get("name"),
-                params.get("email"));
-
+        ParameterMap params = getParameterMap(request);
         try {
-            user.validate();
+            if(!params.get("password").equals(params.get("password_repeat"))) {
+                params.put("error", "password_match");
+            }
+            else if(userService.exists(params.get("username"))) {
+                params.put("error", "username_taken");
+            }
+            else if(userService.create(params)) {
+                Map<String, String> pass = new HashMap<>();
+                pass.put("success", "1");
+                pass.put("username", params.get("username"));
+                redirect(request, response, pass);
+                return;
+            }
+            redirect(request, response, params);
         } catch (ValidationException e) {
             params.put("error", "validation");
             params.put("cause", e.getMessage());
             params.put("field", e.getField());
             redirect(request, response, params);
             return;
-        }
-
-        try {
-            if(service.create(user)) {
-                Map<String, String> pass = new HashMap<>();
-                pass.put("success", "1");
-                pass.put("username", params.get("username"));
-                redirect(request, response, pass);
-            }
         } catch (SQLException e) {
             e.printStackTrace();
             params.put("error", "db");
@@ -78,22 +59,16 @@ public class RegistrationServlet extends BaseServlet {
 
         boolean success = request.getParameter("success") != null;
         if(success) {
-            dataModel.put("username", request.getParameter("username"));
-
             response.sendRedirect("/");
-            //TODO
-/*
-            Helpers.render(getServletContext(), response, "registration_success.ftl", dataModel);
-*/
             return;
         }
 
         String errorCode = request.getParameter("error");
         if(errorCode != null) {
-            dataModel.put("error", Helpers.getErrorMessage(errorCode));
             dataModel.putAll(getParameterMap(request));
+            dataModel.put("error", CommonHelpers.getErrorMessage(errorCode));
         }
 
-        Helpers.render(getServletContext(), request, response, "registration.ftl", dataModel);
+        CommonHelpers.render(getServletContext(), request, response, "registration.ftl", dataModel);
     }
 }

@@ -23,7 +23,6 @@ public class Helpers {
         daoMap.put("feedbacks", new Feedbacks());
         daoMap.put("posts", new Posts());
         daoMap.put("buy_sells", new DAO<>(BuySell.class));
-        //daoMap.put("favorites", "Избранное");
 
 
         tableTitles.put("users", "Пользователи");
@@ -32,7 +31,6 @@ public class Helpers {
         tableTitles.put("feedbacks", "Отзывы");
         tableTitles.put("posts", "Публикации");
         tableTitles.put("buy_sells", "Купля-продажа");
-        //tableTitles.put("favorites", "Избранное");
     }
 
     public static Map<String, String> getTableTitles() {

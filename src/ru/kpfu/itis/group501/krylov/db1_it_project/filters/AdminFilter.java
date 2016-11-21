@@ -1,6 +1,6 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.filters;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
 
 import javax.servlet.*;
@@ -26,7 +26,7 @@ public class AdminFilter implements Filter {
 
         User user;
         try {
-            user = Helpers.getCurrentUser(request);
+            user = CommonHelpers.getCurrentUser(request);
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendRedirect("/login");

@@ -1,9 +1,9 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.models;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.Helpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Entity;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.DbHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.NotFoundException;
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ParameterMap;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ReflectiveHelpers;
 
 import java.lang.reflect.Field;
@@ -128,7 +128,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     @Override
-    public boolean update(Map<String, String> map) throws SQLException {
+    public boolean update(ParameterMap map) throws SQLException {
         //return update((T) Entity.getEntity(map, entityClass));
         int id = Integer.parseInt(map.get("id"));
 
@@ -140,7 +140,7 @@ public class DAO<T extends Entity> implements IDao<T> {
         for (int i = 0; i < rsmd.getColumnCount(); i++) {
             String columnName = rsmd.getColumnName(i+1);
             sqlTypes[i] = rsmd.getColumnType(i+1);
-            values[i] = Helpers.getString(map, columnName);
+            values[i] = map.get(columnName);
 
             set += String.format(" \"%s\" = ?,", columnName);
         }

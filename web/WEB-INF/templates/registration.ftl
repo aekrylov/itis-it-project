@@ -14,6 +14,7 @@
                             <input type="text" class="form-control" id="inputLogin" placeholder="Логин" name="username" required>
                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                             <p style="color: red; margin: 0px;">Логин должен состоять из латинских букв, цифр и быть не короче 4 символов</p>
+                            <p class="text-danger" id="username-taken">Логин занят</p>
                         </div>
 
                     </div>
@@ -67,10 +68,16 @@
                         $(document).ready(function() {  
                         
                                 $("p").hide();
+
+                            var check_username = function(value, callback) {
+                                $.get('/ajax/check_username', {username: value}, function(resp) {
+                                    callback(resp.available);
+                                }, "json")
+                            }
                         
-                                $("#inputLogin").isValid(new RegExp(/^[a-z0-9_-]{4,40}$/i));
+                                $("#inputLogin").isValid(new RegExp(/^[a-z0-9_-]{4,40}$/i), check_username);
                    
-                                $("#inputPassword1").isValid(RegExp(/^[a-z0-9]{6,40}$/i));
+                                $("#inputPassword1").isValid(new RegExp(/^[a-z0-9]{6,40}$/i));
                    
                                 $("#inputEmail").isValid(new RegExp(/^[a-z0-9_-]+@[a-z0-9-]+\.[a-z]{2,6}$/i));
 
@@ -78,13 +85,24 @@
 
 
                         (function($) {                        
-                        $.fn.isValid = function (reg) {
+                        $.fn.isValid = function (reg, func) {
+                            func = func || function() { };
                             var pattern = reg;
                             $(this).keyup(function(){                          
-                             var value = $(this).val();    
+                                var value = $(this).val();
+                                var elem = $(this);
                                 if( value != 0)
                                 {
                                 if( pattern.test(value) ) {
+                                    func(value, function(status) {
+                                        if(!status) {
+                                            elem.parents(".form-group").addClass("has-error").removeClass('has-success');
+                                            elem.next("span").addClass("glyphicon-remove").removeClass('glyphicon-ok');
+                                            $("#username-taken").show();
+                                        } else {
+                                            $("#username-taken").hide();
+                                        }
+                                    });
                                 $(this).parents(".form-group").addClass("has-success").removeClass('has-error');
                                 $(this).next("span").addClass("glyphicon-ok").removeClass('glyphicon-remove').next("p").hide();
                                 }
@@ -96,6 +114,7 @@
                                 else{
                                 $(this).parents(".form-group").removeClass("has-success").removeClass('has-error');
                                 $(this).next("span").removeClass("glyphicon-ok").removeClass('glyphicon-remove').next("p").hide();
+                                    $("#username-taken").hide();
                                 }
                                 
                                 return this;

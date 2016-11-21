@@ -1,7 +1,5 @@
-package ru.kpfu.itis.group501.krylov.db1_it_project;
+package ru.kpfu.itis.group501.krylov.db1_it_project.misc;
 
-import com.sun.istack.internal.NotNull;
-import ru.kpfu.itis.group501.krylov.db1_it_project.misc.NotFoundException;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.Messages;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
 import ru.kpfu.itis.group501.krylov.db1_it_project.services.UserService;
@@ -27,7 +25,7 @@ import java.util.Map;
  * Date: 10/19/16 8:14 PM
  * 11-501
  */
-public class Helpers {
+public class CommonHelpers {
     private static Map<String, String> errors = new HashMap<>();
     static {
         errors.put("password_match", "Passwords don't match");
@@ -50,12 +48,6 @@ public class Helpers {
     public static File getImage(Path name) {
         return imageDir.resolve(name).toAbsolutePath().toFile();
     }
-
-/*
-    public static String readImage(Path name) {
-        Files.rea
-    }
-*/
 
     public static String getErrorMessage(String errorCode) {
         return errors.get(errorCode);
