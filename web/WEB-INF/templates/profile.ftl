@@ -9,7 +9,7 @@
 
                 <#if owner??>
                     <button class="btn btn-default" data-toggle="modal" data-target="#PhotoEditModal">Изменить фотографию</button>
-                    <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-cog"></span></a>
+                    <a href="/user/settings" class="btn btn-default"><span class="glyphicon glyphicon-cog"></span></a>
                     <!-- Modal -->
                 <form method="post" enctype="multipart/form-data">
                     <div class="modal fade" id="PhotoEditModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
@@ -33,12 +33,12 @@
                 </form>
 
                 <#else>
-                    <a href="#" class="btn btn-default">Написать сообщение</a>
+                    <a href="/user/chat?uid=${user.id}" class="btn btn-default">Написать сообщение</a>
                 </#if>
                 <hr/>
 
-                <if user.rating??>
-                    <p><b>Рейтинг: </b><span id="user-rating">${user.rating?string["0.#"]}</span> от ${buy_sells?size} пользователей </p>
+                <#if user.rating?? && user.rate_count gt 0 >
+                    <p><b>Рейтинг: </b><span id="user-rating">${user.rating?string["0.#"]}</span> от ${user.rate_count} пользователей </p>
 
                     <div class="row">
                         <div class="col-md-12">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <br/>
-                </if>
+                </#if>
 
                 <hr/>
 

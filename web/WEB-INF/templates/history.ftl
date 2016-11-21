@@ -80,7 +80,7 @@
                     <div class="form-group">
                         <b>Оценка:</b>
                         <br/>
-                        <input type="number" name="rating">
+                        <input type="number" name="rating" min="1" max="5">
 <#--
                         <div id="rateYo"></div>
                         <div class="counter"></div>
@@ -112,7 +112,6 @@
                <script type="application/javascript">
                    var id;
                    $(".modal-btn").click(function(e) {
-                       //$("#ModalRecall").modal("show");
                        id = $(this).attr("data-id");
                        var input = $("input#bs-id");
                        input.val(id);

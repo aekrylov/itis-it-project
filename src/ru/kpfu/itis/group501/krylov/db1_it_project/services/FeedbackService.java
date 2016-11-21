@@ -49,6 +49,11 @@ public class FeedbackService {
         } catch (NotFoundException e) {
             return false;
         }
+        if(score < 1)
+            score = 1;
+        if(score > 5)
+            score = 5;
+
         User user = bs.getSeller();
         user.addRating(score);
         users.update(user);

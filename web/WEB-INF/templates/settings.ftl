@@ -4,7 +4,7 @@
         <div class="row">
         <div class="col-md-10 col-md-offset-1">
         <div class="well bs-component">
-            <form class="form-horizontal" method="post" action="/settings">
+            <form class="form-horizontal" method="post" action="/user/settings">
                 <input type="hidden" name="act" value="info">
                 <div class="form-group has-feedback">
                     <label for="inputLogin" class="col-md-2 control-label">Логин</label>
@@ -19,7 +19,7 @@
                 <div class="form-group">                       
                     <label for="inputName" class="col-md-2 control-label">Имя</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="Имя" name="name" value="${user.name}">
+                        <input type="text" class="form-control" id="inputName" placeholder="Имя" name="name" value="${user.name!}">
                     </div>
                 </div>
                 
@@ -27,7 +27,7 @@
                     <label for="inputEmail" class="col-md-2 control-label">Почта</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" id="inputEmail" placeholder="Почта" name="email"
-                               value="${user.email}" required>
+                               value="${user.email!}" required>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <p style="color: red;">Почта должна быть реальной</p>                
                     </div>
@@ -41,7 +41,7 @@
                 <hr/>
                 
            </form>
-           <form class="form-horizontal" method="post" action="/settings">
+           <form class="form-horizontal" method="post" action="/user/settings">
                <input type="hidden" name="act" value="password">
                 
                 <div class="form-group">                       
@@ -117,6 +117,7 @@
                 return this;
       
             });
+            $(this).keyup();
         };
         })(jQuery);                        
         </script>
