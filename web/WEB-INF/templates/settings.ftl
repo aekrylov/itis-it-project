@@ -54,7 +54,7 @@
                 <div class="form-group has-feedback">                       
                     <label for="inputNewPassword1" class="col-md-2 control-label">Новый пароль</label>
                     <div class="col-md-10">
-                        <input type="password" class="form-control" id="inputNewPassword1" placeholder="Введите новый пароль" name="password_new" required>
+                        <input type="password" class="form-control" id="inputNewPassword1" placeholder="Введите новый пароль" name="password_new1" required>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <p style="color: red;">Пароль должен состоять из латинских букв, цифр и быть и быть не короче 6 символов</p>  
                     </div>

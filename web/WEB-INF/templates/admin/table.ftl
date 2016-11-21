@@ -17,7 +17,9 @@
                             <#-- TODO freaking links -->
                                 <li><a href="?table=${tablename}&page=${page-1}&sort=${params.sort!''}<#if params.sort_desc??>&sort_desc=true</#if>&q=${params.q!''}">&larr; Назад</a></li>
                             </#if>
-                            <li><a href="?table=${tablename}&page=${page+1}&sort=${params.sort!''}<#if params.sort_desc??>&sort_desc=true</#if>&q=${params.q!''}">Вперед &rarr;</a></li>
+                            <#if has_next_page>
+                                <li><a href="?table=${tablename}&page=${page+1}&sort=${params.sort!''}<#if params.sort_desc??>&sort_desc=true</#if>&q=${params.q!''}">Вперед &rarr;</a></li>
+                            </#if>
                         </ul>
                      </div>
                  </div> 

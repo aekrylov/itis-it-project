@@ -21,6 +21,6 @@ Used computers marketplace
 
 2. Make sure to pass the path to the DB as JAVA_OPT 
 (in IDEA, add `-DDB_PATH="db path"` to VM options).
-Example: `-DDB_PATH="localhost:5432/your_db`
+Example: `-DDB_PATH="localhost:5432/your_db"`
 
 3. Run Tomcat server

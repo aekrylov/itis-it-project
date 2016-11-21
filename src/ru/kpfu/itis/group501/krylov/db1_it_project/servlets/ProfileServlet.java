@@ -55,8 +55,11 @@ public class ProfileServlet extends BaseServlet {
         //todo process image
         Part image = req.getPart("image");
         try {
-            CommonHelpers.saveImage(Paths.get("users", String.valueOf(CommonHelpers.getCurrentUser(req).getId())),
+            User user = CommonHelpers.getCurrentUser(req);
+            CommonHelpers.saveImage(Paths.get("users", String.valueOf(user.getId())),
                     image.getInputStream());
+            user.setHas_avatar(true);
+            userService.updateInfo(user);
         } catch (SQLException e) {
             e.printStackTrace();
         }

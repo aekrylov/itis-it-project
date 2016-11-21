@@ -20,12 +20,13 @@ import java.util.Map;
  */
 public class AdminServlet extends BaseServlet {
 
+    private static final int ROWS_PER_PAGE = 10;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
 
         //get table and display it
-        //todo ordering and pagination
         ParameterMap params = getParameterMap(req);
         addPathInfo(params, req);
 
@@ -40,9 +41,11 @@ public class AdminServlet extends BaseServlet {
         }
 
         DAO<?> dao = Helpers.getDao(tablename);
+        Map<String, Object> dataModel = new HashMap<>();
+
         try {
             SimpleFilter filter = new SimpleFilter();
-            filter.setLimit(10);
+            filter.setLimit(ROWS_PER_PAGE);
             if(params.containsKey("q"))
                 filter.addAnyFieldLikeClause(tablename, params.get("q"));
             if(params.containsKey("sort")) {
@@ -50,16 +53,21 @@ public class AdminServlet extends BaseServlet {
                 boolean desc = params.containsKey("sort_desc");
                 filter.setOrder(key, !desc);
             }
+
+            int maxPage = (int) Math.ceil((dao.count() + .0) / ROWS_PER_PAGE);
             if(params.containsKey("page")) {
-                filter.setOffset(params.getInt("page")*10-10);
+                filter.setOffset((params.getInt("page")-1)*ROWS_PER_PAGE);
+            } else {
+                params.put("page", "1");
             }
+
             List<Object[]> list = dao.getTable(filter);
-            Map<String, Object> dataModel = new HashMap<>();
 
             dataModel.put("tablename", tablename);
             dataModel.put("rows", list);
             dataModel.put("columns", dao.getColumnNames());
             dataModel.put("params", params);
+            dataModel.put("has_next_page", params.getInt("page") < maxPage);
 
             CommonHelpers.render(getServletContext(), req, resp, "admin/table.ftl", dataModel);
         } catch (SQLException e) {

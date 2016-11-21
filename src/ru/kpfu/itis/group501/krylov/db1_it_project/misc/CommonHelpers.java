@@ -38,6 +38,7 @@ public class CommonHelpers {
     }
 
     private static Path imageDir = Paths.get("/media/d/www/tmp/img/").toAbsolutePath();
+    private static Messages messages = new Messages();
 
     public static void saveImage(Path name, InputStream stream) throws IOException {
         Path absolutePath = imageDir.resolve(name);
@@ -64,7 +65,7 @@ public class CommonHelpers {
             try {
                 User user = getCurrentUser(request);
                 dataModel.put("current_user", user);
-                dataModel.put("unread_count", Messages.getUnreadCount(user));
+                dataModel.put("unread_count", messages.getUnreadCount(user));
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -69,4 +69,9 @@ public class UserService {
         user.setPassword(CommonHelpers.encrypt(newPassword));
         return users.update(user);
     }
+
+    public void updateAvatar(User user, boolean hasAvatar) throws SQLException {
+        user.setHas_avatar(hasAvatar);
+        users.update(user);
+    }
 }

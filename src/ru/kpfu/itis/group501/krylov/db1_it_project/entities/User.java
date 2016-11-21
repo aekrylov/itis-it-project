@@ -32,6 +32,8 @@ public class User extends Entity {
 
     String role = "user";
 
+    boolean has_avatar = false;
+
     public int getId() {
         return id;
     }
@@ -61,6 +63,9 @@ public class User extends Entity {
     public String getRole() {
         return role;
     }
+    public boolean isHas_avatar() {
+        return has_avatar;
+    }
 
     public void addRating(int score) {
         rating = (rating*rate_count + score) / ++rate_count;
@@ -77,6 +82,9 @@ public class User extends Entity {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public void setHas_avatar(boolean has_avatar) {
+        this.has_avatar = has_avatar;
     }
 
     public User() {}

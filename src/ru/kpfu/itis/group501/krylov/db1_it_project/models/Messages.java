@@ -73,16 +73,11 @@ public class Messages extends DAO<Message> {
         return list;
     }
 
-    public static int getUnreadCount(User user) throws SQLException {
-        PreparedStatement st = connection.prepareStatement(
-                "SELECT count(1) FROM messages WHERE \"to\" = ? AND read = FALSE "
-        );
-        st.setInt(1, user.getId());
-
-        ResultSet rs = st.executeQuery();
-        if(rs.next())
-            return rs.getInt(1);
-        return 0;
+    public int getUnreadCount(User user) throws SQLException {
+        SimpleFilter filter = new SimpleFilter();
+        filter.addSignClause("to", "=", user.getId());
+        filter.addSignClause("read", "=", false);
+        return count(filter);
     }
 
 

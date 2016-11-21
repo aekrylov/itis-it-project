@@ -101,6 +101,33 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     @Override
+    public int count() throws SQLException {
+        PreparedStatement st = connection.prepareStatement("SELECT count(1) FROM "+ tableName);
+        ResultSet rs = st.executeQuery();
+        if(!rs.next()){
+            return 0;
+        }
+        return rs.getInt(1);
+    }
+
+    @Override
+    public int count(SimpleFilter filter) throws SQLException {
+        PreparedStatement st = connection.prepareStatement("SELECT count(1) FROM "+ tableName +" "+filter.getSQL());
+
+        List<Object> params = filter.getParams();
+        for (int i = 0; i < params.size(); i++) {
+            Object param = params.get(i);
+            st.setObject(i+1, param);
+        }
+
+        ResultSet rs = st.executeQuery();
+        if(!rs.next()) {
+            return 0;
+        }
+        return rs.getInt(1);
+    }
+
+    @Override
     public boolean update(T instance) throws SQLException {
         Field [] fields = Entity.getDbFieldsWithoutId(instance.getClass());
         Object [] values = new Object[fields.length];

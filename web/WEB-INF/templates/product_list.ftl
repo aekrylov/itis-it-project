@@ -136,8 +136,8 @@
                        <hr/>
 
                        <div class="row">
-                           <div class="col-md-4">
-                               <img src="/files/products/${p.product.id}/1" width="100%" style="margin-top:0px;"/>
+                           <div class="col-md-4 product-image">
+                               <img src="/files/products/${p.product.id}/1" width="100%" class="img-responsive"/>
                            </div>
 
                            <div class="col-md-8">

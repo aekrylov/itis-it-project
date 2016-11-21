@@ -26,6 +26,10 @@ public class FileServlet extends HttpServlet {
     {
         String filename = URLDecoder.decode(request.getPathInfo().substring(1), "UTF-8");
         File file = CommonHelpers.getImage(Paths.get(filename));
+        if(!file.exists()) {
+            response.sendError(404);
+            return;
+        }
         response.setHeader("Content-Type", getServletContext().getMimeType(filename));
         response.setHeader("Content-Length", String.valueOf(file.length()));
         response.setHeader("Content-Disposition", "inline; filename=\"" + file.getName() + "\"");
