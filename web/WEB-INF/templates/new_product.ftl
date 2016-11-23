@@ -44,7 +44,7 @@
                 <div class="form-group">
                     <label for="inputCoreNumder" class="col-md-4 control-label">Число ядер</label>
                     <div class="col-md-2">
-                        <select class="form-control" id="inputCoreNumder" name="cpu_cores"  required>
+                        <select class="form-control" id="inputCoreNumder" name="cores"  required>
                             <#list [1, 2, 4, 6,8,10,12,16] as i>
                                 <option value="${i}">${i}</option>
                             </#list>
