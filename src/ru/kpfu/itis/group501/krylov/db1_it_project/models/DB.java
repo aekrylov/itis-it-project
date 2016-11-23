@@ -9,6 +9,7 @@ package ru.kpfu.itis.group501.krylov.db1_it_project.models;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -36,10 +37,13 @@ class DB {
             e.printStackTrace();
         }
         try {
+            Properties properties = new Properties();
+            properties.put("sslmode", "require");
+            properties.put("user", System.getProperty("DB_USER"));
+            properties.put("password", System.getProperty("DB_PASSWORD"));
+
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://"+System.getProperty("DB_PATH"),
-                    "postgres",
-                    "postgres"
+                    "jdbc:postgresql://"+System.getProperty("DB_PATH"), properties
             );
         } catch (SQLException e) {
             e.printStackTrace();

@@ -53,6 +53,7 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     @Override
     public List<T> get() throws SQLException {
+        System.out.println("get");
         PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
         ResultSet rs = st.executeQuery();
 
@@ -61,6 +62,7 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     @Override
     public T get(int id ) throws SQLException, NotFoundException {
+        System.out.println("get id");
         PreparedStatement st = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE id = ?");
         st.setInt(1, id);
 
@@ -73,6 +75,7 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     @Override
     public List<T> get(SimpleFilter filter) throws SQLException {
+        System.out.println("get filter");
         String sql = "SELECT * FROM "+tableName+" ";
 
         sql += filter.getSQL();

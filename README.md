@@ -19,8 +19,16 @@ Used computers marketplace
     - [org.json]
     - [Postgres JDBC][jdbc] v. >= 9.4
 
-2. Make sure to pass the path to the DB as JAVA_OPT 
-(in IDEA, add `-DDB_PATH="db path"` to VM options).
-Example: `-DDB_PATH="localhost:5432/your_db"`
+2. Make sure to pass the path to the DB as JAVA_OPT `DB_PATH`, and 
+also you need `DB_USER` and `DB_PASSWORD`
+
+    In IDEA, just add this to VM options:
+     
+     `-DDB_PATH="db path" -DDB_USER=user -DDB_PASSWORD=pass`
+     
+     Example: 
+     
+     `-DDB_PATH="localhost:5432/your_db" -DDB_USER=postgres -DDB_PASSWORD=postgres`
+
 
 3. Run Tomcat server
