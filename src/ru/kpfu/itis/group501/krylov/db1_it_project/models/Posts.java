@@ -33,17 +33,15 @@ public class Posts extends DAO<Post> {
         return rs.getInt(1);
     }
 
+/*
     public List<Post> get(SimpleFilter filter) throws SQLException {
         String sql = "SELECT posts.id pid, \"timestamp\", \"user\", products.* FROM posts " +
                 "JOIN products on product = products.id ";
 
-        sql += filter.getWhere() + filter.getOrderBy();
+        sql += filter.toSQL();
         PreparedStatement st = connection.prepareStatement(sql);
 
-        List<Object> params = filter.getParams();
-        for (int i = 0; i < params.size(); i++) {
-            st.setObject(i+1, params.get(i));
-        }
+        filter.fillParams(st);
 
         ResultSet rs = st.executeQuery();
         List<Post> list = new ArrayList<>(rs.getFetchSize());
@@ -55,4 +53,5 @@ public class Posts extends DAO<Post> {
         }
         return list;
     }
+*/
 }

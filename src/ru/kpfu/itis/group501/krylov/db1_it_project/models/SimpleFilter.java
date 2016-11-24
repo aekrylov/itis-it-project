@@ -1,5 +1,10 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.models;
 
+import ru.kpfu.itis.group501.krylov.db1_it_project.misc.DbHelpers;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +13,7 @@ import java.util.List;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/15/16 6:57 PM
  */
-public class SimpleFilter implements DbFilter {
+public class SimpleFilter implements DbFilter<SimpleFilter> {
 
     private List<String> whereClauses = new LinkedList<>();
     private String orderBy;
@@ -26,28 +31,32 @@ public class SimpleFilter implements DbFilter {
     }
 
     @Override
-    public void addLikeClause(String field, String pattern) {
+    public SimpleFilter addLikeClause(String field, String pattern) {
         if(pattern == null)
-            return;
+            return this;
         whereClauses.add(String.format(" LOWER(\"%s\") LIKE ?", field));
         params.add("%"+pattern.toLowerCase()+"%");
+        return this;
     }
 
     @Override
-    public void addSignClause(String field, String sign, Object value) {
+    public SimpleFilter addSignClause(String field, String sign, Object value) {
         if(value == null)
-            return;
-        whereClauses.add(String.format(" \"%s\" %s ?", field, sign));
+            return this;
+        String columnName = field.indexOf('.') != -1 ? field : DbHelpers.toColumnDef(field);
+        whereClauses.add(String.format(" %s %s ?", columnName, sign));
         params.add(value);
+        return this;
     }
 
     @Override
-    public void addNotNullClause(String field) {
+    public SimpleFilter addNotNullClause(String field) {
         whereClauses.add(String.format(" \"%s\" IS NOT NULL ", field));
+        return this;
     }
 
     @Override
-    public void addInClause(String field, Object... params) {
+    public SimpleFilter addInClause(String field, Object... params) {
         String str = String.format(" \"%s\" IN (", field);
         for(Object param: params) {
             str += " ?,";
@@ -55,25 +64,23 @@ public class SimpleFilter implements DbFilter {
         }
 
         whereClauses.add(str.substring(0, str.length()-1) + ") ");
+        return this;
     }
 
-    public void addAnyFieldLikeClause(String tableName, String like) {
+    public SimpleFilter addAnyFieldLikeClause(String tableName, String like) {
         whereClauses.add(" lower(concat_ws(', ', "+tableName+".*)) LIKE ? ");
         params.add("%"+like.toLowerCase()+"%");
-    }
-
-    public void addSimpleClause(String clause, Object... params) {
-        whereClauses.add(clause);
-        Collections.addAll(this.params, params);
+        return this;
     }
 
     @Override
-    public void setOrder(String field, boolean asc) {
+    public SimpleFilter setOrder(String field, boolean asc) {
         this.orderBy = String.format(" ORDER BY \"%s\" %s ", field, asc ? "ASC": "DESC");
+        return this;
     }
 
     @Override
-    public String getSQL() {
+    public String toSQL() {
         String str = getWhere() + getOrderBy();
         if (limit >= 0)
             str += " LIMIT "+limit+" ";
@@ -82,13 +89,20 @@ public class SimpleFilter implements DbFilter {
         return str;
     }
 
-    String getOrderBy() {
+    public void fillParams(PreparedStatement st) throws SQLException {
+        for (int i = 0; i < params.size(); i++) {
+            Object param = params.get(i);
+            st.setObject(i+1, param);
+        }
+    }
+
+    private String getOrderBy() {
         if (orderBy == null)
             return "";
         return orderBy;
     }
 
-    String getWhere() {
+    private String getWhere() {
         String str = " WHERE ";
         for (String clause: whereClauses) {
             str += clause + " AND ";

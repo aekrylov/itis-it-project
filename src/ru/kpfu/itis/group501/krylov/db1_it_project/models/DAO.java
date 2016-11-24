@@ -21,6 +21,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     protected static Connection connection = DB.getInstance().getConnection();
 
     private ResultSetMetaData rsmd;
+    private CustomStatementFactory statementFactory = new CustomStatementFactory(connection);
 
     private String tableName;
     private Class<T> entityClass;
@@ -31,7 +32,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     public DAO(Class<T> entityClass) {
-        this.tableName = DbHelpers.toDbName(entityClass.getSimpleName()) + "s";
+        this.tableName = DbHelpers.getTableName(entityClass);
         this.entityClass = entityClass;
     }
 
@@ -42,7 +43,7 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     protected DAO() {
         this.entityClass = getTypeParameter(this);
-        this.tableName = DbHelpers.toDbName(entityClass.getSimpleName()) + "s";;
+        this.tableName = DbHelpers.getTableName(entityClass);
     }
 
     // This magic works for subclasses only
@@ -53,39 +54,32 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     @Override
     public List<T> get() throws SQLException {
-        PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
-        ResultSet rs = st.executeQuery();
+        CustomStatement statement = statementFactory.selectAll(entityClass);
+        ResultSet rs = statement.toPS(connection).executeQuery();
 
-        return getList(rs);
+        return getList(rs, statement.getBounds());
     }
 
     @Override
     public T get(int id ) throws SQLException, NotFoundException {
-        PreparedStatement st = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE id = ?");
-        st.setInt(1, id);
+        CustomStatement statement = statementFactory.selectAll(entityClass);
+        statement.addFilter(new SimpleFilter().addSignClause(tableName+".id", "=", id));
 
+        PreparedStatement st = statement.toPS(connection);
         ResultSet rs = st.executeQuery();
         if(rs.next()) {
-            return ReflectiveHelpers.fromResultSet(rs, entityClass);
+            return ReflectiveHelpers.fromResultSet2(rs, entityClass, statement.getBounds());
         }
         throw new NotFoundException(entityClass.getSimpleName() + " not found");
     }
 
     @Override
     public List<T> get(SimpleFilter filter) throws SQLException {
-        String sql = "SELECT * FROM "+tableName+" ";
-
-        sql += filter.getSQL();
-        PreparedStatement st = connection.prepareStatement(sql);
-
-        List<Object> params = filter.getParams();
-        for (int i = 0; i < params.size(); i++) {
-            st.setObject(i+1, params.get(i));
-        }
+        CustomStatement statement = statementFactory.selectAll(entityClass).addFilter(filter);
+        PreparedStatement st = statement.toPS(connection);
 
         ResultSet rs = st.executeQuery();
-        return getList(rs);
-
+        return getList(rs, statement.getBounds());
     }
 
     @Override
@@ -112,13 +106,9 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     @Override
     public int count(SimpleFilter filter) throws SQLException {
-        PreparedStatement st = connection.prepareStatement("SELECT count(1) FROM "+ tableName +" "+filter.getSQL());
+        PreparedStatement st = connection.prepareStatement("SELECT count(1) FROM "+ tableName +" "+filter.toSQL());
 
-        List<Object> params = filter.getParams();
-        for (int i = 0; i < params.size(); i++) {
-            Object param = params.get(i);
-            st.setObject(i+1, param);
-        }
+        filter.fillParams(st);
 
         ResultSet rs = st.executeQuery();
         if(!rs.next()) {
@@ -135,7 +125,7 @@ public class DAO<T extends Entity> implements IDao<T> {
 
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
-            set += String.format(" \"%s\" = ?,", DbHelpers.toDbName(field.getName()));
+            set += DbHelpers.toColumnDef(field.getName());
             values[i] = ReflectiveHelpers.getField(field, instance);
             if(values[i] instanceof Entity) {
                 values[i] = ((Entity)values[i]).getId();
@@ -169,7 +159,7 @@ public class DAO<T extends Entity> implements IDao<T> {
             sqlTypes[i] = rsmd.getColumnType(i+1);
             values[i] = map.get(columnName);
 
-            set += String.format(" \"%s\" = ?,", columnName);
+            set += String.format(" %s = ?,", DbHelpers.toColumnDef(columnName));
         }
 
         PreparedStatement st = connection.prepareStatement(
@@ -182,10 +172,10 @@ public class DAO<T extends Entity> implements IDao<T> {
         return st.executeUpdate() > 0;
     }
 
-    protected List<T> getList(ResultSet rs) throws SQLException {
+    protected List<T> getList(ResultSet rs, ColumnBounds bounds) throws SQLException {
         List<T> list = new ArrayList<>(rs.getFetchSize());
         while (rs.next()) {
-            list.add(ReflectiveHelpers.fromResultSet(rs, entityClass));
+            list.add(ReflectiveHelpers.fromResultSet2(rs, entityClass, bounds));
         }
 
         return list;
@@ -222,12 +212,8 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     public static List<Object[]> getTableStatic(String tableName, SimpleFilter filter) throws SQLException {
         PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s %s",
-                tableName, filter.getSQL()));
-        List<Object> params = filter.getParams();
-        for (int i = 0; i < params.size(); i++) {
-            Object value = params.get(i);
-            st.setObject(i + 1, value);
-        }
+                tableName, filter.toSQL()));
+        filter.fillParams(st);
 
         ResultSet rs = st.executeQuery();
         return getTableStatic(tableName, rs);
@@ -339,7 +325,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     protected static ResultSetMetaData getTableMetaData(String tableName) throws SQLException {
-        return connection.createStatement().executeQuery("SELECT * FROM "+tableName+" WHERE FALSE").getMetaData();
+        return connection.createStatement().executeQuery("SELECT * FROM " + tableName + " WHERE FALSE").getMetaData();
     }
 
 }

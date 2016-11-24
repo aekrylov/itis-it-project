@@ -1,12 +1,18 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.misc;
 
+import ru.kpfu.itis.group501.krylov.db1_it_project.models.ColumnBounds;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.DAO;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Entity;
+import sun.reflect.Reflection;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -84,6 +90,73 @@ public abstract class ReflectiveHelpers {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /*
+    * TODO merge following two methods
+     */
+
+    /**
+     * Should be used when there can be several columns with the same name in the rs
+     */
+    public static <E extends Entity> E fromResultSet2(ResultSet rs, Class<E> entityClass, int colMin, int colMax)
+            throws SQLException {
+        Field [] fields = Entity.getDbFields(entityClass);
+
+        //get column indices
+        ResultSetMetaData rsmd = rs.getMetaData();
+        Map<String, Integer> cols = new HashMap<>();
+        for (int i = colMin; i <= colMax; i++) {
+            cols.put(rsmd.getColumnName(i), i);
+        }
+
+        E instance = null;
+        try {
+            instance = entityClass.newInstance();
+            for (Field field : fields) {
+                //todo nested joins?
+                String label = DbHelpers.toDbName(field.getName());
+                setField(field, instance, rs.getObject(cols.get(label)));
+            }
+
+        } catch (ReflectiveOperationException ignored) { }
+
+        return instance;
+
+    }
+
+    /**
+     * Should be used when there can be several columns with the same name in the rs
+     */
+    public static <E extends Entity> E fromResultSet2(ResultSet rs, Class<E> entityClass, ColumnBounds bounds)
+            throws SQLException {
+        Field [] fields = Entity.getDbFields(entityClass);
+
+        //get column indices
+        ResultSetMetaData rsmd = rs.getMetaData();
+        Map<String, Integer> cols = new HashMap<>();
+        for (int i = bounds.min(null); i <= bounds.max(null); i++) {
+            cols.put(rsmd.getColumnName(i), i);
+        }
+
+        E instance = null;
+        try {
+            instance = entityClass.newInstance();
+            for (Field field : fields) {
+                Class<?> type = field.getType();
+                if(Entity.class.isAssignableFrom(type)) {
+                    Class<? extends Entity> eType = (Class<? extends Entity>) type;
+                    Entity entity = fromResultSet2(rs, eType, bounds.min(field), bounds.max(field));
+                    setField(field, instance, entity);
+                } else {
+                    String label = DbHelpers.toDbName(field.getName());
+                    setField(field, instance, rs.getObject(cols.get(label)));
+                }
+            }
+
+        } catch (ReflectiveOperationException ignored) { }
+
+        return instance;
     }
 
     /**
