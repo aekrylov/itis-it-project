@@ -2,7 +2,6 @@ package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.NotFoundException;
-import ru.kpfu.itis.group501.krylov.db1_it_project.models.Posts;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
 
 import javax.servlet.ServletException;
@@ -32,7 +31,7 @@ public class ProfileServlet extends BaseServlet {
                 user = userService.get(Integer.parseInt(request.getParameter("id")));
             }
             Map<String, Object> dataModel = new HashMap<>();
-            dataModel.put("post_count", Posts.countPosts(user));
+            dataModel.put("post_count", postService.countPosts(user));
             dataModel.put("buy_sells", feedbackService.getRecentFeedbacks(user));
             dataModel.put("user", user);
 

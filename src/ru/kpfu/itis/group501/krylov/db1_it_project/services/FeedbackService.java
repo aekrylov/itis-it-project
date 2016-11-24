@@ -5,8 +5,7 @@ import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Feedback;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.NotFoundException;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.DAO;
-import ru.kpfu.itis.group501.krylov.db1_it_project.models.Feedbacks;
-import ru.kpfu.itis.group501.krylov.db1_it_project.models.SimpleFilter;
+import ru.kpfu.itis.group501.krylov.db1_it_project.models.misc.SimpleFilter;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.Users;
 
 import java.sql.SQLException;
@@ -24,22 +23,32 @@ public class FeedbackService {
     }
     private FeedbackService() {}
 
-    private Feedbacks feedbacks = new Feedbacks();
+    private DAO<Feedback> feedbacks = new DAO<>(Feedback.class);
     private DAO<BuySell> buySells = new DAO<>(BuySell.class);
     private Users users = new Users();
 
     public List<BuySell> getRecentSells(User seller) throws SQLException {
-        return feedbacks.getRecentSells(seller);
+        SimpleFilter filter = new SimpleFilter(buySells);
+        filter.addSignClause("seller", "=", seller.getId());
+        filter.setOrder("timestamp", false);
+
+        return buySells.get(filter);
     }
 
     public List<BuySell> getRecentBuys(User buyer) throws SQLException {
-        SimpleFilter filter = new SimpleFilter();
+        SimpleFilter filter = new SimpleFilter(buySells);
         filter.addSignClause("buyer", "=", buyer.getId());
         return buySells.get(filter);
     }
 
     public List<BuySell> getRecentFeedbacks(User seller) throws SQLException {
-        return feedbacks.getRecentSells(seller, true);
+        SimpleFilter filter = new SimpleFilter(buySells);
+        filter.addSignClause("seller", "=", seller.getId());
+        filter.addNotNullClause("feedback");
+
+        filter.setOrder("timestamp", false);
+
+        return buySells.get(filter);
     }
 
     public boolean leaveFeedback(int bsid, int score, String text) throws SQLException {

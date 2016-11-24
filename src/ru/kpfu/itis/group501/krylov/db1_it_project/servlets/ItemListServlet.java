@@ -3,7 +3,7 @@ package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.CommonHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Post;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ParameterMap;
-import ru.kpfu.itis.group501.krylov.db1_it_project.models.SimpleFilter;
+import ru.kpfu.itis.group501.krylov.db1_it_project.models.misc.SimpleFilter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

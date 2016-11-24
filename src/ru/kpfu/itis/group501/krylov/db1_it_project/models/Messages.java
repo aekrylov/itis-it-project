@@ -4,6 +4,7 @@ import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Conversation;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Message;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ReflectiveHelpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.models.misc.SimpleFilter;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

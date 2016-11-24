@@ -1,6 +1,4 @@
-package ru.kpfu.itis.group501.krylov.db1_it_project.models;
-
-import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Entity;
+package ru.kpfu.itis.group501.krylov.db1_it_project.models.misc;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

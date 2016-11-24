@@ -1,6 +1,8 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin;
 
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.BuySell;
+import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Feedback;
+import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Post;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Product;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.*;
 
@@ -20,8 +22,8 @@ public class Helpers {
         daoMap.put("users", new Users());
         daoMap.put("products", new DAO<>(Product.class));
         daoMap.put("messages", new Messages());
-        daoMap.put("feedbacks", new Feedbacks());
-        daoMap.put("posts", new Posts());
+        daoMap.put("feedbacks", new DAO<>(Feedback.class));
+        daoMap.put("posts", new DAO<>(Post.class));
         daoMap.put("buy_sells", new DAO<>(BuySell.class));
 
 

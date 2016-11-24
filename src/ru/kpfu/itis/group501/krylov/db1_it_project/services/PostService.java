@@ -3,8 +3,7 @@ package ru.kpfu.itis.group501.krylov.db1_it_project.services;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.*;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.NotFoundException;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.DAO;
-import ru.kpfu.itis.group501.krylov.db1_it_project.models.Posts;
-import ru.kpfu.itis.group501.krylov.db1_it_project.models.SimpleFilter;
+import ru.kpfu.itis.group501.krylov.db1_it_project.models.misc.SimpleFilter;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -21,7 +20,7 @@ public class PostService {
         return ourInstance;
     }
 
-    private Posts posts = new Posts();
+    private DAO<Post> posts = new DAO<>(Post.class);
     private DAO<Product> products = new DAO<>(Product.class);
     private DAO<BuySell> buySells = new DAO<>(BuySell.class);
 
@@ -58,6 +57,10 @@ public class PostService {
 
     public boolean deletePost(int post_id) throws SQLException {
         return posts.delete(post_id);
+    }
+
+    public int countPosts(User user) throws SQLException {
+        return posts.count(new SimpleFilter(posts).addSignClause("user", "=", user.getId()));
     }
 
 

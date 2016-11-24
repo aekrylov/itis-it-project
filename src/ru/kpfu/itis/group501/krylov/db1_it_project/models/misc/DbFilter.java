@@ -1,4 +1,4 @@
-package ru.kpfu.itis.group501.krylov.db1_it_project.models;
+package ru.kpfu.itis.group501.krylov.db1_it_project.models.misc;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)

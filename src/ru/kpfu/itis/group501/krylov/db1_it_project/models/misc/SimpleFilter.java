@@ -1,8 +1,8 @@
-package ru.kpfu.itis.group501.krylov.db1_it_project.models;
+package ru.kpfu.itis.group501.krylov.db1_it_project.models.misc;
 
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.DbHelpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.models.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -16,8 +16,16 @@ import java.util.List;
 public class SimpleFilter implements DbFilter<SimpleFilter> {
 
     private List<String> whereClauses = new LinkedList<>();
+    private List<String> columns = new LinkedList<>();
     private String orderBy;
     private List<Object> params = new LinkedList<>();
+    private String tableName;
+
+    public SimpleFilter() {
+    }
+    public SimpleFilter(DAO dao) {
+        this.tableName = dao.getTableName();
+    }
 
     private int limit = -1;
     private int offset = 0;
@@ -30,52 +38,64 @@ public class SimpleFilter implements DbFilter<SimpleFilter> {
         this.offset = offset;
     }
 
+    private String getColumnName(String field) {
+        if(field.contains("."))
+            return field;
+        if(tableName != null) {
+            return DbHelpers.toColumnDef(tableName) + "." + DbHelpers.toColumnDef(field);
+        }
+        return DbHelpers.toColumnDef(field);
+    }
+
+    public SimpleFilter addSimpleClause(String clause, Object... params) {
+        whereClauses.add(clause);
+        columns.add(null);
+        Collections.addAll(this.params, params);
+        return this;
+    }
+
+    private SimpleFilter addClause(String column, String template, Object... params) {
+        whereClauses.add(template);
+        columns.add(column);
+        Collections.addAll(this.params, params);
+        return this;
+    }
+
     @Override
     public SimpleFilter addLikeClause(String field, String pattern) {
         if(pattern == null)
             return this;
-        whereClauses.add(String.format(" LOWER(\"%s\") LIKE ?", field));
-        params.add("%"+pattern.toLowerCase()+"%");
-        return this;
+        return addClause(field, " LOWER(%s) LIKE ?", "%"+pattern.toLowerCase()+"%");
     }
 
     @Override
     public SimpleFilter addSignClause(String field, String sign, Object value) {
         if(value == null)
             return this;
-        String columnName = field.indexOf('.') != -1 ? field : DbHelpers.toColumnDef(field);
-        whereClauses.add(String.format(" %s %s ?", columnName, sign));
-        params.add(value);
-        return this;
+        return addClause(field, " %s "+sign+" ?", value);
     }
 
     @Override
     public SimpleFilter addNotNullClause(String field) {
-        whereClauses.add(String.format(" \"%s\" IS NOT NULL ", field));
-        return this;
+        return addClause(field, " %s IS NOT NULL ");
     }
 
     @Override
     public SimpleFilter addInClause(String field, Object... params) {
-        String str = String.format(" \"%s\" IN (", field);
-        for(Object param: params) {
+        String str = " %s IN (";
+        for(Object ignored : params) {
             str += " ?,";
-            this.params.add(param);
         }
-
-        whereClauses.add(str.substring(0, str.length()-1) + ") ");
-        return this;
+        return addClause(field, str.substring(0, str.length()-1) + ") ", params);
     }
 
     public SimpleFilter addAnyFieldLikeClause(String tableName, String like) {
-        whereClauses.add(" lower(concat_ws(', ', "+tableName+".*)) LIKE ? ");
-        params.add("%"+like.toLowerCase()+"%");
-        return this;
+        return addSimpleClause(" lower(concat_ws(', ', "+tableName+".*)) LIKE ? ", "%"+like.toLowerCase()+"%");
     }
 
     @Override
     public SimpleFilter setOrder(String field, boolean asc) {
-        this.orderBy = String.format(" ORDER BY \"%s\" %s ", field, asc ? "ASC": "DESC");
+        this.orderBy = String.format(" ORDER BY %s %s ", getColumnName(field), asc ? "ASC": "DESC");
         return this;
     }
 
@@ -87,6 +107,11 @@ public class SimpleFilter implements DbFilter<SimpleFilter> {
         if(offset > 0)
             str += " OFFSET "+offset+" ";
         return str;
+    }
+
+    public String toSQL(String tableName) {
+        this.tableName = tableName;
+        return toSQL();
     }
 
     public void fillParams(PreparedStatement st) throws SQLException {
@@ -104,8 +129,15 @@ public class SimpleFilter implements DbFilter<SimpleFilter> {
 
     private String getWhere() {
         String str = " WHERE ";
-        for (String clause: whereClauses) {
-            str += clause + " AND ";
+        for (int i = 0; i < whereClauses.size(); i++) {
+            String clause = whereClauses.get(i);
+            String column = columns.get(i);
+            if(column == null) {
+                str += clause;
+            } else {
+                str += String.format(clause, getColumnName(column));
+            }
+            str += " AND ";
         }
         //workaround AND at the end, dirty way
         str += " TRUE";

@@ -1,4 +1,4 @@
-package ru.kpfu.itis.group501.krylov.db1_it_project.models;
+package ru.kpfu.itis.group501.krylov.db1_it_project.models.misc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,10 +16,17 @@ public class CustomStatement {
     private String sql;
     private List<Object> params = new ArrayList<>();
     private ColumnBounds bounds;
+    private Map<String, String> aliases;
 
     public CustomStatement(String sql, ColumnBounds bounds) {
         this.sql = sql;
         this.bounds = bounds;
+    }
+
+    public CustomStatement(String sql, ColumnBounds bounds, Map<String, String> aliases) {
+        this.sql = sql;
+        this.bounds = bounds;
+        this.aliases = aliases;
     }
 
     public CustomStatement addFilter(SimpleFilter filter) {

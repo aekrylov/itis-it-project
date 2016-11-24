@@ -1,11 +1,10 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.misc;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.models.ColumnBounds;
+import com.sun.istack.internal.Nullable;
+import ru.kpfu.itis.group501.krylov.db1_it_project.models.misc.ColumnBounds;
 import ru.kpfu.itis.group501.krylov.db1_it_project.models.DAO;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Entity;
-import sun.reflect.Reflection;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -92,14 +91,52 @@ public abstract class ReflectiveHelpers {
         }
     }
 
-    /*
-    * TODO merge following two methods
+    /**
+     * Should be used when there can be several columns with the same name in the rs
+     * This method is used for auto joined queries
      */
+    public static <E extends Entity> E fromResultSet2(ResultSet rs, Class<E> entityClass, ColumnBounds bounds)
+            throws SQLException {
+        return fromResultSet2(rs, entityClass, bounds.min(null), bounds.max(null), bounds);
+    }
+
+    /**
+     * Converts str to desired type
+     * @param type desired type (int, double, chat and String supported)
+     * @param str string to convert
+     * @return converted Object, or null if type is not supported
+     */
+    public static Object parseString(Class type, String str) {
+        if(type.equals(String.class))
+            return str;
+
+        Object value = null;
+
+        if (double.class.isAssignableFrom(type)) {
+            value = Double.valueOf(str);
+        } else if(int.class.isAssignableFrom(type)) {
+            value = Integer.parseInt(str);
+        } else if(char.class.isAssignableFrom(type)) {
+            value = str.charAt(0);
+        }
+
+        return value;
+    }
+
 
     /**
      * Should be used when there can be several columns with the same name in the rs
+     * This method parses provided entity class fields from columns of the rs in the supplied range
+     * todo nested joins?
+     * @param rs ResultSet from which to get entity
+     * @param entityClass entity class
+     * @param colMin starting column, inclusive (1 is first)
+     * @param colMax ending column, inclusive
+     * @param bounds If null, then no nested calls will be made; otherwise, method will get nested entities from rs
+     *               instead of querying them separately
      */
-    public static <E extends Entity> E fromResultSet2(ResultSet rs, Class<E> entityClass, int colMin, int colMax)
+    private static <E extends Entity> E fromResultSet2(ResultSet rs, Class<E> entityClass, int colMin, int colMax,
+                                                       @Nullable ColumnBounds bounds)
             throws SQLException {
         Field [] fields = Entity.getDbFields(entityClass);
 
@@ -114,39 +151,10 @@ public abstract class ReflectiveHelpers {
         try {
             instance = entityClass.newInstance();
             for (Field field : fields) {
-                //todo nested joins?
-                String label = DbHelpers.toDbName(field.getName());
-                setField(field, instance, rs.getObject(cols.get(label)));
-            }
-
-        } catch (ReflectiveOperationException ignored) { }
-
-        return instance;
-
-    }
-
-    /**
-     * Should be used when there can be several columns with the same name in the rs
-     */
-    public static <E extends Entity> E fromResultSet2(ResultSet rs, Class<E> entityClass, ColumnBounds bounds)
-            throws SQLException {
-        Field [] fields = Entity.getDbFields(entityClass);
-
-        //get column indices
-        ResultSetMetaData rsmd = rs.getMetaData();
-        Map<String, Integer> cols = new HashMap<>();
-        for (int i = bounds.min(null); i <= bounds.max(null); i++) {
-            cols.put(rsmd.getColumnName(i), i);
-        }
-
-        E instance = null;
-        try {
-            instance = entityClass.newInstance();
-            for (Field field : fields) {
                 Class<?> type = field.getType();
-                if(Entity.class.isAssignableFrom(type)) {
+                if(bounds != null && Entity.class.isAssignableFrom(type)) {
                     Class<? extends Entity> eType = (Class<? extends Entity>) type;
-                    Entity entity = fromResultSet2(rs, eType, bounds.min(field), bounds.max(field));
+                    Entity entity = fromResultSet2(rs, eType, bounds.min(field), bounds.max(field), null);
                     setField(field, instance, entity);
                 } else {
                     String label = DbHelpers.toDbName(field.getName());
@@ -157,29 +165,6 @@ public abstract class ReflectiveHelpers {
         } catch (ReflectiveOperationException ignored) { }
 
         return instance;
-    }
 
-    /**
-     * Converts str to desired type
-     * @param type desired type (int, double, chat and String supported)
-     * @param str string to convert
-     * @return converted Object, or null if type is not supported
-     */
-    public static Object parseString(Class type, String str) {
-        if(type.equals(String.class))
-            return str;
-
-        Object value = null;
-        //todo entities
-
-        if (double.class.isAssignableFrom(type)) {
-            value = Double.valueOf(str);
-        } else if(int.class.isAssignableFrom(type)) {
-            value = Integer.parseInt(str);
-        } else if(char.class.isAssignableFrom(type)) {
-            value = str.charAt(0);
-        }
-
-        return value;
     }
 }

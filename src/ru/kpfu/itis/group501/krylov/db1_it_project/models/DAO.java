@@ -5,6 +5,7 @@ import ru.kpfu.itis.group501.krylov.db1_it_project.misc.DbHelpers;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.NotFoundException;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ParameterMap;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ReflectiveHelpers;
+import ru.kpfu.itis.group501.krylov.db1_it_project.models.misc.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -19,12 +20,16 @@ import java.util.*;
 public class DAO<T extends Entity> implements IDao<T> {
 
     protected static Connection connection = DB.getInstance().getConnection();
+    protected static CustomStatementFactory statementFactory = new CustomStatementFactory(connection);
 
     private ResultSetMetaData rsmd;
-    private CustomStatementFactory statementFactory = new CustomStatementFactory(connection);
 
     private String tableName;
     private Class<T> entityClass;
+
+    public String getTableName() {
+        return tableName;
+    }
 
     public DAO(String tableName, Class<T> entityClass) {
         this.tableName = tableName;
@@ -54,7 +59,7 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     @Override
     public List<T> get() throws SQLException {
-        CustomStatement statement = statementFactory.selectAll(entityClass);
+        CustomStatement statement = statementFactory.selectAll(entityClass, true);
         ResultSet rs = statement.toPS(connection).executeQuery();
 
         return getList(rs, statement.getBounds());
@@ -62,11 +67,15 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     @Override
     public T get(int id ) throws SQLException, NotFoundException {
-        CustomStatement statement = statementFactory.selectAll(entityClass);
-        statement.addFilter(new SimpleFilter().addSignClause(tableName+".id", "=", id));
+        CustomStatement statement = statementFactory.selectAll(entityClass, true);
+        statement.addFilter(new SimpleFilter(this).addSignClause("id", "=", id));
 
         PreparedStatement st = statement.toPS(connection);
         ResultSet rs = st.executeQuery();
+        return get(rs, statement);
+    }
+
+    protected T get(ResultSet rs, CustomStatement statement) throws NotFoundException, SQLException {
         if(rs.next()) {
             return ReflectiveHelpers.fromResultSet2(rs, entityClass, statement.getBounds());
         }
@@ -75,7 +84,7 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     @Override
     public List<T> get(SimpleFilter filter) throws SQLException {
-        CustomStatement statement = statementFactory.selectAll(entityClass).addFilter(filter);
+        CustomStatement statement = statementFactory.selectAll(entityClass, true).addFilter(filter);
         PreparedStatement st = statement.toPS(connection);
 
         ResultSet rs = st.executeQuery();
@@ -84,8 +93,8 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     @Override
     public Map<String, String> getMap(int id) throws SQLException {
-        PreparedStatement st = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE id = ?");
-        st.setInt(1, id);
+        PreparedStatement st = statementFactory.selectAll(tableName).addFilter(
+                new SimpleFilter(this).addSignClause("id", "=", id)).toPS(connection);
 
         ResultSet rs = st.executeQuery();
         if(rs.next()) {
@@ -204,16 +213,14 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     public static List<Object[]> getTableStatic(String tableName) throws SQLException {
-        PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s", tableName));
+        PreparedStatement st = statementFactory.selectAll(tableName).toPS(connection);
 
         ResultSet rs = st.executeQuery();
         return getTableStatic(tableName, rs);
     }
 
     public static List<Object[]> getTableStatic(String tableName, SimpleFilter filter) throws SQLException {
-        PreparedStatement st = connection.prepareStatement(String.format("SELECT * FROM %s %s",
-                tableName, filter.toSQL()));
-        filter.fillParams(st);
+        PreparedStatement st = statementFactory.selectAll(tableName).addFilter(filter).toPS(connection);
 
         ResultSet rs = st.executeQuery();
         return getTableStatic(tableName, rs);

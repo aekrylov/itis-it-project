@@ -3,6 +3,7 @@ package ru.kpfu.itis.group501.krylov.db1_it_project.models;
 import ru.kpfu.itis.group501.krylov.db1_it_project.entities.Entity;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.NotFoundException;
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.ParameterMap;
+import ru.kpfu.itis.group501.krylov.db1_it_project.models.misc.SimpleFilter;
 
 import java.sql.SQLException;
 import java.util.List;
