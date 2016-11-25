@@ -14,7 +14,6 @@ import java.util.Map;
 public class BaseServlet extends ru.kpfu.itis.group501.krylov.db1_it_project.servlets.BaseServlet {
 
     protected void addPathInfo(Map<String, String> map, HttpServletRequest req) {
-        String pathInfo = req.getPathInfo();
     }
 
 

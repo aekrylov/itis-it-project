@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -16,17 +15,17 @@ public class CustomStatement {
     private String sql;
     private List<Object> params = new ArrayList<>();
     private ColumnBounds bounds;
-    private Map<String, String> aliases;
+    private Connection connection;
 
-    public CustomStatement(String sql, ColumnBounds bounds) {
+    CustomStatement(String sql, ColumnBounds bounds, Connection connection) {
         this.sql = sql;
         this.bounds = bounds;
+        this.connection = connection;
     }
 
-    public CustomStatement(String sql, ColumnBounds bounds, Map<String, String> aliases) {
-        this.sql = sql;
-        this.bounds = bounds;
-        this.aliases = aliases;
+    public CustomStatement addParams(List<Object> add) {
+        params.addAll(add);
+        return this;
     }
 
     public CustomStatement addFilter(SimpleFilter filter) {
@@ -35,7 +34,7 @@ public class CustomStatement {
         return this;
     }
 
-    public PreparedStatement toPS(Connection connection) throws SQLException {
+    public PreparedStatement toPS() throws SQLException {
         PreparedStatement st = connection.prepareStatement(sql);
         for (int i = 0; i < params.size(); i++) {
             st.setObject(i+1, params.get(i));

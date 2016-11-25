@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,16 +72,30 @@ public class CustomStatementFactory {
                 }
             }
 
-            return new CustomStatement(sql, bounds);
+            return new CustomStatement(sql, bounds, connection);
         }
-        return new CustomStatement(sql, null);
+        return new CustomStatement(sql, null, connection);
     }
 
     public CustomStatement selectAll(String tableName) {
         tableName = DbHelpers.toDbName(tableName);
         String sql = "SELECT * FROM "+tableName+" ";
 
-        return new CustomStatement(sql, null);
+        return new CustomStatement(sql, null, connection);
+    }
+
+    public CustomStatement delete(String tableName, SimpleFilter filter) {
+        return new CustomStatement("DELETE FROM "+tableName+" ", null, connection).addFilter(filter);
+    }
+
+    public CustomStatement update(String tableName, Map<String, Object> set) {
+        String sql = "UPDATE "+tableName+" SET ";
+        List<Object> params = new ArrayList<>();
+        for(Map.Entry<String, Object> entry: set.entrySet()) {
+            sql += String.format(" %s = ?,", DbHelpers.toColumnDef(entry.getKey()));
+            params.add(entry.getValue());
+        }
+        return new CustomStatement(sql.substring(0, sql.length()-1), null, connection).addParams(params);
     }
 
 

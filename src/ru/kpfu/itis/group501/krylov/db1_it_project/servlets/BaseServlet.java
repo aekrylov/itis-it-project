@@ -1,9 +1,3 @@
-/**
- * By Anton Krylov (anthony.kryloff@gmail.com)
- * Date: 10/22/16 7:24 PM
- * 11-501
- * Task
- */
 package ru.kpfu.itis.group501.krylov.db1_it_project.servlets;
 
 import ru.kpfu.itis.group501.krylov.db1_it_project.misc.QueryString;

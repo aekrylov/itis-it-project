@@ -51,8 +51,8 @@ public class ItemListServlet extends BaseServlet {
             CommonHelpers.render(getServletContext(), req, resp, "product_list.ftl", dataModel);
 
         } catch (SQLException e) {
-            //todo
             e.printStackTrace();
+            resp.sendError(500);
         }
     }
 }

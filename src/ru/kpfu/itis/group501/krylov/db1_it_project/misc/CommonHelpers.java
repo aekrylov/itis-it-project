@@ -1,10 +1,10 @@
 package ru.kpfu.itis.group501.krylov.db1_it_project.misc;
 
-import ru.kpfu.itis.group501.krylov.db1_it_project.models.Messages;
-import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
-import ru.kpfu.itis.group501.krylov.db1_it_project.services.UserService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import ru.kpfu.itis.group501.krylov.db1_it_project.entities.User;
+import ru.kpfu.itis.group501.krylov.db1_it_project.services.ChatService;
+import ru.kpfu.itis.group501.krylov.db1_it_project.services.UserService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,10 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -38,7 +41,8 @@ public class CommonHelpers {
     }
 
     private static Path imageDir = Paths.get("/media/d/www/tmp/img/").toAbsolutePath();
-    private static Messages messages = new Messages();
+    private static ChatService chatService = ChatService.getInstance();
+    private static UserService userService = UserService.getInstance();
 
     public static void saveImage(Path name, InputStream stream) throws IOException {
         Path absolutePath = imageDir.resolve(name);
@@ -65,7 +69,7 @@ public class CommonHelpers {
             try {
                 User user = getCurrentUser(request);
                 dataModel.put("current_user", user);
-                dataModel.put("unread_count", messages.getUnreadCount(user));
+                dataModel.put("unread_count", chatService.getUnreadCount(user));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -88,7 +92,7 @@ public class CommonHelpers {
 
     public static User getCurrentUser(HttpServletRequest req) throws SQLException {
         try {
-            return UserService.getInstance().get((String) req.getSession().getAttribute("username"));
+            return userService.get((String) req.getSession().getAttribute("username"));
         } catch (NotFoundException e) {
             return null;
         }

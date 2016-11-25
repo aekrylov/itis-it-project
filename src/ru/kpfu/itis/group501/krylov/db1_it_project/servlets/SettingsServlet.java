@@ -37,7 +37,6 @@ public class SettingsServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPost(req, resp);
-        //todo process changes
         ParameterMap params = getParameterMap(req);
 
         String act =  params.get("act");

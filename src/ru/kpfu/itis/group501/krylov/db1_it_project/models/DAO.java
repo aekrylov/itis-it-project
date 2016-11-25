@@ -60,7 +60,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     @Override
     public List<T> get() throws SQLException {
         CustomStatement statement = statementFactory.selectAll(entityClass, true);
-        ResultSet rs = statement.toPS(connection).executeQuery();
+        ResultSet rs = statement.toPS().executeQuery();
 
         return getList(rs, statement.getBounds());
     }
@@ -70,7 +70,7 @@ public class DAO<T extends Entity> implements IDao<T> {
         CustomStatement statement = statementFactory.selectAll(entityClass, true);
         statement.addFilter(new SimpleFilter(this).addSignClause("id", "=", id));
 
-        PreparedStatement st = statement.toPS(connection);
+        PreparedStatement st = statement.toPS();
         ResultSet rs = st.executeQuery();
         return get(rs, statement);
     }
@@ -85,7 +85,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     @Override
     public List<T> get(SimpleFilter filter) throws SQLException {
         CustomStatement statement = statementFactory.selectAll(entityClass, true).addFilter(filter);
-        PreparedStatement st = statement.toPS(connection);
+        PreparedStatement st = statement.toPS();
 
         ResultSet rs = st.executeQuery();
         return getList(rs, statement.getBounds());
@@ -94,7 +94,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     @Override
     public Map<String, String> getMap(int id) throws SQLException {
         PreparedStatement st = statementFactory.selectAll(tableName).addFilter(
-                new SimpleFilter(this).addSignClause("id", "=", id)).toPS(connection);
+                new SimpleFilter(this).addSignClause("id", "=", id)).toPS();
 
         ResultSet rs = st.executeQuery();
         if(rs.next()) {
@@ -129,30 +129,19 @@ public class DAO<T extends Entity> implements IDao<T> {
     @Override
     public boolean update(T instance) throws SQLException {
         Field [] fields = Entity.getDbFieldsWithoutId(instance.getClass());
-        Object [] values = new Object[fields.length];
-        String set = "";
 
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-            set += DbHelpers.toColumnDef(field.getName());
-            values[i] = ReflectiveHelpers.getField(field, instance);
-            if(values[i] instanceof Entity) {
-                values[i] = ((Entity)values[i]).getId();
-            }
+        Map<String, Object> set = new HashMap<>();
+
+        for (Field field : fields) {
+            set.put(field.getName(), ReflectiveHelpers.getField(field, instance));
         }
 
-        PreparedStatement st = connection.prepareStatement("UPDATE "+tableName+" SET "+set.substring(0, set.length()-1)
-            +" WHERE id = ?");
-
-        int i;
-        for (i = 0; i < fields.length; i++) {
-            st.setObject(i+1, values[i]);
-        }
-        st.setInt(i+1, instance.getId());
-
+        PreparedStatement st = statementFactory.update(tableName, set)
+                .addFilter(new SimpleFilter().addSignClause("id", "=", instance.getId())).toPS();
         return st.executeUpdate() > 0;
     }
 
+    //TODO remove SQL
     @Override
     public boolean update(ParameterMap map) throws SQLException {
         //return update((T) Entity.getEntity(map, entityClass));
@@ -213,14 +202,14 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     public static List<Object[]> getTableStatic(String tableName) throws SQLException {
-        PreparedStatement st = statementFactory.selectAll(tableName).toPS(connection);
+        PreparedStatement st = statementFactory.selectAll(tableName).toPS();
 
         ResultSet rs = st.executeQuery();
         return getTableStatic(tableName, rs);
     }
 
     public static List<Object[]> getTableStatic(String tableName, SimpleFilter filter) throws SQLException {
-        PreparedStatement st = statementFactory.selectAll(tableName).addFilter(filter).toPS(connection);
+        PreparedStatement st = statementFactory.selectAll(tableName).addFilter(filter).toPS();
 
         ResultSet rs = st.executeQuery();
         return getTableStatic(tableName, rs);
@@ -245,6 +234,7 @@ public class DAO<T extends Entity> implements IDao<T> {
         return create(Entity.getEntity(map, entityClass));
     }
 
+    //TODO remove SQL
     @Override
     public boolean create(T instance) throws SQLException {
         Field [] fields = Entity.getDbFieldsWithoutId(entityClass);
@@ -253,12 +243,12 @@ public class DAO<T extends Entity> implements IDao<T> {
         String valueString = "(";
 
         //get table schema
-        ResultSet columns = connection
-                .createStatement()
-                .executeQuery("SELECT * FROM "+tableName+" WHERE FALSE ");
+        ResultSet columns = statementFactory.selectAll(tableName).addFilter(new SimpleFilter(this).setLimit(0))
+                .toPS().executeQuery();
         ResultSetMetaData metaData = getTableMetaData();
 
         Object[] values = new Object[fields.length];
+        int[] sqlTypes = new int[fields.length];
 
         //compose prepared statement
         for(int i = 0; i < fields.length; i++) {
@@ -267,10 +257,11 @@ public class DAO<T extends Entity> implements IDao<T> {
             values[i] = ReflectiveHelpers.getField(field, instance);
 
             int index = columns.findColumn(columnName);
-            String columnType = metaData.getColumnTypeName(index);
+
+            sqlTypes[i] = metaData.getColumnType(index);
 
             columnString = columnString + "\"" + columnName + "\",";
-            valueString = valueString + "?::"+columnType+",";
+            valueString = valueString + "?,";
         }
 
         //remove trailing commas
@@ -285,7 +276,7 @@ public class DAO<T extends Entity> implements IDao<T> {
             if(values[i] instanceof Entity) {
                 st.setInt(i+1, ((Entity)values[i]).getId());
             } else {
-                st.setObject(i+1, values[i]);
+                st.setObject(i+1, values[i], sqlTypes[i]);
             }
         }
 
@@ -307,8 +298,7 @@ public class DAO<T extends Entity> implements IDao<T> {
 
     @Override
     public boolean delete(int id) throws SQLException {
-        PreparedStatement st = connection.prepareStatement("DELETE FROM "+tableName+" WHERE id = ?");
-        st.setInt(1, id);
+        PreparedStatement st = statementFactory.delete(tableName, new SimpleFilter().addSignClause("id", "=", id)).toPS();
 
         return st.executeUpdate() > 0;
     }
@@ -332,7 +322,8 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     protected static ResultSetMetaData getTableMetaData(String tableName) throws SQLException {
-        return connection.createStatement().executeQuery("SELECT * FROM " + tableName + " WHERE FALSE").getMetaData();
+        PreparedStatement st = statementFactory.selectAll(tableName).addFilter(new SimpleFilter().setLimit(0)).toPS();
+        return st.getMetaData();
     }
 
 }

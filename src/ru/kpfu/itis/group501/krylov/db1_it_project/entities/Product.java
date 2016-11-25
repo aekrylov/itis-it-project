@@ -5,9 +5,6 @@ package ru.kpfu.itis.group501.krylov.db1_it_project.entities;
  * Date: 11/1/16 10:03 PM
  */
 public class Product extends Entity {
-    public enum ProductType {
-        DESKTOP, LAPTOP, AIO
-    }
 
     int id;
     String name;
@@ -22,7 +19,6 @@ public class Product extends Entity {
     String video_card;
     String hdd_name;
     int hdd_capacity;
-    //todo
     String type;
 
     public int getId() {

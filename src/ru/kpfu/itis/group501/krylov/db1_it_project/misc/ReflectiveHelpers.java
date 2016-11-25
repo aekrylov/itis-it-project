@@ -76,19 +76,13 @@ public abstract class ReflectiveHelpers {
     public static <E extends Entity> E fromResultSet(ResultSet rs, Class<E> entityClass) throws SQLException {
         Field [] fields = Entity.getDbFields(entityClass);
 
-        E instance;
-        try {
-            instance = entityClass.newInstance();
-            for (Field field : fields) {
-                String label = DbHelpers.toDbName(field.getName());
-                setField(field, instance, rs.getObject(label));
-            }
-            return instance;
-
-        } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
-            return null;
+        E instance = Entity.getInstance(entityClass);
+        for (Field field : fields) {
+            String label = DbHelpers.toDbName(field.getName());
+            setField(field, instance, rs.getObject(label));
         }
+        return instance;
+
     }
 
     /**
@@ -102,7 +96,7 @@ public abstract class ReflectiveHelpers {
 
     /**
      * Converts str to desired type
-     * @param type desired type (int, double, chat and String supported)
+     * @param type desired type (int, double, char and String supported)
      * @param str string to convert
      * @return converted Object, or null if type is not supported
      */
@@ -147,22 +141,18 @@ public abstract class ReflectiveHelpers {
             cols.put(rsmd.getColumnName(i), i);
         }
 
-        E instance = null;
-        try {
-            instance = entityClass.newInstance();
-            for (Field field : fields) {
-                Class<?> type = field.getType();
-                if(bounds != null && Entity.class.isAssignableFrom(type)) {
-                    Class<? extends Entity> eType = (Class<? extends Entity>) type;
-                    Entity entity = fromResultSet2(rs, eType, bounds.min(field), bounds.max(field), null);
-                    setField(field, instance, entity);
-                } else {
-                    String label = DbHelpers.toDbName(field.getName());
-                    setField(field, instance, rs.getObject(cols.get(label)));
-                }
+        E instance = Entity.getInstance(entityClass);
+        for (Field field : fields) {
+            Class<?> type = field.getType();
+            if(bounds != null && Entity.class.isAssignableFrom(type)) {
+                Class<? extends Entity> eType = (Class<? extends Entity>) type;
+                Entity entity = fromResultSet2(rs, eType, bounds.min(field), bounds.max(field), null);
+                setField(field, instance, entity);
+            } else {
+                String label = DbHelpers.toDbName(field.getName());
+                setField(field, instance, rs.getObject(cols.get(label)));
             }
-
-        } catch (ReflectiveOperationException ignored) { }
+        }
 
         return instance;
 

@@ -51,7 +51,6 @@ public class ProfileServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doPost(req, resp);
-        //todo process image
         Part image = req.getPart("image");
         try {
             User user = CommonHelpers.getCurrentUser(req);

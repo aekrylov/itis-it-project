@@ -30,12 +30,14 @@ public class SimpleFilter implements DbFilter<SimpleFilter> {
     private int limit = -1;
     private int offset = 0;
 
-    public void setLimit(int limit) {
+    public SimpleFilter setLimit(int limit) {
         this.limit = limit;
+        return this;
     }
 
-    public void setOffset(int offset) {
+    public SimpleFilter setOffset(int offset) {
         this.offset = offset;
+        return this;
     }
 
     private String getColumnName(String field) {
@@ -107,11 +109,6 @@ public class SimpleFilter implements DbFilter<SimpleFilter> {
         if(offset > 0)
             str += " OFFSET "+offset+" ";
         return str;
-    }
-
-    public String toSQL(String tableName) {
-        this.tableName = tableName;
-        return toSQL();
     }
 
     public void fillParams(PreparedStatement st) throws SQLException {

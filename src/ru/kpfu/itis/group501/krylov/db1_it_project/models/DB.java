@@ -1,9 +1,3 @@
-/**
- * By Anton Krylov (anthony.kryloff@gmail.com)
- * Date: 10/19/16 8:11 PM
- * 11-501
- * Task
- */
 package ru.kpfu.itis.group501.krylov.db1_it_project.models;
 
 import java.sql.Connection;

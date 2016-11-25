@@ -18,17 +18,6 @@ import java.util.List;
  */
 public class Messages extends DAO<Message> {
 
-    public List<Message> getConversation(User user1, User user2) throws SQLException {
-        int id1 = user1.getId();
-        int id2 = user2.getId();
-        SimpleFilter filter = new SimpleFilter();
-        filter.addInClause("from", id1, id2);
-        filter.addInClause("to", id1, id2);
-        filter.setOrder("timestamp", true);
-
-        return get(filter);
-    }
-
     public int markRead(User thisUser, User thatUser) throws SQLException {
         PreparedStatement st = connection.prepareStatement("" +
                 "UPDATE messages SET read = TRUE " +
@@ -40,7 +29,6 @@ public class Messages extends DAO<Message> {
     }
 
     public List<Conversation> getConversations(User user) throws SQLException {
-        //TODO use unread_count field instead?
         PreparedStatement st = connection.prepareStatement(
                 "SELECT messages.id mid, \"from\", \"to\", timestamp, \"read\", \"text\", users.*, " +
                         "(SELECT count(1) FROM messages m " +
@@ -72,13 +60,6 @@ public class Messages extends DAO<Message> {
         }
 
         return list;
-    }
-
-    public int getUnreadCount(User user) throws SQLException {
-        SimpleFilter filter = new SimpleFilter();
-        filter.addSignClause("to", "=", user.getId());
-        filter.addSignClause("read", "=", false);
-        return count(filter);
     }
 
 

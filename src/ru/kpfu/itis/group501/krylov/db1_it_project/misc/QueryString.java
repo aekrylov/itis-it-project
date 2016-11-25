@@ -1,9 +1,3 @@
-/**
- * By Anton Krylov (anthony.kryloff@gmail.com)
- * Date: 10/22/16 6:37 PM
- * 11-501
- * Task
- */
 package ru.kpfu.itis.group501.krylov.db1_it_project.misc;
 
 import java.net.URLEncoder;

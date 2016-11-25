@@ -20,23 +20,27 @@ import java.util.Map;
 public abstract class Entity {
     public abstract int getId();
 
+    public static <E extends Entity> E getInstance(Class<E> c) {
+        E instance = null;
+        try {
+            instance = c.newInstance();
+        } catch (ReflectiveOperationException ignored) {
+            //since all sub classes have () constructor by contract, this will never happen
+        }
+        return instance;
+    }
+
     public static <E extends Entity> E getEntity(Map<String, String> map, Class<E> c) throws SQLException {
         Field[] fields = getDbFields(c);
-        try {
-            E instance = c.newInstance();
-            for(Field field: fields) {
-                String key = DbHelpers.toDbName(field.getName());
-                if(map.containsKey(key) && !map.get(key).equals("")) {
-                    ReflectiveHelpers.setField(field, instance, ReflectiveHelpers.parseString(field.getType(), map.get(key)));
-                }
+        E instance = getInstance(c);
+        for(Field field: fields) {
+            String key = DbHelpers.toDbName(field.getName());
+            if(map.containsKey(key) && !map.get(key).equals("")) {
+                ReflectiveHelpers.setField(field, instance, ReflectiveHelpers.parseString(field.getType(), map.get(key)));
             }
-
-            return instance;
-        } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
         }
 
-        return null;
+        return instance;
     }
 
     public static Field[] getDbFields(Class<? extends Entity> c) {
