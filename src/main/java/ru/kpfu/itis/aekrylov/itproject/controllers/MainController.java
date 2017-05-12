@@ -1,4 +1,4 @@
-package ru.kpfu.itis.aekrylov.itproject.servlets;
+package ru.kpfu.itis.aekrylov.itproject.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

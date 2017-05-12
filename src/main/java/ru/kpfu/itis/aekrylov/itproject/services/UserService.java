@@ -1,11 +1,16 @@
 package ru.kpfu.itis.aekrylov.itproject.services;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
 import ru.kpfu.itis.aekrylov.itproject.misc.NotFoundException;
 import ru.kpfu.itis.aekrylov.itproject.misc.ParameterMap;
 import ru.kpfu.itis.aekrylov.itproject.misc.ValidationException;
 import ru.kpfu.itis.aekrylov.itproject.models.Users;
+import ru.kpfu.itis.aekrylov.itproject.security.UserPrincipal;
 
 import java.sql.SQLException;
 
@@ -13,7 +18,9 @@ import java.sql.SQLException;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/17/16 12:36 PM
  */
-public class UserService {
+
+@Service("userService")
+public class UserService implements UserDetailsService {
     private static UserService ourInstance = new UserService();
 
     public static UserService getInstance() {
@@ -21,9 +28,6 @@ public class UserService {
     }
 
     private Users users = new Users();
-
-    private UserService() {
-    }
 
     public boolean create(User user) throws SQLException {
         return users.create(user);
@@ -73,5 +77,17 @@ public class UserService {
     public void updateAvatar(User user, boolean hasAvatar) throws SQLException {
         user.setHas_avatar(hasAvatar);
         users.update(user);
+    }
+
+    @Override
+    public UserPrincipal loadUserByUsername(String username) throws UsernameNotFoundException {
+        try {
+            return new UserPrincipal(get(username));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NotFoundException e) {
+            throw new UsernameNotFoundException(e.getMessage());
+        }
+        return null;
     }
 }

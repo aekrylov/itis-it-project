@@ -1,5 +1,6 @@
 package ru.kpfu.itis.aekrylov.itproject;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -7,6 +8,8 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import ru.kpfu.itis.aekrylov.itproject.config.DispatcherConfig;
+import ru.kpfu.itis.aekrylov.itproject.security.WebSecurityConfig;
+import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
@@ -23,6 +26,7 @@ public class WebInitializer extends WebMvcConfigurerAdapter implements WebApplic
         AnnotationConfigWebApplicationContext rootContext =
                 new AnnotationConfigWebApplicationContext();
         rootContext.register(ApplicationConfig.class);
+        rootContext.register(WebSecurityConfig.class);
 
         // Manage the lifecycle of the root application context
         container.addListener(new ContextLoaderListener(rootContext));
@@ -44,4 +48,6 @@ public class WebInitializer extends WebMvcConfigurerAdapter implements WebApplic
         super.addResourceHandlers(registry);
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
     }
+
+
 }

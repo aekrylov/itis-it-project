@@ -3,13 +3,21 @@ package ru.kpfu.itis.aekrylov.itproject.entities;
 import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
 import ru.kpfu.itis.aekrylov.itproject.misc.ValidationException;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/22/16 7:05 PM
  * 11-501
  * Task 
  */
+@javax.persistence.Entity
 public class User extends Entity {
+
+    @Id
+    @GeneratedValue
     int id;
     String username;
     String password;

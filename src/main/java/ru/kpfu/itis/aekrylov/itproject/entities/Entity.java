@@ -3,6 +3,7 @@ package ru.kpfu.itis.aekrylov.itproject.entities;
 import ru.kpfu.itis.aekrylov.itproject.misc.DbHelpers;
 import ru.kpfu.itis.aekrylov.itproject.misc.ReflectiveHelpers;
 
+import javax.persistence.MappedSuperclass;
 import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import java.util.Map;
  * Every field of every subclass used in DAO should have a default constructor
  * and should represent a DB field with the same name
  */
+
+@MappedSuperclass
 public abstract class Entity {
     public abstract int getId();
 

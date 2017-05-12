@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
  */
 
 @Configuration
-@ComponentScan(basePackageClasses = {ru.kpfu.itis.aekrylov.itproject.servlets.BaseServlet.class})
+@ComponentScan(basePackageClasses = {ru.kpfu.itis.aekrylov.itproject.controllers.MainController.class})
 public class DispatcherConfig {
 
     @Bean
