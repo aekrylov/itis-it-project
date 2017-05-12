@@ -21,7 +21,7 @@ public class ChatListServlet extends BaseServlet {
 
         //TODO pagination
         try {
-            List<Conversation> conversations = chatService.getConversations(CommonHelpers.getCurrentUser(request));
+            List<Conversation> conversations = chatService.getConversations(CommonHelpers.getCurrentUser());
             Map<String, Object> dataModel = new HashMap<>();
 
             dataModel.put("conversations", conversations);

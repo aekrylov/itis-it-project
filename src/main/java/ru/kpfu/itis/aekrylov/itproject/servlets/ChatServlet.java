@@ -29,7 +29,7 @@ public class ChatServlet extends BaseServlet {
         int to = Integer.parseInt(request.getParameter("to"));
 
         try {
-            chatService.sendMessage(CommonHelpers.getCurrentUser(request), to, text);
+            chatService.sendMessage(CommonHelpers.getCurrentUser(), to, text);
             Map<String, String> params = new HashMap<>();
             params.put("uid", String.valueOf(to));
             redirect(request, response, params);
@@ -40,7 +40,7 @@ public class ChatServlet extends BaseServlet {
         int uid = Integer.parseInt(request.getParameter("uid"));
 
         try {
-            User thisUser = CommonHelpers.getCurrentUser(request);
+            User thisUser = CommonHelpers.getCurrentUser();
             User thatUser = userService.get(uid);
 
             List<Message> messages = chatService.getConversation(thisUser, thatUser);
@@ -54,8 +54,10 @@ public class ChatServlet extends BaseServlet {
             this.messages.markRead(thisUser, thatUser);
         } catch (SQLException e) {
             e.printStackTrace();
+/*
         } catch (NotFoundException e) {
             response.sendError(404);
+*/
         }
     }
 }

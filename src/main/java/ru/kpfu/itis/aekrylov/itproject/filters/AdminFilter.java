@@ -26,7 +26,7 @@ public class AdminFilter implements Filter {
 
         User user;
         try {
-            user = CommonHelpers.getCurrentUser(request);
+            user = CommonHelpers.getCurrentUser();
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendRedirect("/login");

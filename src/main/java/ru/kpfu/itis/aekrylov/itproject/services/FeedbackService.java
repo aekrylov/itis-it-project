@@ -1,5 +1,6 @@
 package ru.kpfu.itis.aekrylov.itproject.services;
 
+import org.springframework.stereotype.Service;
 import ru.kpfu.itis.aekrylov.itproject.entities.BuySell;
 import ru.kpfu.itis.aekrylov.itproject.entities.Feedback;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
@@ -15,13 +16,13 @@ import java.util.List;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/18/16 12:33 AM
  */
+@Service
 public class FeedbackService {
 
     private static FeedbackService instance = new FeedbackService();
     public static FeedbackService getInstance() {
         return instance;
     }
-    private FeedbackService() {}
 
     private DAO<Feedback> feedbacks = new DAO<>(Feedback.class);
     private DAO<BuySell> buySells = new DAO<>(BuySell.class);

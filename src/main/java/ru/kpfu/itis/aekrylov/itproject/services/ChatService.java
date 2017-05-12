@@ -1,5 +1,6 @@
 package ru.kpfu.itis.aekrylov.itproject.services;
 
+import org.springframework.stereotype.Service;
 import ru.kpfu.itis.aekrylov.itproject.entities.Conversation;
 import ru.kpfu.itis.aekrylov.itproject.entities.Message;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
@@ -17,10 +18,10 @@ import java.util.List;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/17/16 6:17 PM
  */
+@Service
 public class ChatService {
 
     private static ChatService instance = new ChatService();
-    private ChatService() {}
     public static ChatService getInstance() {
         return instance;
     }

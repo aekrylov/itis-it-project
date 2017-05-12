@@ -1,5 +1,7 @@
 package ru.kpfu.itis.aekrylov.itproject.servlets;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.kpfu.itis.aekrylov.itproject.misc.QueryString;
 import ru.kpfu.itis.aekrylov.itproject.misc.ParameterMap;
 import ru.kpfu.itis.aekrylov.itproject.services.ChatService;
@@ -20,12 +22,18 @@ import java.util.Map;
  * 11-501
  * Task 
  */
+
+@Component
 public abstract class BaseServlet extends HttpServlet {
 
-    protected UserService userService = UserService.getInstance();
-    protected ChatService chatService = ChatService.getInstance();
-    protected PostService postService = PostService.getInstance();
-    protected FeedbackService feedbackService = FeedbackService.getInstance();
+    @Autowired
+    protected UserService userService;
+    @Autowired
+    protected ChatService chatService;
+    @Autowired
+    protected PostService postService;
+    @Autowired
+    protected FeedbackService feedbackService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

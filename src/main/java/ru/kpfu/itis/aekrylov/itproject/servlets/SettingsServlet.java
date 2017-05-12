@@ -24,7 +24,7 @@ public class SettingsServlet extends BaseServlet {
         super.doGet(req, resp);
         //display settings
         try {
-            User user = CommonHelpers.getCurrentUser(req);
+            User user = CommonHelpers.getCurrentUser();
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("user", user);
 
@@ -43,7 +43,7 @@ public class SettingsServlet extends BaseServlet {
 
         Map<String, String> pass = new HashMap<>();
         try {
-            User user = CommonHelpers.getCurrentUser(req);
+            User user = CommonHelpers.getCurrentUser();
             //user is never null due to web app structure
             assert user != null;
             switch (act) {

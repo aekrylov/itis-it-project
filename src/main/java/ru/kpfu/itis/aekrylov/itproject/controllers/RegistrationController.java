@@ -1,17 +1,26 @@
 package ru.kpfu.itis.aekrylov.itproject.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.kpfu.itis.aekrylov.itproject.entities.User;
+import ru.kpfu.itis.aekrylov.itproject.forms.RegistrationForm;
 import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
 import ru.kpfu.itis.aekrylov.itproject.misc.ParameterMap;
 import ru.kpfu.itis.aekrylov.itproject.misc.ValidationException;
+import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 import ru.kpfu.itis.aekrylov.itproject.servlets.BaseServlet;
 
+import javax.enterprise.inject.Model;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -21,54 +30,51 @@ import java.util.Map;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 5/12/17 12:40 PM
  */
-//@Controller("/register")
+@Controller("/register")
 public class RegistrationController extends BaseServlet {
+    
+    private UserService userService;
 
-/*    @PostMapping
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, ModelMap params) throws ServletException, IOException {
-        super.doPost(request, response);
+    @Autowired
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
+    }
 
-        params.putAll(getParameterMap(request));
-        try {
-            if(!params.get("password").equals(params.get("password_repeat"))) {
-                params.put("error", "password_match");
-            }
-            else if(userService.exists(params.get("username"))) {
-                params.put("error", "username_taken");
-            }
-            else if(userService.create(params)) {
-                Map<String, String> pass = new HashMap<>();
-                pass.put("success", "1");
-                pass.put("username", params.get("username"));
-                redirect(request, response, pass);
-                return;
-            }
-            redirect(request, response, params);
-        } catch (ValidationException e) {
+    @PostMapping
+    protected String doPost(@ModelAttribute @Valid RegistrationForm form, BindingResult result,
+                            ModelMap params) throws ServletException, IOException {
+        if(result.hasErrors()) {
+            FieldError e = result.getFieldError();
             params.put("error", "validation");
-            params.put("cause", e.getMessage());
+            params.put("cause", e.getDefaultMessage());
             params.put("field", e.getField());
-            redirect(request, response, params);
-            return;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            params.put("error", "db");
-            redirect(request, response, params);
-            return;
+            return "redirect:/register";
         }
-    }*/
+
+        //todo move to validator
+        if(!form.getPassword().equals(form.getPassword_repeat())) {
+            params.put("error", "password_match");
+            return "redirect:/register";
+        }
+        else if(userService.exists(form.getUsername())) {
+            params.put("error", "username_taken");
+            return "redirect:/register";
+        }
+
+        User user = new User();
+        user.setEmail(form.getEmail());
+        user.setPassword(form.getPassword());
+        user.setName(form.getName());
+        user.setUsername(form.getUsername());
+
+        userService.create(user);
+        return "redirect:/";
+    }
 
     @GetMapping
-    protected String doGet(HttpServletRequest request, ModelMap dataModel) throws ServletException, IOException {
-
-        boolean success = request.getParameter("success") != null;
-        if(success) {
-            return "redirect:/";
-        }
-
-        String errorCode = request.getParameter("error");
+    protected String doGet(ModelMap dataModel) throws ServletException, IOException {
+        String errorCode = (String) dataModel.get("error");
         if(errorCode != null) {
-            dataModel.putAll(getParameterMap(request));
             dataModel.put("error", CommonHelpers.getErrorMessage(errorCode));
         }
         return "registration";

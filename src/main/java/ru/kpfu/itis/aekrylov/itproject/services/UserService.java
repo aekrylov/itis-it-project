@@ -1,5 +1,6 @@
 package ru.kpfu.itis.aekrylov.itproject.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +11,7 @@ import ru.kpfu.itis.aekrylov.itproject.misc.NotFoundException;
 import ru.kpfu.itis.aekrylov.itproject.misc.ParameterMap;
 import ru.kpfu.itis.aekrylov.itproject.misc.ValidationException;
 import ru.kpfu.itis.aekrylov.itproject.models.Users;
+import ru.kpfu.itis.aekrylov.itproject.repositories.UserRepository;
 import ru.kpfu.itis.aekrylov.itproject.security.UserPrincipal;
 
 import java.sql.SQLException;
@@ -21,62 +23,43 @@ import java.sql.SQLException;
 
 @Service("userService")
 public class UserService implements UserDetailsService {
-    private static UserService ourInstance = new UserService();
 
-    public static UserService getInstance() {
-        return ourInstance;
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    private Users users = new Users();
-
-    public boolean create(User user) throws SQLException {
-        return users.create(user);
-    }
-
-    public boolean create(ParameterMap map) throws ValidationException, SQLException {
-        User user = new User(map.get("username"), map.get("password"), map.get("name"), map.get("email"));
-        user.validate(true);
-        return users.create(user);
-    }
-
-    public boolean checkCredentials(String username, String password) throws SQLException {
-        String passwordHash = CommonHelpers.encrypt(password);
-
-        User user = null;
-        try {
-            user = users.get(username);
-        } catch (NotFoundException ignored) { }
-        return user != null && user.getPassword().equals(passwordHash);
+    public boolean create(User user) {
+        userRepository.save(user);
+        return true;
     }
 
     public User get(String username) throws SQLException, NotFoundException {
-        return users.get(username);
+        return userRepository.findByUsername(username);
     }
 
-    public User get(int id) throws SQLException, NotFoundException {
-        return users.get(id);
+    public User get(int id) {
+        return userRepository.findOne(id);
     }
 
-    public boolean exists(String username) throws SQLException {
-        try{
-            return users.get(username) != null;
-        } catch (NotFoundException e) {
-            return false;
-        }
+    public boolean exists(String username) {
+        return userRepository.findByUsername(username) != null;
     }
 
-    public boolean updateInfo(User user) throws SQLException {
-        return users.update(user);
+    public void updateInfo(User user) {
+        userRepository.save(user);
     }
 
-    public boolean updatePassword(User user, String newPassword) throws SQLException {
+    public void updatePassword(User user, String newPassword) throws SQLException {
         user.setPassword(CommonHelpers.encrypt(newPassword));
-        return users.update(user);
+        userRepository.save(user);
     }
 
     public void updateAvatar(User user, boolean hasAvatar) throws SQLException {
         user.setHas_avatar(hasAvatar);
-        users.update(user);
+        userRepository.save(user);
     }
 
     @Override

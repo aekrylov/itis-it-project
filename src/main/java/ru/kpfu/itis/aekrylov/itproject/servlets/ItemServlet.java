@@ -30,7 +30,7 @@ public class ItemServlet extends BaseServlet {
         try {
             Post post = postService.getPost(id);
             Map<String, Object> dataModel = new HashMap<>();
-            dataModel.put("isSeller", post.getUser().getId() == CommonHelpers.getCurrentUser(req).getId());
+            dataModel.put("isSeller", post.getUser().getId() == CommonHelpers.getCurrentUser().getId());
             dataModel.put("post", post);
             dataModel.put("product", post.getProduct());
 
@@ -55,7 +55,7 @@ public class ItemServlet extends BaseServlet {
             switch (action) {
                 case "sell":
                     User buyer = userService.get(map.get("buyer"));
-                    User seller = CommonHelpers.getCurrentUser(req);
+                    User seller = CommonHelpers.getCurrentUser();
 
                     postService.sellProduct(seller, buyer, postId);
                     resp.sendRedirect("/items");

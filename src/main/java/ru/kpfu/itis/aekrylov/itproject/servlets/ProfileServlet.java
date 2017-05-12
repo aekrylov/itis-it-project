@@ -26,7 +26,7 @@ public class ProfileServlet extends BaseServlet {
         try {
             User user;
             if(request.getParameter("id") == null) {
-                user = CommonHelpers.getCurrentUser(request);
+                user = CommonHelpers.getCurrentUser();
             } else {
                 user = userService.get(Integer.parseInt(request.getParameter("id")));
             }
@@ -43,8 +43,10 @@ public class ProfileServlet extends BaseServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(500);
+/*
         } catch (NotFoundException e) {
             response.sendError(404);
+*/
         }
     }
 
@@ -53,7 +55,7 @@ public class ProfileServlet extends BaseServlet {
         //super.doPost(req, resp);
         Part image = req.getPart("image");
         try {
-            User user = CommonHelpers.getCurrentUser(req);
+            User user = CommonHelpers.getCurrentUser();
             CommonHelpers.saveImage(Paths.get("users", String.valueOf(user.getId())),
                     image.getInputStream());
             user.setHas_avatar(true);

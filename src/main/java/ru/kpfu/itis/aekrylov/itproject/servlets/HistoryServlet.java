@@ -22,7 +22,7 @@ public class HistoryServlet extends BaseServlet {
         super.doGet(req, resp);
         //get recent buy_sells
         try {
-            User user = CommonHelpers.getCurrentUser(req);
+            User user = CommonHelpers.getCurrentUser();
 
             Map<String, Object> dataModel = new HashMap<>();
             dataModel.put("sells", feedbackService.getRecentSells(user));

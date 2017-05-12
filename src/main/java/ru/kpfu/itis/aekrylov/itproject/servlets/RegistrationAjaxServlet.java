@@ -19,11 +19,7 @@ public class RegistrationAjaxServlet extends BaseServlet {
         super.doGet(req, resp);
         JSONObject object = new JSONObject();
         String username = req.getParameter("username");
-        try {
-            object.put("available", !userService.exists(username));
-            resp.getWriter().write(object.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        object.put("available", !userService.exists(username));
+        resp.getWriter().write(object.toString());
     }
 }

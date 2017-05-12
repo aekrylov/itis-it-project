@@ -39,7 +39,7 @@ public class ItemAddServlet extends BaseServlet {
         try {
             Product product = postService.toProduct(map);
             postService.createProduct(product);
-            Post post = new Post(product, CommonHelpers.getCurrentUser(req));
+            Post post = new Post(product, CommonHelpers.getCurrentUser());
             postService.createPost(post);
 
             Part image = req.getPart("image");

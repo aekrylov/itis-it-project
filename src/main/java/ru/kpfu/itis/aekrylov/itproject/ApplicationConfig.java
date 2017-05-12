@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -15,6 +17,7 @@ import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
+import java.util.Properties;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -23,13 +26,15 @@ import javax.transaction.TransactionManager;
 
 @Configuration
 @PropertySource(value = "classpath:db.properties")
+@PropertySource(value = "classpath:application.properties")
 @ComponentScan(basePackageClasses = {UserService.class})
+@EnableJpaRepositories
 public class ApplicationConfig {
 
-    private final Environment env;
+    private final ConfigurableEnvironment env;
 
     @Autowired
-    public ApplicationConfig(Environment env) {
+    public ApplicationConfig(ConfigurableEnvironment env) {
         this.env = env;
     }
 
@@ -44,18 +49,31 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public EntityManagerFactory entityManagerFactory(DataSource dataSource) {
+    public EntityManagerFactory entityManagerFactory(DataSource dataSource, Properties allProperties) {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource);
         factoryBean.setPackagesToScan("ru.kpfu.itis.aekrylov.itproject.entities");
         factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        factoryBean.setJpaProperties(allProperties);
+        
         factoryBean.afterPropertiesSet();
-
         return factoryBean.getObject();
     }
 
     @Bean
     public JpaTransactionManager transactionManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
+    }
+
+    @Bean
+    public Properties allProperties() {
+        Properties properties = new Properties();
+        for(org.springframework.core.env.PropertySource<?> source: env.getPropertySources()) {
+            if(source instanceof MapPropertySource) {
+                properties.putAll(((MapPropertySource) source).getSource());
+            }
+        }
+
+        return properties;
     }
 }

@@ -2,7 +2,9 @@ package ru.kpfu.itis.aekrylov.itproject.misc;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
+import ru.kpfu.itis.aekrylov.itproject.security.UserPrincipal;
 import ru.kpfu.itis.aekrylov.itproject.services.ChatService;
 import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 
@@ -42,7 +44,6 @@ public class CommonHelpers {
 
     private static Path imageDir = Paths.get("/media/d/www/tmp/img/").toAbsolutePath();
     private static ChatService chatService = ChatService.getInstance();
-    private static UserService userService = UserService.getInstance();
 
     public static void saveImage(Path name, InputStream stream) throws IOException {
         Path absolutePath = imageDir.resolve(name);
@@ -67,7 +68,7 @@ public class CommonHelpers {
                 dataModel = new HashMap<>();
 
             try {
-                User user = getCurrentUser(request);
+                User user = getCurrentUser();
                 dataModel.put("current_user", user);
                 dataModel.put("unread_count", chatService.getUnreadCount(user));
             } catch (SQLException e) {
@@ -90,12 +91,8 @@ public class CommonHelpers {
 
     }
 
-    public static User getCurrentUser(HttpServletRequest req) throws SQLException {
-        try {
-            return userService.get((String) req.getSession().getAttribute("username"));
-        } catch (NotFoundException e) {
-            return null;
-        }
+    public static User getCurrentUser() throws SQLException {
+        return ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
     }
 
     public static String encrypt(String str) {

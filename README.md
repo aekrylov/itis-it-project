@@ -2,7 +2,7 @@
 [org.json]: https://mvnrepository.com/artifact/org.json/json/20160810
 [jdbc]: https://jdbc.postgresql.org/download.html
 
-#IT Project 
+# IT Project 
 
 Used computers marketplace
 
@@ -13,7 +13,7 @@ Used computers marketplace
 - [x] Reviews
 - [x] Messages
 
-##Usage
+## Usage
 1. Install required libs: 
     - [Freemarker][freemarker] v. >= 2.3.25
     - [org.json]

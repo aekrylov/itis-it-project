@@ -5,6 +5,7 @@ import ru.kpfu.itis.aekrylov.itproject.misc.ValidationException;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
@@ -14,6 +15,7 @@ import javax.persistence.Transient;
  * Task 
  */
 @javax.persistence.Entity
+@Table(name = "users")
 public class User extends Entity {
 
     @Id
@@ -99,7 +101,7 @@ public class User extends Entity {
         this.email = email;
     }
 
-    public boolean validate(boolean checkPassword) throws ValidationException {
+    public void validate(boolean checkPassword) throws ValidationException {
         if(!username.matches("^[a-zA-Z0-9]{3,}$"))
             throw new ValidationException("invalid", "username");
 
@@ -113,7 +115,6 @@ public class User extends Entity {
             throw new ValidationException("invalid", "email");
         }
 
-        return true;
     }
 
 }
