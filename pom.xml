@@ -6,6 +6,12 @@
     <version>2.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <properties>
+        <spring.version>4.3.7.RELEASE</spring.version>
+        <spring.security.version>4.2.2.RELEASE</spring.security.version>
+        <hibernate.version>5.2.9.Final</hibernate.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -28,10 +34,16 @@
             <version>20160810</version>
         </dependency>
 
+        <!-- SPRING -->
         <dependency>
-            <groupId>com.sun.istack</groupId>
-            <artifactId>maven-istack-commons-plugin</artifactId>
-            <version>2.11</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
     </dependencies>
@@ -71,12 +83,6 @@
                     <contextReloadable>true</contextReloadable>
                     <update>true</update>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>com.sun.istack</groupId>
-                <artifactId>maven-istack-commons-plugin</artifactId>
-                <version>2.11</version>
             </plugin>
 
         </plugins>
