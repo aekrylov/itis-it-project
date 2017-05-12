@@ -1,5 +1,9 @@
 package ru.kpfu.itis.aekrylov.itproject.entities;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -7,9 +11,17 @@ import java.time.Instant;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/24/16 9:26 PM
  */
+@javax.persistence.Entity
+@Table(name = "feedbacks")
 public class Feedback extends Entity {
 
+    @Id
+            @GeneratedValue
     int id;
+
+    @OneToOne(mappedBy = "feedback")
+    private BuySell buySell;
+
     String comment;
     Timestamp date;
     int score;

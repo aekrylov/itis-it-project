@@ -43,7 +43,6 @@ public class CommonHelpers {
     }
 
     private static Path imageDir = Paths.get("/media/d/www/tmp/img/").toAbsolutePath();
-    private static ChatService chatService = ChatService.getInstance();
 
     public static void saveImage(Path name, InputStream stream) throws IOException {
         Path absolutePath = imageDir.resolve(name);
@@ -63,19 +62,6 @@ public class CommonHelpers {
                               String templateName, Map<String, Object> dataModel)
             throws IOException {
 
-        if(request.getSession().getAttribute("username") != null) {
-            if(dataModel == null)
-                dataModel = new HashMap<>();
-
-            try {
-                User user = getCurrentUser();
-                dataModel.put("current_user", user);
-                dataModel.put("unread_count", chatService.getUnreadCount(user));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
         render(sc, response, templateName, dataModel);
     }
 
@@ -91,8 +77,11 @@ public class CommonHelpers {
 
     }
 
-    public static User getCurrentUser() throws SQLException {
-        return ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+    public static User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(!(principal instanceof UserPrincipal))
+            return null;
+        return ((UserPrincipal) principal).getUser();
     }
 
     public static String encrypt(String str) {

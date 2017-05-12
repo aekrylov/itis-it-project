@@ -1,10 +1,13 @@
 package ru.kpfu.itis.aekrylov.itproject.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.aekrylov.itproject.entities.*;
 import ru.kpfu.itis.aekrylov.itproject.misc.NotFoundException;
-import ru.kpfu.itis.aekrylov.itproject.models.DAO;
 import ru.kpfu.itis.aekrylov.itproject.models.misc.SimpleFilter;
+import ru.kpfu.itis.aekrylov.itproject.repositories.BuySellRepository;
+import ru.kpfu.itis.aekrylov.itproject.repositories.PostRepository;
+import ru.kpfu.itis.aekrylov.itproject.repositories.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,50 +19,53 @@ import java.util.Map;
  */
 @Service
 public class PostService {
-    private static PostService ourInstance = new PostService();
+    private PostRepository postRepository;
+    private ProductRepository productRepository;
+    private BuySellRepository buySellRepository;
 
-    public static PostService getInstance() {
-        return ourInstance;
+    @Autowired
+    public PostService(PostRepository postRepository, ProductRepository productRepository, BuySellRepository buySellRepository) {
+        this.postRepository = postRepository;
+        this.productRepository = productRepository;
+        this.buySellRepository = buySellRepository;
     }
 
-    private DAO<Post> posts = new DAO<>(Post.class);
-    private DAO<Product> products = new DAO<>(Product.class);
-    private DAO<BuySell> buySells = new DAO<>(BuySell.class);
-
-    public boolean createPost(Post post) throws SQLException {
-        return posts.create(post);
+    public void createPost(Post post) {
+        postRepository.save(post);
     }
 
-    public boolean createProduct(Product product) throws SQLException {
-        return products.create(product);
+    public void createProduct(Product product) {
+        productRepository.save(product);
     }
     public Product toProduct(Map<String, String> map) throws SQLException {
         return Entity.getEntity(map, Product.class);
     }
 
-    public Post getPost(int id) throws SQLException, NotFoundException {
-        return posts.get(id);
+    public Post getPost(int id) throws SQLException, NotFoundException { //todo
+        return postRepository.findOne(id);
     }
 
-    public List<Post> getPosts(SimpleFilter filter) throws SQLException {
+    public List<Post> getPosts(SimpleFilter filter) throws SQLException {  //todo
         filter.setOrder("timestamp", false);
-        return posts.get(filter);
+        throw new RuntimeException("not implemented");
     }
 
-    public boolean sellProduct(User seller, User buyer, int post_id) throws SQLException, NotFoundException {
+    public void sellProduct(User seller, User buyer, int post_id) throws SQLException, NotFoundException {
         Post post = getPost(post_id);
         Product product = post.getProduct();
 
         BuySell bs = new BuySell(buyer, seller, product);
-        return buySells.create(bs) && posts.delete(post_id);
+        buySellRepository.save(bs);
+        postRepository.delete(post_id);
     }
 
     public boolean deletePost(int post_id) throws SQLException {
-        return posts.delete(post_id);
+        postRepository.delete(post_id);
+        return true;
     }
 
     public int countPosts(User user) throws SQLException {
-        return posts.count(new SimpleFilter(posts).addSignClause("user", "=", user.getId()));
+        return postRepository.countAllByUser(user);
     }
 
 

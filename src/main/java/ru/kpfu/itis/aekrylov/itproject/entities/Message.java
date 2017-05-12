@@ -1,14 +1,26 @@
 package ru.kpfu.itis.aekrylov.itproject.entities;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 10/25/16 9:06 PM
  */
+@javax.persistence.Entity
+@Table(name = "messages")
 public class Message extends Entity {
+    @Id
+            @GeneratedValue
     int id;
+
+    @ManyToOne
      User from;
+
+    @ManyToOne
      User to;
 
      String text;
@@ -58,5 +70,21 @@ public class Message extends Entity {
     }
     public void setRead(boolean read) {
         this.read = read;
+    }
+
+    public void setFrom(User from) {
+        this.from = from;
+    }
+
+    public void setTo(User to) {
+        this.to = to;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }

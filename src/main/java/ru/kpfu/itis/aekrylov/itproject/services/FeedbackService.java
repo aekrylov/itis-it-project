@@ -1,13 +1,13 @@
 package ru.kpfu.itis.aekrylov.itproject.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.aekrylov.itproject.entities.BuySell;
 import ru.kpfu.itis.aekrylov.itproject.entities.Feedback;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
-import ru.kpfu.itis.aekrylov.itproject.misc.NotFoundException;
-import ru.kpfu.itis.aekrylov.itproject.models.DAO;
-import ru.kpfu.itis.aekrylov.itproject.models.misc.SimpleFilter;
-import ru.kpfu.itis.aekrylov.itproject.models.Users;
+import ru.kpfu.itis.aekrylov.itproject.repositories.BuySellRepository;
+import ru.kpfu.itis.aekrylov.itproject.repositories.FeedbackRepository;
+import ru.kpfu.itis.aekrylov.itproject.repositories.UserRepository;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -19,46 +19,32 @@ import java.util.List;
 @Service
 public class FeedbackService {
 
-    private static FeedbackService instance = new FeedbackService();
-    public static FeedbackService getInstance() {
-        return instance;
+    private FeedbackRepository feedbackRepository;
+    private BuySellRepository buySellRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    public FeedbackService(FeedbackRepository feedbackRepository, BuySellRepository buySellRepository, UserRepository userRepository) {
+        this.feedbackRepository = feedbackRepository;
+        this.buySellRepository = buySellRepository;
+        this.userRepository = userRepository;
     }
 
-    private DAO<Feedback> feedbacks = new DAO<>(Feedback.class);
-    private DAO<BuySell> buySells = new DAO<>(BuySell.class);
-    private Users users = new Users();
-
     public List<BuySell> getRecentSells(User seller) throws SQLException {
-        SimpleFilter filter = new SimpleFilter(buySells);
-        filter.addSignClause("seller", "=", seller.getId());
-        filter.setOrder("timestamp", false);
-
-        return buySells.get(filter);
+        return buySellRepository.findAllBySeller(seller);
     }
 
     public List<BuySell> getRecentBuys(User buyer) throws SQLException {
-        SimpleFilter filter = new SimpleFilter(buySells);
-        filter.addSignClause("buyer", "=", buyer.getId());
-        return buySells.get(filter);
+        return buySellRepository.findAllByBuyer(buyer);
     }
 
     public List<BuySell> getRecentFeedbacks(User seller) throws SQLException {
-        SimpleFilter filter = new SimpleFilter(buySells);
-        filter.addSignClause("seller", "=", seller.getId());
-        filter.addNotNullClause("feedback");
-
-        filter.setOrder("timestamp", false);
-
-        return buySells.get(filter);
+        return buySellRepository.findAllByFeedbackNotNullAndSellerOrderByTimestampDesc(seller);
     }
 
-    public boolean leaveFeedback(int bsid, int score, String text) throws SQLException {
-        BuySell bs;
-        try {
-            bs = buySells.get(bsid);
-        } catch (NotFoundException e) {
-            return false;
-        }
+    public void leaveFeedback(int bsid, int score, String text) throws SQLException {
+        BuySell bs = buySellRepository.findOne(bsid);
+
         if(score < 1)
             score = 1;
         if(score > 5)
@@ -66,11 +52,11 @@ public class FeedbackService {
 
         User user = bs.getSeller();
         user.addRating(score);
-        users.update(user);
+        userRepository.save(user);
 
         Feedback feedback = new Feedback(text, score);
-        feedbacks.create(feedback);
+        feedbackRepository.save(feedback);
         bs.setFeedback(feedback);
-        return buySells.update(bs);
+        buySellRepository.save(bs);
     }
 }

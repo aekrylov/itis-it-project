@@ -1,14 +1,24 @@
 package ru.kpfu.itis.aekrylov.itproject.entities;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/1/16 10:03 PM
  */
+@javax.persistence.Entity
+@Table(name = "products")
 public class Product extends Entity {
 
+    @Id
+    @GeneratedValue
     int id;
     String name;
     int price;
+    @Lob
     String description;
     String photo;
     String brand;

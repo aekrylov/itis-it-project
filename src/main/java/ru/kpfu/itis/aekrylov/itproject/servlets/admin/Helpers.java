@@ -1,9 +1,6 @@
 package ru.kpfu.itis.aekrylov.itproject.servlets.admin;
 
-import ru.kpfu.itis.aekrylov.itproject.entities.BuySell;
-import ru.kpfu.itis.aekrylov.itproject.entities.Feedback;
-import ru.kpfu.itis.aekrylov.itproject.entities.Post;
-import ru.kpfu.itis.aekrylov.itproject.entities.Product;
+import ru.kpfu.itis.aekrylov.itproject.entities.*;
 import ru.kpfu.itis.aekrylov.itproject.models.*;
 
 import java.util.HashMap;
@@ -19,7 +16,7 @@ public class Helpers {
     private static Map<String, String> tableTitles = new HashMap<>();
 
     static {
-        daoMap.put("users", new Users());
+        daoMap.put("users", new DAO<>(User.class));
         daoMap.put("products", new DAO<>(Product.class));
         daoMap.put("messages", new Messages());
         daoMap.put("feedbacks", new DAO<>(Feedback.class));

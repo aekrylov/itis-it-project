@@ -1,5 +1,7 @@
 package ru.kpfu.itis.aekrylov.itproject.servlets;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
 import ru.kpfu.itis.aekrylov.itproject.entities.Post;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
@@ -18,9 +20,11 @@ import java.util.Map;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/1/16 10:36 PM
  */
+@Component
 public class ItemServlet extends BaseServlet {
 
-    private PostService postService = PostService.getInstance();
+    @Autowired
+    private PostService postService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

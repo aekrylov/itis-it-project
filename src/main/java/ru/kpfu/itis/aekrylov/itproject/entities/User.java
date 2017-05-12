@@ -72,7 +72,8 @@ public class User extends Entity {
     }
 
     public void addRating(int score) {
-        rating = (rating*rate_count + score) / ++rate_count;
+        setRate_count(getRate_count() + 1);
+        setRating((rating*rate_count + score) / getRate_count());
     }
 
     public void setUsername(String username) {
@@ -89,6 +90,34 @@ public class User extends Entity {
     }
     public void setHas_avatar(boolean has_avatar) {
         this.has_avatar = has_avatar;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPassword_raw() {
+        return password_raw;
+    }
+
+    public void setPassword_raw(String password_raw) {
+        this.password_raw = password_raw;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public void setRate_count(int rate_count) {
+        this.rate_count = rate_count;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public User() {}

@@ -1,5 +1,6 @@
 package ru.kpfu.itis.aekrylov.itproject.entities;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -7,13 +8,26 @@ import java.time.Instant;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/3/16 12:57 PM
  */
+@javax.persistence.Entity
+@Table(name = "buy_sells")
 public class BuySell extends Entity {
 
+    @Id
+    @GeneratedValue
     int id;
+
+    @ManyToOne
     User buyer;
+
+    @ManyToOne
     User seller;
+
+    @ManyToOne
     Product product;
+
     Timestamp timestamp;
+
+    @OneToOne
     Feedback feedback;
 
     public int getId() {

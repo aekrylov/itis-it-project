@@ -1,16 +1,12 @@
 package ru.kpfu.itis.aekrylov.itproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
 import ru.kpfu.itis.aekrylov.itproject.misc.NotFoundException;
-import ru.kpfu.itis.aekrylov.itproject.misc.ParameterMap;
-import ru.kpfu.itis.aekrylov.itproject.misc.ValidationException;
-import ru.kpfu.itis.aekrylov.itproject.models.Users;
 import ru.kpfu.itis.aekrylov.itproject.repositories.UserRepository;
 import ru.kpfu.itis.aekrylov.itproject.security.UserPrincipal;
 

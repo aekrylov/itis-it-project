@@ -1,5 +1,9 @@
 package ru.kpfu.itis.aekrylov.itproject.entities;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -7,15 +11,22 @@ import java.time.Instant;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/1/16 10:29 PM
  */
+@javax.persistence.Entity
+@Table(name = "posts")
 public class Post extends Entity {
+    @Id
+            @GeneratedValue
     int id;
-    Product product;
-    User user;
-    Timestamp timestamp;
 
-    public Post(){
-        timestamp = Timestamp.from(Instant.now());
-    }
+    @ManyToOne(optional = false)
+    Product product;
+
+    @ManyToOne(optional = false)
+    User user;
+
+    Timestamp timestamp = Timestamp.from(Instant.now());
+
+    public Post() {  }
 
     public Post(int id, Product product, User user, Timestamp timestamp) {
         this.id = id;
