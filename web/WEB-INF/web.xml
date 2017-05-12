@@ -5,74 +5,75 @@
          version="3.1">
     <servlet>
         <servlet-name>MainServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.MainServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.MainServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.LoginServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.LogoutServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegistrationServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.RegistrationServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.RegistrationServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegistrationAjaxServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.RegistrationAjaxServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.RegistrationAjaxServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProfileServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ProfileServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ProfileServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChatListServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ChatListServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ChatListServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChatServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ChatServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ChatServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ItemServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ItemServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ItemAddServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ItemAddServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ItemAddServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ItemListServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.ItemListServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ItemListServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>HistoryServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.HistoryServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.HistoryServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SettingsServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.SettingsServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.SettingsServlet</servlet-class>
     </servlet>
 
     <servlet>
         <servlet-name>AdminServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin.AdminServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.admin.AdminServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminCreateServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin.AdminСreateServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.admin.AdminСreateServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminEditServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin.AdminEditServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.admin.AdminEditServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminDeleteServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.group501.krylov.db1_it_project.servlets.admin.AdminDeleteServlet</servlet-class>
+        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.admin.AdminDeleteServlet</servlet-class>
     </servlet>
 
+<!--
     <servlet>
         <servlet-name>default</servlet-name>
         <servlet-class>
@@ -84,6 +85,7 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+-->
 
 
     <servlet-mapping>
@@ -163,15 +165,15 @@
 
     <filter>
         <filter-name>CookieFilter</filter-name>
-        <filter-class>ru.kpfu.itis.group501.krylov.db1_it_project.filters.CookieFilter</filter-class>
+        <filter-class>ru.kpfu.itis.aekrylov.itproject.filters.CookieFilter</filter-class>
     </filter>
     <filter>
         <filter-name>AuthFilter</filter-name>
-        <filter-class>ru.kpfu.itis.group501.krylov.db1_it_project.filters.AuthFilter</filter-class>
+        <filter-class>ru.kpfu.itis.aekrylov.itproject.filters.AuthFilter</filter-class>
     </filter>
     <filter>
         <filter-name>AdminFilter</filter-name>
-        <filter-class>ru.kpfu.itis.group501.krylov.db1_it_project.filters.AdminFilter</filter-class>
+        <filter-class>ru.kpfu.itis.aekrylov.itproject.filters.AdminFilter</filter-class>
     </filter>
 
     <filter-mapping>
