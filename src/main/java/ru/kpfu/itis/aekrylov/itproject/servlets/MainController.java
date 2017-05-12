@@ -1,5 +1,7 @@
 package ru.kpfu.itis.aekrylov.itproject.servlets;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
 
 import javax.servlet.ServletException;
@@ -13,9 +15,12 @@ import java.io.IOException;
  * 11-501
  * Home page servlet
  */
-public class MainServlet extends BaseServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        super.doGet(request, response);
-        CommonHelpers.render(getServletContext(), request, response, "main.ftl", null);
+
+@Controller
+public class MainController {
+
+    @RequestMapping("/")
+    public String mainGet() {
+        return "main";
     }
 }

@@ -4,8 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-
-import javax.annotation.Resources;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 
 /**
@@ -23,5 +22,13 @@ public class DispatcherConfig {
         configurer.setTemplateLoaderPath("/WEB-INF/templates");
 
         return configurer;
+    }
+
+    @Bean
+    public FreeMarkerViewResolver viewResolver() {
+        FreeMarkerViewResolver resolver = new FreeMarkerViewResolver("", ".ftl");
+        resolver.setOrder(1);
+        resolver.setContentType("text/html;charset=UTF-8");
+        return resolver;
     }
 }
