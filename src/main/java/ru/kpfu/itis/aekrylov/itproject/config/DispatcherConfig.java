@@ -3,6 +3,8 @@ package ru.kpfu.itis.aekrylov.itproject.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
@@ -14,6 +16,8 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 @Configuration
 @ComponentScan(basePackageClasses = {ru.kpfu.itis.aekrylov.itproject.controllers.MainController.class})
+@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
+@EnableWebSecurity
 public class DispatcherConfig {
 
     @Bean

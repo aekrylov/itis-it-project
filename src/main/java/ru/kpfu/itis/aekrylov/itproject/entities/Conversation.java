@@ -13,10 +13,10 @@ public class Conversation {
 
     private Message lastMessage;
 
-    public Conversation(User user1, User user2, int unreadCount, Message lastMessage) {
+    public Conversation(User user1, User user2, long unreadCount, Message lastMessage) {
         this.user1 = user1;
         this.user2 = user2;
-        this.unreadCount = unreadCount;
+        this.unreadCount = (int) unreadCount; //for hibernate query
         this.lastMessage = lastMessage;
     }
 

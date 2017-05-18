@@ -25,13 +25,7 @@ public class AdminFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse)resp;
 
         User user;
-        try {
-            user = CommonHelpers.getCurrentUser();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendRedirect("/login");
-            return;
-        }
+        user = CommonHelpers.getCurrentUser();
 
         if(user.getRole().equals("admin")) {
             chain.doFilter(req, resp);

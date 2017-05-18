@@ -54,15 +54,11 @@ public class ProfileServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doPost(req, resp);
         Part image = req.getPart("image");
-        try {
-            User user = CommonHelpers.getCurrentUser();
-            CommonHelpers.saveImage(Paths.get("users", String.valueOf(user.getId())),
-                    image.getInputStream());
-            user.setHas_avatar(true);
-            userService.updateInfo(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        User user = CommonHelpers.getCurrentUser();
+        CommonHelpers.saveImage(Paths.get("users", String.valueOf(user.getId())),
+                image.getInputStream());
+        user.setHas_avatar(true);
+        userService.updateInfo(user);
         redirect(req, resp);
 
     }

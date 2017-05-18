@@ -4,6 +4,7 @@ import ru.kpfu.itis.aekrylov.itproject.misc.DbHelpers;
 import ru.kpfu.itis.aekrylov.itproject.misc.ReflectiveHelpers;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public abstract class Entity {
         List<Field> list = new ArrayList<>();
 
         for (Field field: c.getDeclaredFields()) {
-            if(!field.isAnnotationPresent(OwnField.class)) {
+            if(!field.isAnnotationPresent(Transient.class)) {
                 list.add(field);
             }
 
@@ -62,7 +63,7 @@ public abstract class Entity {
         List<Field> list = new ArrayList<>();
 
         for (Field field: c.getDeclaredFields()) {
-            if(!(field.isAnnotationPresent(OwnField.class) || field.getName().equals("id"))) {
+            if(!(field.isAnnotationPresent(Transient.class) || field.getName().equals("id"))) {
                 list.add(field);
             }
 

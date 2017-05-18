@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class ChatService {
 
-    private Messages messages = new Messages();
+//    private Messages messages = new Messages();
 
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
@@ -44,7 +44,8 @@ public class ChatService {
     }
 
     public List<Conversation> getConversations(User user)throws SQLException {
-        return messages.getConversations(user);
+        return messageRepository.getConversations(user);
+        //return messages.getConversations(user);
     }
 
     public int getUnreadCount(User user) {

@@ -1,6 +1,7 @@
 package ru.kpfu.itis.aekrylov.itproject.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,7 @@ import java.util.Map;
 public class RegistrationController extends BaseServlet {
     
     private UserService userService;
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
     public RegistrationController(UserService userService) {
@@ -63,7 +65,7 @@ public class RegistrationController extends BaseServlet {
 
         User user = new User();
         user.setEmail(form.getEmail());
-        user.setPassword(form.getPassword());
+        user.setPassword_raw(form.getPassword());
         user.setName(form.getName());
         user.setUsername(form.getUsername());
 

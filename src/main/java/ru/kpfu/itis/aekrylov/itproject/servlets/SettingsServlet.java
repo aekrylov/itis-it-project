@@ -23,15 +23,11 @@ public class SettingsServlet extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
         //display settings
-        try {
-            User user = CommonHelpers.getCurrentUser();
-            Map<String, Object> dataModel = new HashMap<>();
-            dataModel.put("user", user);
+        User user = CommonHelpers.getCurrentUser();
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("user", user);
 
-            CommonHelpers.render(getServletContext(), req, resp, "settings.ftl", dataModel);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        CommonHelpers.render(getServletContext(), req, resp, "settings.ftl", dataModel);
     }
 
     @Override

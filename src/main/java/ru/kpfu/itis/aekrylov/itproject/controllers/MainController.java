@@ -1,6 +1,7 @@
 package ru.kpfu.itis.aekrylov.itproject.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
 
@@ -16,10 +17,10 @@ import java.io.IOException;
  * Home page servlet
  */
 
-@Controller
+@Controller("/")
 public class MainController {
 
-    @RequestMapping("/")
+    @GetMapping
     public String mainGet() {
         return "main";
     }

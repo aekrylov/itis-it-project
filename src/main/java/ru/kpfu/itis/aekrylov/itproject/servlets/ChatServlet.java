@@ -28,12 +28,10 @@ public class ChatServlet extends BaseServlet {
         String text = request.getParameter("text");
         int to = Integer.parseInt(request.getParameter("to"));
 
-        try {
-            chatService.sendMessage(CommonHelpers.getCurrentUser(), to, text);
-            Map<String, String> params = new HashMap<>();
-            params.put("uid", String.valueOf(to));
-            redirect(request, response, params);
-        } catch (SQLException ignored) { }
+        chatService.sendMessage(CommonHelpers.getCurrentUser(), to, text);
+        Map<String, String> params = new HashMap<>();
+        params.put("uid", String.valueOf(to));
+        redirect(request, response, params);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

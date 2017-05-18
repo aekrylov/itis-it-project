@@ -24,7 +24,7 @@ public class User extends Entity {
     String username;
     String password;
 
-    @OwnField
+    @Transient
     private String password_raw;
 
     String name;

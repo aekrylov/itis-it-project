@@ -1,8 +1,10 @@
 package ru.kpfu.itis.aekrylov.itproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.BasePasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
@@ -21,18 +23,21 @@ import java.sql.SQLException;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
     public boolean create(User user) {
+        user.setPassword(encoder.encode(user.getPassword_raw()));
         userRepository.save(user);
         return true;
     }
 
-    public User get(String username) throws SQLException, NotFoundException {
+    public User get(String username) {
         return userRepository.findByUsername(username);
     }
 
@@ -60,13 +65,9 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserPrincipal loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-            return new UserPrincipal(get(username));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (NotFoundException e) {
-            throw new UsernameNotFoundException(e.getMessage());
-        }
-        return null;
+        User user = get(username);
+        if(user == null)
+            throw new UsernameNotFoundException("Username not found");
+        return new UserPrincipal(user);
     }
 }
