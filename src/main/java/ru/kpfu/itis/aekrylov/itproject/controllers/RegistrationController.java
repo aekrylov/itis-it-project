@@ -12,20 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
 import ru.kpfu.itis.aekrylov.itproject.forms.RegistrationForm;
 import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
-import ru.kpfu.itis.aekrylov.itproject.misc.ParameterMap;
-import ru.kpfu.itis.aekrylov.itproject.misc.ValidationException;
 import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 import ru.kpfu.itis.aekrylov.itproject.servlets.BaseServlet;
 
-import javax.enterprise.inject.Model;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
