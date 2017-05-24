@@ -9,6 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
 import ru.kpfu.itis.aekrylov.itproject.forms.RegistrationForm;
 import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
@@ -31,11 +32,11 @@ import java.util.Map;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 5/12/17 12:40 PM
  */
-@Controller("/register")
+@Controller
+@RequestMapping("/register")
 public class RegistrationController extends BaseServlet {
     
     private UserService userService;
-    private BCryptPasswordEncoder encoder;
 
     @Autowired
     public RegistrationController(UserService userService) {

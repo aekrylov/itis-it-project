@@ -49,8 +49,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .defaultSuccessUrl("/")
                 .and().logout()
                     .logoutUrl("/logout")
-                .and().csrf()
-                    .disable();
+                .and().csrf().disable()
+                .rememberMe()
+                    .rememberMeParameter("remember");
     }
 
     @Bean

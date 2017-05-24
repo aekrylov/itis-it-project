@@ -1,15 +1,15 @@
 package ru.kpfu.itis.aekrylov.itproject;
 
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import ru.kpfu.itis.aekrylov.itproject.config.DispatcherConfig;
 import ru.kpfu.itis.aekrylov.itproject.security.WebSecurityConfig;
-import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
@@ -18,6 +18,8 @@ import javax.servlet.ServletRegistration;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 5/12/17 12:05 PM
  */
+@EnableWebMvc
+@Configuration
 public class WebInitializer extends WebMvcConfigurerAdapter implements WebApplicationInitializer {
 
     @Override
