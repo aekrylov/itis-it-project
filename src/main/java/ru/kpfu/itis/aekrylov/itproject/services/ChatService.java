@@ -2,15 +2,13 @@ package ru.kpfu.itis.aekrylov.itproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kpfu.itis.aekrylov.itproject.entities.Conversation;
 import ru.kpfu.itis.aekrylov.itproject.entities.Message;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
-import ru.kpfu.itis.aekrylov.itproject.models.Messages;
-import ru.kpfu.itis.aekrylov.itproject.models.misc.SimpleFilter;
 import ru.kpfu.itis.aekrylov.itproject.repositories.MessageRepository;
 import ru.kpfu.itis.aekrylov.itproject.repositories.UserRepository;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
@@ -21,8 +19,6 @@ import java.util.List;
  */
 @Service
 public class ChatService {
-
-//    private Messages messages = new Messages();
 
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
@@ -43,13 +39,25 @@ public class ChatService {
         );
     }
 
-    public List<Conversation> getConversations(User user)throws SQLException {
+    public void sendMessage(Message message) {
+        messageRepository.save(message);
+    }
+
+    public List<Conversation> getConversations(User user) {
         return messageRepository.getConversations(user);
-        //return messages.getConversations(user);
     }
 
     public int getUnreadCount(User user) {
         return messageRepository.countAllByReadFalseAndTo(user);
+    }
+
+    /**
+     * Marks read all messages from {@code thatUser} to {@code thisUser}
+     * @param thisUser 'to' user
+     * @param thatUser 'from' user
+     */
+    public void markRead(User thisUser, User thatUser) {
+        messageRepository.markRead(thisUser, thatUser);
     }
 
 }

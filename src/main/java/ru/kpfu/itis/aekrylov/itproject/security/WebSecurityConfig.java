@@ -42,15 +42,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/user/*").fullyAuthenticated()
-                    .antMatchers("/admin/*").hasRole("ADMIN")
+                    .antMatchers("/user/**").fullyAuthenticated()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
                 .and().formLogin()
                     .loginPage("/login")
                     .defaultSuccessUrl("/")
                 .and().logout()
                     .logoutUrl("/logout")
                 .and().csrf().disable()
-                .rememberMe()
+                .rememberMe() //todo
                     .rememberMeParameter("remember");
     }
 

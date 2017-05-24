@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -24,7 +25,7 @@ public class Message extends Entity {
      User to;
 
      String text;
-     Timestamp timestamp;
+     Timestamp timestamp = Timestamp.from(Instant.now());
 
      boolean read = false;
 

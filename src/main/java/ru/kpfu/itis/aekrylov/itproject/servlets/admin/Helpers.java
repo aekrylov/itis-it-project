@@ -18,7 +18,7 @@ public class Helpers {
     static {
         daoMap.put("users", new DAO<>(User.class));
         daoMap.put("products", new DAO<>(Product.class));
-        daoMap.put("messages", new Messages());
+        daoMap.put("messages", new DAO<>(Message.class));
         daoMap.put("feedbacks", new DAO<>(Feedback.class));
         daoMap.put("posts", new DAO<>(Post.class));
         daoMap.put("buy_sells", new DAO<>(BuySell.class));

@@ -4,20 +4,8 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     <servlet>
-        <servlet-name>RegistrationAjaxServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.RegistrationAjaxServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ProfileServlet</servlet-name>
         <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ProfileServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ChatListServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ChatListServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ChatServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ChatServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ItemServlet</servlet-name>
@@ -72,18 +60,6 @@
 -->
 
     <servlet-mapping>
-        <servlet-name>RegistrationAjaxServlet</servlet-name>
-        <url-pattern>/ajax/check_username</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ChatListServlet</servlet-name>
-        <url-pattern>/user/chats</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ChatServlet</servlet-name>
-        <url-pattern>/user/chat</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>SettingsServlet</servlet-name>
         <url-pattern>/user/settings</url-pattern>
     </servlet-mapping>
@@ -124,13 +100,6 @@
         <servlet-name>AdminDeleteServlet</servlet-name>
         <url-pattern>/admin/delete</url-pattern>
     </servlet-mapping>
-
-<!--
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>/static/*</url-pattern>
-    </servlet-mapping>
--->
 
 <!--
     <filter>

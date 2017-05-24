@@ -56,7 +56,7 @@
 
                 <hr/>
                 <div class="row">
-                    <form method="post" action="/user/chat">
+                    <form method="post">
                         <input type="hidden" name="to" value="${user2.id}">
                         <div class="col-md-10">
                             <textarea class="form-control" rows="3" placeholder="Введите сообщение" name="text"></textarea>
