@@ -1,6 +1,7 @@
 package ru.kpfu.itis.aekrylov.itproject.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -27,6 +28,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final BCryptPasswordEncoder encoder;
 
+    @Value("${security.remember-me.key}")
+    private String rememberMeKey;
+
     @Autowired
     public WebSecurityConfig(UserService userService, BCryptPasswordEncoder encoder) {
         this.userService = userService;
@@ -50,7 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().logout()
                     .logoutUrl("/logout")
                 .and().csrf().disable()
-                .rememberMe() //todo
+                .rememberMe()
+                    .key(rememberMeKey)
                     .rememberMeParameter("remember");
     }
 

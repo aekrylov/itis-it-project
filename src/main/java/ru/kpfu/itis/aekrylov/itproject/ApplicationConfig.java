@@ -1,10 +1,12 @@
 package ru.kpfu.itis.aekrylov.itproject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -33,6 +35,13 @@ import java.util.Properties;
 public class ApplicationConfig {
 
     private final ConfigurableEnvironment env;
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+        //configurer.setProperties(allProperties);
+        return configurer;
+    }
 
     @Autowired
     public ApplicationConfig(ConfigurableEnvironment env) {
