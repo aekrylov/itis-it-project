@@ -125,26 +125,22 @@
         <url-pattern>/admin/delete</url-pattern>
     </servlet-mapping>
 
+<!--
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/static/*</url-pattern>
     </servlet-mapping>
+-->
 
-    <filter>
-        <filter-name>CookieFilter</filter-name>
-        <filter-class>ru.kpfu.itis.aekrylov.itproject.filters.CookieFilter</filter-class>
-    </filter>
+<!--
     <filter>
         <filter-name>AuthFilter</filter-name>
         <filter-class>ru.kpfu.itis.aekrylov.itproject.filters.AuthFilter</filter-class>
     </filter>
 
     <filter-mapping>
-        <filter-name>CookieFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
         <filter-name>AuthFilter</filter-name>
         <servlet-name>ItemAddServlet</servlet-name>
     </filter-mapping>
+-->
 </web-app>
