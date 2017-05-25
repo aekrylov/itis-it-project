@@ -23,17 +23,7 @@ import java.util.Map;
  * Task 
  */
 
-@Component
 public abstract class BaseServlet extends HttpServlet {
-
-    @Autowired
-    protected UserService userService;
-    @Autowired
-    protected ChatService chatService;
-    @Autowired
-    protected PostService postService;
-    @Autowired
-    protected FeedbackService feedbackService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

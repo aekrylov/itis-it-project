@@ -122,14 +122,6 @@ public class User extends Entity {
 
     public User() {}
 
-    public User(String username, String password, String name, String email) {
-        this.username = username;
-        this.password_raw = password;
-        this.password = CommonHelpers.encrypt(password);
-        this.name = name;
-        this.email = email;
-    }
-
     public void validate(boolean checkPassword) throws ValidationException {
         if(!username.matches("^[a-zA-Z0-9]{3,}$"))
             throw new ValidationException("invalid", "username");

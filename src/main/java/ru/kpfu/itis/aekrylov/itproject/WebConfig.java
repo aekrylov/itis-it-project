@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -27,6 +28,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public FreeMarkerConfigurer freeMarkerConfigurer() {
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
         configurer.setTemplateLoaderPath("/WEB-INF/templates");
+        configurer.
 
         return configurer;
     }
@@ -36,6 +38,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         FreeMarkerViewResolver resolver = new FreeMarkerViewResolver("", ".ftl");
         resolver.setOrder(1);
         resolver.setContentType("text/html;charset=UTF-8");
+        return resolver;
+    }
+
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setMaxUploadSize(2_500_000);
         return resolver;
     }
 

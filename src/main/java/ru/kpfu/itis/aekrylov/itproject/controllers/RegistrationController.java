@@ -34,7 +34,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/register")
-public class RegistrationController extends BaseServlet {
+public class RegistrationController {
     
     private UserService userService;
 

@@ -37,20 +37,17 @@ public class PostService {
     public void createProduct(Product product) {
         productRepository.save(product);
     }
-    public Product toProduct(Map<String, String> map) throws SQLException {
-        return Entity.getEntity(map, Product.class);
-    }
 
-    public Post getPost(int id) throws SQLException, NotFoundException { //todo
+    public Post getPost(int id) throws NotFoundException { //todo
         return postRepository.findOne(id);
     }
 
-    public List<Post> getPosts(SimpleFilter filter) throws SQLException {  //todo
+    public List<Post> getPosts(SimpleFilter filter) {  //todo
         filter.setOrder("timestamp", false);
         throw new RuntimeException("not implemented");
     }
 
-    public void sellProduct(User seller, User buyer, int post_id) throws SQLException, NotFoundException {
+    public void sellProduct(User seller, User buyer, int post_id) throws NotFoundException {
         Post post = getPost(post_id);
         Product product = post.getProduct();
 
@@ -59,12 +56,12 @@ public class PostService {
         postRepository.delete(post_id);
     }
 
-    public boolean deletePost(int post_id) throws SQLException {
+    public boolean deletePost(int post_id) {
         postRepository.delete(post_id);
         return true;
     }
 
-    public int countPosts(User user) throws SQLException {
+    public int countPosts(User user) {
         return postRepository.countAllByUser(user);
     }
 

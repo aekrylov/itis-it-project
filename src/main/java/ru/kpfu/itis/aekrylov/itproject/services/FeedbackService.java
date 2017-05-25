@@ -30,19 +30,19 @@ public class FeedbackService {
         this.userRepository = userRepository;
     }
 
-    public List<BuySell> getRecentSells(User seller) throws SQLException {
+    public List<BuySell> getRecentSells(User seller) {
         return buySellRepository.findAllBySeller(seller);
     }
 
-    public List<BuySell> getRecentBuys(User buyer) throws SQLException {
+    public List<BuySell> getRecentBuys(User buyer) {
         return buySellRepository.findAllByBuyer(buyer);
     }
 
-    public List<BuySell> getRecentFeedbacks(User seller) throws SQLException {
+    public List<BuySell> getRecentFeedbacks(User seller) {
         return buySellRepository.findAllByFeedbackNotNullAndSellerOrderByTimestampDesc(seller);
     }
 
-    public void leaveFeedback(int bsid, int score, String text) throws SQLException {
+    public void leaveFeedback(int bsid, int score, String text) {
         BuySell bs = buySellRepository.findOne(bsid);
 
         if(score < 1)

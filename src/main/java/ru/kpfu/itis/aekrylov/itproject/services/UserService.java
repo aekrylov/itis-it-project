@@ -53,12 +53,12 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void updatePassword(User user, String newPassword) throws SQLException {
-        user.setPassword(CommonHelpers.encrypt(newPassword));
+    public void updatePassword(User user, String newPassword) {
+        user.setPassword(encoder.encode(newPassword));
         userRepository.save(user);
     }
 
-    public void updateAvatar(User user, boolean hasAvatar) throws SQLException {
+    public void updateAvatar(User user, boolean hasAvatar) {
         user.setHas_avatar(hasAvatar);
         userRepository.save(user);
     }

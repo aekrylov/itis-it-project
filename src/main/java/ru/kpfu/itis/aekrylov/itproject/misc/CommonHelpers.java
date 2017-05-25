@@ -3,6 +3,7 @@ package ru.kpfu.itis.aekrylov.itproject.misc;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.multipart.MultipartFile;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
 import ru.kpfu.itis.aekrylov.itproject.security.UserPrincipal;
 import ru.kpfu.itis.aekrylov.itproject.services.ChatService;
@@ -50,6 +51,10 @@ public class CommonHelpers {
         Files.copy(stream, absolutePath, StandardCopyOption.REPLACE_EXISTING);
     }
 
+    public static void saveImage(Path name, MultipartFile image) throws IOException {
+        saveImage(name, image.getInputStream());
+    }
+
     public static File getImage(Path name) {
         return imageDir.resolve(name).toAbsolutePath().toFile();
     }
@@ -82,15 +87,6 @@ public class CommonHelpers {
         if(!(principal instanceof UserPrincipal))
             return null;
         return ((UserPrincipal) principal).getUser();
-    }
-
-    public static String encrypt(String str) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(str.getBytes());
-            byte[] digest =  md.digest();
-            return DatatypeConverter.printHexBinary(digest);
-        } catch (NoSuchAlgorithmException ignored) { return null; }
     }
 
 }

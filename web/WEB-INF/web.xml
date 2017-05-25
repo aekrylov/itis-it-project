@@ -4,31 +4,6 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     <servlet>
-        <servlet-name>ProfileServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ProfileServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ItemServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ItemServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ItemAddServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ItemAddServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ItemListServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.ItemListServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>HistoryServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.HistoryServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SettingsServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.SettingsServlet</servlet-class>
-    </servlet>
-
-    <servlet>
         <servlet-name>AdminServlet</servlet-name>
         <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.admin.AdminServlet</servlet-class>
     </servlet>
@@ -45,44 +20,6 @@
         <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.admin.AdminDeleteServlet</servlet-class>
     </servlet>
 
-<!--
-    <servlet>
-        <servlet-name>default</servlet-name>
-        <servlet-class>
-            org.apache.catalina.servlets.DefaultServlet
-        </servlet-class>
-        <init-param>
-            <param-name>listings</param-name>
-            <param-value>false</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
--->
-
-    <servlet-mapping>
-        <servlet-name>SettingsServlet</servlet-name>
-        <url-pattern>/user/settings</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ProfileServlet</servlet-name>
-        <url-pattern>/user</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ItemServlet</servlet-name>
-        <url-pattern>/item</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ItemAddServlet</servlet-name>
-        <url-pattern>/item/add</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ItemListServlet</servlet-name>
-        <url-pattern>/items</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>HistoryServlet</servlet-name>
-        <url-pattern>/user/history</url-pattern>
-    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
@@ -101,15 +38,4 @@
         <url-pattern>/admin/delete</url-pattern>
     </servlet-mapping>
 
-<!--
-    <filter>
-        <filter-name>AuthFilter</filter-name>
-        <filter-class>ru.kpfu.itis.aekrylov.itproject.filters.AuthFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <servlet-name>ItemAddServlet</servlet-name>
-    </filter-mapping>
--->
 </web-app>
