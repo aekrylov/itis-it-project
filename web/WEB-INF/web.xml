@@ -4,10 +4,6 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     <servlet>
-        <servlet-name>AdminServlet</servlet-name>
-        <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.admin.AdminServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AdminCreateServlet</servlet-name>
         <servlet-class>ru.kpfu.itis.aekrylov.itproject.servlets.admin.AdminСreateServlet</servlet-class>
     </servlet>
@@ -21,10 +17,6 @@
     </servlet>
 
 
-    <servlet-mapping>
-        <servlet-name>AdminServlet</servlet-name>
-        <url-pattern>/admin/</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminCreateServlet</servlet-name>
         <url-pattern>/admin/create</url-pattern>

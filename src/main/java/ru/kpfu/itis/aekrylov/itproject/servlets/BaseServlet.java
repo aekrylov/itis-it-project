@@ -37,17 +37,6 @@ public abstract class BaseServlet extends HttpServlet {
         resp.setCharacterEncoding("utf-8");
     }
 
-    protected static void redirect(HttpServletRequest req, HttpServletResponse resp, Map<String, String> params)
-            throws IOException {
-        params.remove("password");
-        params.remove("password_repeat");
-        resp.sendRedirect(req.getServletPath() + QueryString.encodeStrings(params));
-    }
-
-    protected static void redirect(HttpServletRequest req, HttpServletResponse response) throws IOException {
-        response.sendRedirect(req.getServletPath());
-    }
-
     protected static ParameterMap getParameterMap(HttpServletRequest req) {
         Map<String, String[]> map = req.getParameterMap();
         ParameterMap result = new ParameterMap();
