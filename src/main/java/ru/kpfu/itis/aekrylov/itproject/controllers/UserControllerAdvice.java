@@ -11,7 +11,7 @@ import ru.kpfu.itis.aekrylov.itproject.services.ChatService;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 5/12/17 7:31 PM
  */
-@ControllerAdvice
+@ControllerAdvice(basePackageClasses = MainController.class)
 public class UserControllerAdvice {
 
     private ChatService chatService;

@@ -15,9 +15,9 @@ import java.util.Map;
  */
 public interface IDao<T extends Entity> {
 
-    List<T> get() throws SQLException;
-    List<T> get(SimpleFilter filter) throws SQLException;
-    T get(int id) throws SQLException, NotFoundException;
+    List<T> findAll() throws SQLException;
+    List<T> findAll(SimpleFilter filter) throws SQLException;
+    T findOne(int id) throws SQLException, NotFoundException;
     Map<String, String> getMap(int id) throws SQLException;
 
     int count() throws SQLException;

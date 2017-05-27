@@ -58,7 +58,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     @Override
-    public List<T> get() throws SQLException {
+    public List<T> findAll() throws SQLException {
         CustomStatement statement = statementFactory.selectAll(entityClass, true);
         ResultSet rs = statement.toPS().executeQuery();
 
@@ -66,16 +66,16 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     @Override
-    public T get(int id ) throws SQLException, NotFoundException {
+    public T findOne(int id ) throws SQLException, NotFoundException {
         CustomStatement statement = statementFactory.selectAll(entityClass, true);
         statement.addFilter(new SimpleFilter(this).addSignClause("id", "=", id));
 
         PreparedStatement st = statement.toPS();
         ResultSet rs = st.executeQuery();
-        return get(rs, statement);
+        return findOne(rs, statement);
     }
 
-    protected T get(ResultSet rs, CustomStatement statement) throws NotFoundException, SQLException {
+    private T findOne(ResultSet rs, CustomStatement statement) throws NotFoundException, SQLException {
         if(rs.next()) {
             return ReflectiveHelpers.fromResultSet2(rs, entityClass, statement.getBounds());
         }
@@ -83,7 +83,7 @@ public class DAO<T extends Entity> implements IDao<T> {
     }
 
     @Override
-    public List<T> get(SimpleFilter filter) throws SQLException {
+    public List<T> findAll(SimpleFilter filter) throws SQLException {
         CustomStatement statement = statementFactory.selectAll(entityClass, true).addFilter(filter);
         PreparedStatement st = statement.toPS();
 

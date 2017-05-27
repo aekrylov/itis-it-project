@@ -27,13 +27,13 @@ public abstract class ReflectiveHelpers {
             return;
         }
 
-        //for entity, get it by id
+        //for entity, findOne it by id
         //if not found, set to null
         if(Entity.class.isAssignableFrom(field.getType()) &&
                 (int.class.isAssignableFrom(value.getClass()) || Integer.class.isAssignableFrom(value.getClass())) ) {
             DAO<?> dao = new DAO(field.getType());
             try {
-                value = dao.get((Integer) value);
+                value = dao.findOne((Integer) value);
             } catch (NotFoundException e) {
                 value = null;
             }
@@ -70,18 +70,6 @@ public abstract class ReflectiveHelpers {
         }
         field.setAccessible(accessible);
         return obj;
-    }
-
-    public static <E extends Entity> E fromResultSet(ResultSet rs, Class<E> entityClass) throws SQLException {
-        Field [] fields = Entity.getDbFields(entityClass);
-
-        E instance = Entity.getInstance(entityClass);
-        for (Field field : fields) {
-            String label = DbHelpers.toDbName(field.getName());
-            setField(field, instance, rs.getObject(label));
-        }
-        return instance;
-
     }
 
     /**
@@ -121,11 +109,11 @@ public abstract class ReflectiveHelpers {
      * Should be used when there can be several columns with the same name in the rs
      * This method parses provided entity class fields from columns of the rs in the supplied range
      * todo nested joins?
-     * @param rs ResultSet from which to get entity
+     * @param rs ResultSet from which to findOne entity
      * @param entityClass entity class
      * @param colMin starting column, inclusive (1 is first)
      * @param colMax ending column, inclusive
-     * @param bounds If null, then no nested calls will be made; otherwise, method will get nested entities from rs
+     * @param bounds If null, then no nested calls will be made; otherwise, method will findOne nested entities from rs
      *               instead of querying them separately
      */
     private static <E extends Entity> E fromResultSet2(ResultSet rs, Class<E> entityClass, int colMin, int colMax,
@@ -133,7 +121,7 @@ public abstract class ReflectiveHelpers {
             throws SQLException {
         Field [] fields = Entity.getDbFields(entityClass);
 
-        //get column indices
+        //findOne column indices
         ResultSetMetaData rsmd = rs.getMetaData();
         Map<String, Integer> cols = new HashMap<>();
         for (int i = colMin; i <= colMax; i++) {

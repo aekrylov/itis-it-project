@@ -12,6 +12,8 @@ import java.util.List;
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 11/15/16 6:57 PM
+ *
+ * Filter class For PostgresQL database
  */
 public class SimpleFilter implements DbFilter<SimpleFilter> {
 

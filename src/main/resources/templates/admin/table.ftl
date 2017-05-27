@@ -1,6 +1,6 @@
 ﻿<#include '../base.ftl'>
 <#macro body>
-<#assign page = (params.page!1)?number>
+<#assign pageNum = (page.page!1)?number>
     <div class="container-fluid">
             
                             
@@ -13,12 +13,12 @@
                      </div>
                      <div class="col-md-6">
                         <ul class="pager" style="float: right">
-                            <#if 1 < page>
+                            <#if 1 < pageNum>
                             <#-- TODO freaking links -->
-                                <li><a href="?table=${tablename}&page=${page-1}&sort=${params.sort!''}<#if params.sort_desc??>&sort_desc=true</#if>&q=${params.q!''}">&larr; Назад</a></li>
+                                <li><a href="?table=${tablename}&page=${pageNum-1}&sort=${page.sort!''}<#if page.sort_desc??>&sort_desc=true</#if>&q=${q!''}">&larr; Назад</a></li>
                             </#if>
                             <#if has_next_page>
-                                <li><a href="?table=${tablename}&page=${page+1}&sort=${params.sort!''}<#if params.sort_desc??>&sort_desc=true</#if>&q=${params.q!''}">Вперед &rarr;</a></li>
+                                <li><a href="?table=${tablename}&page=${pageNum+1}&sort=${page.sort!''}<#if page.sort_desc??>&sort_desc=true</#if>&q=${q!''}">Вперед &rarr;</a></li>
                             </#if>
                         </ul>
                      </div>
@@ -38,10 +38,11 @@
                     <tbody>
                     <#list rows as row>
                     <tr>
-                        <#list row as field>
-                        <#assign value = (field!'')?string?trim>
-                        <td><#if value?length < 20>${value}<#else >${value[0..*20]}...</#if></td>
+                        <#list columns as col>
+                            <#assign value = (row[col]!'')?string?trim>
+                            <td><#if value?length < 20>${value}<#else >${value[0..*20]}...</#if></td>
                         </#list>
+                        
                         <td><a href="/admin/edit?table=${tablename}&id=${row[0]}" ><span class="glyphicon glyphicon-pencil"></span></a></td>
                         <td>
                             <form action="/admin/delete" method="post">
@@ -68,7 +69,7 @@
                     <input type="hidden" name="table" value="${tablename}">
                     <div class="row">  
                         <div class="col-md-12">
-                            <input type="text" class="form-control" placeholder="поиск..." name="q" value="${params.q!''}">
+                            <input type="text" class="form-control" placeholder="поиск..." name="q" value="${q!''}">
                         </div>
                     </div>
                 <hr/>
@@ -77,7 +78,7 @@
                         <div class="col-md-12">
                             <select class="form-control" name="sort">
                                 <#list columns as column>
-                                    <option <#if column=params.sort!''>selected</#if>>${column}</option>
+                                    <option <#if column=sort!''>selected</#if>>${column}</option>
                                 </#list>
                             </select>
                             <div class="checkbox">
@@ -93,7 +94,7 @@
                             <input type="submit" class="btn btn-default btn-block" value="Поиск">
                         </div>
                     </div>
-                    <#if params.q??>
+                    <#if q??>
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
