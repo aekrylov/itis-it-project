@@ -7,7 +7,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kpfu.itis.aekrylov.itproject.services.AdminService;
@@ -21,13 +20,11 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminController {
-
-    private AdminService adminService;
+public class AdminController extends BaseAdminController {
 
     @Autowired
     public AdminController(AdminService adminService) {
-        this.adminService = adminService;
+        super(adminService);
     }
 
     @GetMapping
@@ -43,10 +40,8 @@ public class AdminController {
 
         Page results = adminService.query(entityName, q, pageable);
 
-        modelMap.put("tablename", entityName);
         modelMap.put("q", q);
         modelMap.put("rows", results.iterator());
-        modelMap.put("columns", adminService.getColumnNames(entityName));
         modelMap.put("has_next_page", results.isLast());
         modelMap.put("page", pageable);
         return "admin/table";

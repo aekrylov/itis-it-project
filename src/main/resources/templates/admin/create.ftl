@@ -1,5 +1,6 @@
 <#include '../base.ftl'>
 <#macro body>
+<#assign boolean_format="true,false">
 <div class="container">
     <div class="row">
 
@@ -18,7 +19,7 @@
                             <label for="input-${column}" class="col-md-2 control-label">${column}</label>
                             <div class="col-md-10">
                                 <input type="text" class="form-control" id="input-${column}"
-                                       name="${column}" value="${values[column]!}">
+                                       name="${column}" value="${(values[column]!'')?string}">
                             </div>
                         </div>
                     </#list>

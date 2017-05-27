@@ -6,14 +6,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.*;
+import javax.persistence.criteria.*;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.EntityType;
 import java.util.*;
@@ -50,6 +44,40 @@ public class AdminService {
         return type.getSingularAttributes().stream()
                 .map(Attribute::getName)
                 .collect(Collectors.toSet());
+    }
+
+    public Object findOne(String entityName, int id) {
+        EntityType<?> type = entityTypeMap.get(entityName);
+        CriteriaBuilder cb = emf.getCriteriaBuilder();
+        CriteriaQuery<?> q = cb.createQuery(type.getJavaType());
+
+        Root<?> root = q.from(type);
+        q.where(cb.equal(root.get("id"), cb.literal(id)));
+
+        TypedQuery<?> tq = em.createQuery(q);
+        return tq.getSingleResult();
+    }
+
+    public <T> void save(String entityName, int id, Map<String, Object> values) {
+        EntityType<?> type = entityTypeMap.get(entityName);
+        save(type, id, values);
+    }
+
+    private <T> void save(EntityType<T> type, int id, Map<String, Object> values) {
+        CriteriaBuilder cb = emf.getCriteriaBuilder();
+        CriteriaUpdate<T> cu = cb.createCriteriaUpdate(type.getJavaType());
+        Root<T> root = cu.from(type);
+
+        //todo cast to needed types
+        type.getSingularAttributes()
+                .forEach(attr -> {
+                    cu.set(attr.getName(), values.get(attr.getName()));
+                });
+
+        cu.where(cb.equal(root.get("id"), id));
+
+        Query tq = em.createQuery(cu);
+        tq.executeUpdate();
     }
 
     public Page query(String entityName, String str, Pageable pageable) {
