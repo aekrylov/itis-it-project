@@ -5,12 +5,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.EntityType;
-import java.util.*;
+import javax.persistence.metamodel.SingularAttribute;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -19,6 +24,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
+@Transactional
 public class AdminService {
 
     @PersistenceContext
@@ -58,26 +64,33 @@ public class AdminService {
         return tq.getSingleResult();
     }
 
-    public <T> void save(String entityName, int id, Map<String, Object> values) {
+    public void save(String entityName, int id, Map<String, Object> values) {
         EntityType<?> type = entityTypeMap.get(entityName);
         save(type, id, values);
     }
 
+    @SuppressWarnings("unchecked")
     private <T> void save(EntityType<T> type, int id, Map<String, Object> values) {
         CriteriaBuilder cb = emf.getCriteriaBuilder();
         CriteriaUpdate<T> cu = cb.createCriteriaUpdate(type.getJavaType());
         Root<T> root = cu.from(type);
 
-        //todo cast to needed types
         type.getSingularAttributes()
                 .forEach(attr -> {
-                    cu.set(attr.getName(), values.get(attr.getName()));
+                    //cast attribute to the correct type
+                    Expression expr = cb.literal(values.get(attr.getName())).as(attr.getJavaType());
+                    cu.set(attr, expr);
                 });
 
         cu.where(cb.equal(root.get("id"), id));
 
         Query tq = em.createQuery(cu);
         tq.executeUpdate();
+    }
+
+    private <T, X> void setAttr(SingularAttribute<T, X> attr, CriteriaUpdate<T> cu, Map<String, Object> values) {
+        Expression<X> expr = emf.getCriteriaBuilder().literal(values.get(attr.getName())).as(attr.getJavaType());
+        cu.set(attr, expr);
     }
 
     public Page query(String entityName, String str, Pageable pageable) {

@@ -15,6 +15,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 
 import javax.persistence.EntityManagerFactory;
@@ -32,6 +33,7 @@ import java.util.Properties;
 @PropertySource(value = "classpath:application.properties")
 @ComponentScan(basePackageClasses = {UserService.class})
 @EnableJpaRepositories
+@EnableTransactionManagement
 public class ApplicationConfig {
 
     private final ConfigurableEnvironment env;

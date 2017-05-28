@@ -6,10 +6,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.aekrylov.itproject.services.AdminService;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -44,16 +41,8 @@ public class AdminEditController extends BaseAdminController {
 
     //todo
     @PostMapping
-    public String doPost( @ModelAttribute("values") Object entity,
-                          final @RequestParam Map<String, Object> values,
+    public String doPost(@RequestParam Map<String, Object> values,
                           @RequestParam("id") int id, ModelMap modelMap) {
-        Class entityClass = entity.getClass();
-        /*Map<String, Object> newValues = Arrays.stream(entityClass.getDeclaredFields())
-                .collect(Collectors.toMap(Field::getName, field -> {
-                    Class c = field.getType();
-                    return c.cast(values.get(field.getName()));
-                }));*/
-
         try{
             adminService.save((String) modelMap.get("tablename"), id, values);
             return "redirect:/admin/?table="+modelMap.get("tablename");
