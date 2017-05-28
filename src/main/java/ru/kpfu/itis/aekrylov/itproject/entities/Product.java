@@ -15,25 +15,26 @@ public class Product {
 
     @Id
     @GeneratedValue
-    int id;
-    String name;
-    int price;
+    private int id;
+    private String name;
+    private int price;
     @Lob
-    String description;
-    String photo;
-    String brand;
-    String model;
-    String cpu_name;
-    int cores;
-    int ram_gb;
-    String video_card;
-    String hdd_name;
-    int hdd_capacity;
-    String type;
+    private String description;
+    private String photo;
+    private String brand;
+    private String model;
+    private String cpu_name;
+    private int cores;
+    private int ram_gb;
+    private String video_card;
+    private String hdd_name;
+    private int hdd_capacity;
+    private String type;
 
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -41,6 +42,7 @@ public class Product {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -48,6 +50,7 @@ public class Product {
     public int getPrice() {
         return price;
     }
+
     public void setPrice(int price) {
         this.price = price;
     }
@@ -55,6 +58,7 @@ public class Product {
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -62,6 +66,7 @@ public class Product {
     public String getPhoto() {
         return photo;
     }
+
     public void setPhoto(String photo) {
         this.photo = photo;
     }
@@ -69,6 +74,7 @@ public class Product {
     public String getBrand() {
         return brand;
     }
+
     public void setBrand(String brand) {
         this.brand = brand;
     }
@@ -76,6 +82,7 @@ public class Product {
     public String getModel() {
         return model;
     }
+
     public void setModel(String model) {
         this.model = model;
     }
@@ -83,6 +90,7 @@ public class Product {
     public String getCpu_name() {
         return cpu_name;
     }
+
     public void setCpu_name(String cpu_name) {
         this.cpu_name = cpu_name;
     }
@@ -90,6 +98,7 @@ public class Product {
     public int getCores() {
         return cores;
     }
+
     public void setCores(int cores) {
         this.cores = cores;
     }
@@ -97,6 +106,7 @@ public class Product {
     public int getRam_gb() {
         return ram_gb;
     }
+
     public void setRam_gb(int ram_gb) {
         this.ram_gb = ram_gb;
     }
@@ -104,6 +114,7 @@ public class Product {
     public String getVideo_card() {
         return video_card;
     }
+
     public void setVideo_card(String video_card) {
         this.video_card = video_card;
     }
@@ -111,6 +122,7 @@ public class Product {
     public String getHdd_name() {
         return hdd_name;
     }
+
     public void setHdd_name(String hdd_name) {
         this.hdd_name = hdd_name;
     }
@@ -118,6 +130,7 @@ public class Product {
     public int getHdd_capacity() {
         return hdd_capacity;
     }
+
     public void setHdd_capacity(int hdd_capacity) {
         this.hdd_capacity = hdd_capacity;
     }
@@ -125,6 +138,7 @@ public class Product {
     public String getType() {
         return type;
     }
+
     public void setType(String type) {
         this.type = type;
     }

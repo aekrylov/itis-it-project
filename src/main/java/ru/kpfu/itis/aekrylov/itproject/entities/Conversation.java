@@ -23,12 +23,15 @@ public class Conversation {
     public User getUser1() {
         return user1;
     }
+
     public User getUser2() {
         return user2;
     }
+
     public int getUnreadCount() {
         return unreadCount;
     }
+
     public Message getLastMessage() {
         return lastMessage;
     }

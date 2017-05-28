@@ -16,25 +16,28 @@ import java.time.Instant;
 public class Feedback {
 
     @Id
-            @GeneratedValue
-    int id;
+    @GeneratedValue
+    private int id;
 
     @OneToOne(mappedBy = "feedback")
     private BuySell buySell;
 
-    String comment;
-    Timestamp date;
-    int score;
+    private String comment;
+    private Timestamp date;
+    private int score;
 
     public int getId() {
         return id;
     }
+
     public String getComment() {
         return comment;
     }
+
     public Timestamp getDate() {
         return date;
     }
+
     public int getScore() {
         return score;
     }
@@ -53,5 +56,13 @@ public class Feedback {
         this();
         this.comment = comment;
         this.score = score;
+    }
+
+    public BuySell getBuySell() {
+        return buySell;
+    }
+
+    public void setBuySell(BuySell buySell) {
+        this.buySell = buySell;
     }
 }

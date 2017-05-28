@@ -46,37 +46,32 @@ public class SettingsController {
     protected String doPost(@RequestParam Map<String, String> params, ModelMap modelMap) {
         String act =  params.get("act");
 
-        try {
-            User user = CommonHelpers.getCurrentUser();
-            //user is never null due to web app structure
-            assert user != null;
-            switch (act) {
-                case "info":
-                    if(params.get("username") != null) user.setUsername(params.get("username"));
-                    if(params.get("name") != null) user.setName(params.get("name"));
-                    if(params.get("email") != null) user.setEmail(params.get("email"));
-                    user.validate(false);
+        User user = CommonHelpers.getCurrentUser();
+        //user is never null due to web app structure
+        //todo validation
+        assert user != null;
+        switch (act) {
+            case "info":
+                if(params.get("username") != null) user.setUsername(params.get("username"));
+                if(params.get("name") != null) user.setName(params.get("name"));
+                if(params.get("email") != null) user.setEmail(params.get("email"));
 
-                    userService.updateInfo(user);
-                    break;
+                userService.updateInfo(user);
+                break;
 
-                case "password":
-                    String old = params.get("password_old");
-                    String new1 = params.get("password_new1");
-                    String new2 = params.get("password_new2");
+            case "password":
+                String old = params.get("password_old");
+                String new1 = params.get("password_new1");
+                String new2 = params.get("password_new2");
 
-                    if(!encoder.matches(old, user.getPassword())) {
-                        modelMap.put("error", CommonHelpers.getErrorMessage("password_invalid"));
-                    } else if(new1 == null || !new1.equals(new2)) {
-                        modelMap.put("error", CommonHelpers.getErrorMessage("password_match"));
-                    } else {
-                        userService.updatePassword(user, new1);
-                    }
-                    break;
-            }
-        } catch (ValidationException e) {
-            modelMap.put("error", "validation");
-            modelMap.put("field", e.getField());
+                if(!encoder.matches(old, user.getPassword())) {
+                    modelMap.put("error", CommonHelpers.getErrorMessage("password_invalid"));
+                } else if(new1 == null || !new1.equals(new2)) {
+                    modelMap.put("error", CommonHelpers.getErrorMessage("password_match"));
+                } else {
+                    userService.updatePassword(user, new1);
+                }
+                break;
         }
         return "redirect:/user/settings";
     }

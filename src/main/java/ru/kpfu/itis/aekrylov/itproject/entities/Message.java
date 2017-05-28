@@ -15,21 +15,25 @@ import java.time.Instant;
 @Table(name = "messages")
 public class Message {
     @Id
-            @GeneratedValue
+    @GeneratedValue
+    private
     int id;
 
     @ManyToOne
-     User from;
+    private
+    User from;
 
     @ManyToOne
-     User to;
+    private
+    User to;
 
-     String text;
-     Timestamp timestamp = Timestamp.from(Instant.now());
+    private String text;
+    private Timestamp timestamp = Timestamp.from(Instant.now());
 
-     boolean read = false;
+    private boolean read = false;
 
-    public Message(){}
+    public Message() {
+    }
 
     public Message(User from, User to, String text, Timestamp timestamp) {
         this.from = from;
@@ -50,18 +54,23 @@ public class Message {
     public User getFrom() {
         return from;
     }
+
     public User getTo() {
         return to;
     }
+
     public String getText() {
         return text;
     }
+
     public Timestamp getTimestamp() {
         return timestamp;
     }
+
     public int getId() {
         return id;
     }
+
     public boolean isRead() {
         return read;
     }
@@ -69,6 +78,7 @@ public class Message {
     public void setId(int id) {
         this.id = id;
     }
+
     public void setRead(boolean read) {
         this.read = read;
     }

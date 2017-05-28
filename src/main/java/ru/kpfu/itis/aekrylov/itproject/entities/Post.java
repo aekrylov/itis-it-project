@@ -12,18 +12,22 @@ import java.time.Instant;
 @Table(name = "posts")
 public class Post {
     @Id
-            @GeneratedValue
+    @GeneratedValue
+    private
     int id;
 
     @ManyToOne(optional = false)
+    private
     Product product;
 
     @ManyToOne(optional = false)
+    private
     User user;
 
-    Timestamp timestamp = Timestamp.from(Instant.now());
+    private Timestamp timestamp = Timestamp.from(Instant.now());
 
-    public Post() {  }
+    public Post() {
+    }
 
     public Post(int id, Product product, User user, Timestamp timestamp) {
         this.id = id;
@@ -41,12 +45,15 @@ public class Post {
     public int getId() {
         return id;
     }
+
     public Product getProduct() {
         return product;
     }
+
     public User getUser() {
         return user;
     }
+
     public Timestamp getTimestamp() {
         return timestamp;
     }

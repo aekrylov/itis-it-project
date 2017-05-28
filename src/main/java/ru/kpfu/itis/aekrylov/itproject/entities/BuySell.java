@@ -14,21 +14,31 @@ public class BuySell {
 
     @Id
     @GeneratedValue
-    int id;
+    private int id;
 
     @ManyToOne
-    User buyer;
+    private User buyer;
 
     @ManyToOne
-    User seller;
+    private User seller;
 
     @ManyToOne
-    Product product;
+    private Product product;
 
-    Timestamp timestamp;
+    private Timestamp timestamp;
 
     @OneToOne
-    Feedback feedback;
+    private Feedback feedback;
+
+    public BuySell() {
+    }
+
+    public BuySell(User buyer, User seller, Product product) {
+        this.buyer = buyer;
+        this.seller = seller;
+        this.product = product;
+        this.timestamp = Timestamp.from(Instant.now());
+    }
 
     public int getId() {
         return id;
@@ -56,14 +66,5 @@ public class BuySell {
 
     public void setFeedback(Feedback feedback) {
         this.feedback = feedback;
-    }
-
-    public BuySell() {}
-
-    public BuySell(User buyer, User seller, Product product) {
-        this.buyer = buyer;
-        this.seller = seller;
-        this.product = product;
-        this.timestamp = Timestamp.from(Instant.now());
     }
 }
