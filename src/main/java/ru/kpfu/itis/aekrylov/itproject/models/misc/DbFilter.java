@@ -15,5 +15,4 @@ public interface DbFilter<T extends DbFilter> {
 
     T setOrder(String field, boolean asc);
 
-    String toSQL();
 }

@@ -1,9 +1,6 @@
 package ru.kpfu.itis.aekrylov.itproject.entities;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -13,7 +10,7 @@ import java.time.Instant;
  */
 @javax.persistence.Entity
 @Table(name = "posts")
-public class Post extends Entity {
+public class Post {
     @Id
             @GeneratedValue
     int id;

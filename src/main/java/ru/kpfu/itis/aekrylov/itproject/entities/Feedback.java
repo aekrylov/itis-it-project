@@ -13,7 +13,7 @@ import java.time.Instant;
  */
 @javax.persistence.Entity
 @Table(name = "feedbacks")
-public class Feedback extends Entity {
+public class Feedback {
 
     @Id
             @GeneratedValue

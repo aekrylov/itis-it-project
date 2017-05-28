@@ -1,12 +1,9 @@
 package ru.kpfu.itis.aekrylov.itproject.entities;
 
-import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
 import ru.kpfu.itis.aekrylov.itproject.misc.ValidationException;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -16,7 +13,7 @@ import javax.persistence.Transient;
  */
 @javax.persistence.Entity
 @Table(name = "users")
-public class User extends Entity {
+public class User {
 
     @Id
     @GeneratedValue
@@ -34,9 +31,12 @@ public class User extends Entity {
     double rating;
     int rate_count = 0;
 
-    String role = "user";
+    String role = "USER";
 
     boolean has_avatar = false;
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private List<Post> posts;
 
     public int getId() {
         return id;
@@ -120,8 +120,17 @@ public class User extends Entity {
         this.role = role;
     }
 
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
     public User() {}
 
+    //todo validation
     public void validate(boolean checkPassword) throws ValidationException {
         if(!username.matches("^[a-zA-Z0-9]{3,}$"))
             throw new ValidationException("invalid", "username");

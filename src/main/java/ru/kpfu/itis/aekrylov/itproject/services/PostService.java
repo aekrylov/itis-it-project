@@ -38,7 +38,7 @@ public class PostService {
         productRepository.save(product);
     }
 
-    public Post getPost(int id) throws NotFoundException { //todo
+    public Post getPost(int id) {
         return postRepository.findOne(id);
     }
 
@@ -47,7 +47,7 @@ public class PostService {
         throw new RuntimeException("not implemented");
     }
 
-    public void sellProduct(User seller, User buyer, int post_id) throws NotFoundException {
+    public void sellProduct(User seller, User buyer, int post_id) {
         Post post = getPost(post_id);
         Product product = post.getProduct();
 

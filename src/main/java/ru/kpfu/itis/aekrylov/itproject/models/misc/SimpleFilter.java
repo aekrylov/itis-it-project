@@ -1,7 +1,6 @@
 package ru.kpfu.itis.aekrylov.itproject.models.misc;
 
 import ru.kpfu.itis.aekrylov.itproject.misc.DbHelpers;
-import ru.kpfu.itis.aekrylov.itproject.models.DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -24,9 +23,6 @@ public class SimpleFilter implements DbFilter<SimpleFilter> {
     private String tableName;
 
     public SimpleFilter() {
-    }
-    public SimpleFilter(DAO dao) {
-        this.tableName = dao.getTableName();
     }
 
     private int limit = -1;
@@ -101,16 +97,6 @@ public class SimpleFilter implements DbFilter<SimpleFilter> {
     public SimpleFilter setOrder(String field, boolean asc) {
         this.orderBy = String.format(" ORDER BY %s %s ", getColumnName(field), asc ? "ASC": "DESC");
         return this;
-    }
-
-    @Override
-    public String toSQL() {
-        String str = getWhere() + getOrderBy();
-        if (limit >= 0)
-            str += " LIMIT "+limit+" ";
-        if(offset > 0)
-            str += " OFFSET "+offset+" ";
-        return str;
     }
 
     public void fillParams(PreparedStatement st) throws SQLException {

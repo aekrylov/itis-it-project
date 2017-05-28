@@ -1,18 +1,10 @@
 package ru.kpfu.itis.aekrylov.itproject.misc;
 
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
 import ru.kpfu.itis.aekrylov.itproject.security.UserPrincipal;
-import ru.kpfu.itis.aekrylov.itproject.services.ChatService;
-import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,9 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,25 +50,6 @@ public class CommonHelpers {
 
     public static String getErrorMessage(String errorCode) {
         return errors.get(errorCode);
-    }
-
-    public static void render(ServletContext sc, HttpServletRequest request, HttpServletResponse response,
-                              String templateName, Map<String, Object> dataModel)
-            throws IOException {
-
-        render(sc, response, templateName, dataModel);
-    }
-
-    private static void render(ServletContext sc, HttpServletResponse resp,
-                              String templateName, Object dataModel) throws IOException {
-        Template tmpl = ConfigSingleton.getConfig(sc).getTemplate(templateName);
-        try {
-            resp.setContentType("text/html;charset=UTF-8");
-            tmpl.process(dataModel, resp.getWriter());
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public static User getCurrentUser() {

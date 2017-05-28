@@ -13,7 +13,7 @@ import java.time.Instant;
  */
 @javax.persistence.Entity
 @Table(name = "messages")
-public class Message extends Entity {
+public class Message {
     @Id
             @GeneratedValue
     int id;

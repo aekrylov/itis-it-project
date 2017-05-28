@@ -64,6 +64,15 @@ public class AdminService {
         return tq.getSingleResult();
     }
 
+    public Object getExample(String entityName) {
+        EntityType<?> type = entityTypeMap.get(entityName);
+        return findAny(type);
+    }
+
+    public void insert(Object entity) {
+        em.persist(entity);
+    }
+
     public void save(String entityName, int id, Map<String, Object> values) {
         EntityType<?> type = entityTypeMap.get(entityName);
         save(type, id, values);
@@ -91,6 +100,17 @@ public class AdminService {
     private <T, X> void setAttr(SingularAttribute<T, X> attr, CriteriaUpdate<T> cu, Map<String, Object> values) {
         Expression<X> expr = emf.getCriteriaBuilder().literal(values.get(attr.getName())).as(attr.getJavaType());
         cu.set(attr, expr);
+    }
+
+    /**
+     * Deletes single entity with given class name and id
+     * TODO cascading
+     * @param entityName name of entity class
+     * @param id entity id
+     */
+    public void delete(String entityName, int id) {
+        EntityType<?> type = entityTypeMap.get(entityName);
+        em.remove(em.find(type.getJavaType(), id));
     }
 
     public Page query(String entityName, String str, Pageable pageable) {
@@ -125,6 +145,15 @@ public class AdminService {
 
         q.from(entityType);
         return em.createQuery(q);
+    }
+
+    private <T> T findAny(EntityType<T> type) {
+        CriteriaBuilder cb = emf.getCriteriaBuilder();
+        CriteriaQuery<T> q = cb.createQuery(type.getJavaType());
+
+        q.from(type);
+        TypedQuery<T> typedQuery = em.createQuery(q);
+        return typedQuery.setMaxResults(1).getSingleResult();
     }
 
 

@@ -10,7 +10,7 @@ import java.time.Instant;
  */
 @javax.persistence.Entity
 @Table(name = "buy_sells")
-public class BuySell extends Entity {
+public class BuySell {
 
     @Id
     @GeneratedValue

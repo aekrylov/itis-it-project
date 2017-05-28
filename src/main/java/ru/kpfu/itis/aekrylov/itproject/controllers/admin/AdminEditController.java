@@ -33,9 +33,7 @@ public class AdminEditController extends BaseAdminController {
     }
 
     @GetMapping
-    public String doGet(@RequestParam("table") String entityName, ModelMap map) {
-        map.put("action", "edit");
-        map.put("columns", adminService.getColumnNames(entityName));
+    public String doGet() {
         return "admin/create";
     }
 
