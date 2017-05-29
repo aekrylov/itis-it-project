@@ -37,7 +37,6 @@ public class AdminEditController extends BaseAdminController {
         return "admin/create";
     }
 
-    //todo
     @PostMapping
     public String doPost(@RequestParam Map<String, Object> values,
                           @RequestParam("id") int id, ModelMap modelMap) {

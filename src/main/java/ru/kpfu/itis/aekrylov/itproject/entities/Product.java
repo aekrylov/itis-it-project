@@ -1,9 +1,6 @@
 package ru.kpfu.itis.aekrylov.itproject.entities;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -15,7 +12,8 @@ public class Product {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
+    @Column(nullable = false)
     private String name;
     private int price;
     @Lob
@@ -31,11 +29,11 @@ public class Product {
     private int hdd_capacity;
     private String type;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

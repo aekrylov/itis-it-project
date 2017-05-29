@@ -16,16 +16,13 @@ import java.time.Instant;
 public class Message {
     @Id
     @GeneratedValue
-    private
-    int id;
+    private Integer id;
 
     @ManyToOne
-    private
-    User from;
+    private User from;
 
     @ManyToOne
-    private
-    User to;
+    private User to;
 
     private String text;
     private Timestamp timestamp = Timestamp.from(Instant.now());
@@ -67,7 +64,7 @@ public class Message {
         return timestamp;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -75,7 +72,7 @@ public class Message {
         return read;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

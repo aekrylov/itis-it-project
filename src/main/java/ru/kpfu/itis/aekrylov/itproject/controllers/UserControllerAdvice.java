@@ -23,11 +23,12 @@ public class UserControllerAdvice {
 
     @ModelAttribute("current_user")
     public User currentUser() {
-        return CommonHelpers.getCurrentUser();
+        User user = CommonHelpers.getCurrentUser();
+        return user;
     }
 
     @ModelAttribute("unread_count")
-    public int unreadCount(@ModelAttribute("current_user") User current_user) {
-        return chatService.getUnreadCount(current_user);
+    public int unreadCount() {
+        return chatService.getUnreadCount(CommonHelpers.getCurrentUser());
     }
 }

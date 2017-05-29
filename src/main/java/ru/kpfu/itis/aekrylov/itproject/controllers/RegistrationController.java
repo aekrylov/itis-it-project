@@ -44,12 +44,7 @@ public class RegistrationController {
             return "redirect:/register";
         }
 
-        //todo move to validator
-        if(!form.getPassword().equals(form.getPassword_repeat())) {
-            params.put("error", "password_match");
-            return "redirect:/register";
-        }
-        else if(userService.exists(form.getUsername())) {
+        if(userService.exists(form.getUsername())) {
             params.put("error", "username_taken");
             return "redirect:/register";
         }

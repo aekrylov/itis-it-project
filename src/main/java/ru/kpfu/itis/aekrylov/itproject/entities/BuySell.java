@@ -14,7 +14,7 @@ public class BuySell {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
 
     @ManyToOne
     private User buyer;
@@ -40,7 +40,7 @@ public class BuySell {
         this.timestamp = Timestamp.from(Instant.now());
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

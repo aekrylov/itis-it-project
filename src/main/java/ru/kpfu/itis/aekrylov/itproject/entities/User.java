@@ -15,7 +15,7 @@ public class User {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
     private String username;
     private String password;
 
@@ -36,7 +36,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<Post> posts;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -101,7 +101,7 @@ public class User {
         this.has_avatar = has_avatar;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

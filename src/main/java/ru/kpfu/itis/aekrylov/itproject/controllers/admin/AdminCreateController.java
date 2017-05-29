@@ -3,6 +3,7 @@ package ru.kpfu.itis.aekrylov.itproject.controllers.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.aekrylov.itproject.services.AdminService;
 
@@ -13,7 +14,6 @@ import java.util.Map;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 5/28/17 3:18 PM
  *
- * TODO
  */
 
 @Controller
@@ -46,7 +46,7 @@ public class AdminCreateController extends BaseAdminController {
     }
 
     @PostMapping
-    public String doPost(@ModelAttribute("example") @RequestParam Object entity) {
+    public String doPost(@ModelAttribute("example") Object entity, BindingResult result) {
         adminService.insert(entity);
         return "redirect:/admin";
     }

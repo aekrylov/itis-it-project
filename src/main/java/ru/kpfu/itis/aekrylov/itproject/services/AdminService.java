@@ -66,7 +66,12 @@ public class AdminService {
 
     public Object getExample(String entityName) {
         EntityType<?> type = entityTypeMap.get(entityName);
-        return findAny(type);
+        try {
+            return type.getJavaType().newInstance();
+        } catch (InstantiationException | IllegalAccessException e) { //all entities have default public constructor
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void insert(Object entity) {
@@ -78,18 +83,13 @@ public class AdminService {
         save(type, id, values);
     }
 
-    @SuppressWarnings("unchecked")
     private <T> void save(EntityType<T> type, int id, Map<String, Object> values) {
         CriteriaBuilder cb = emf.getCriteriaBuilder();
         CriteriaUpdate<T> cu = cb.createCriteriaUpdate(type.getJavaType());
         Root<T> root = cu.from(type);
 
         type.getSingularAttributes()
-                .forEach(attr -> {
-                    //cast attribute to the correct type
-                    Expression expr = cb.literal(values.get(attr.getName())).as(attr.getJavaType());
-                    cu.set(attr, expr);
-                });
+                .forEach(attr -> setAttr(attr, cu, values));
 
         cu.where(cb.equal(root.get("id"), id));
 
@@ -97,7 +97,15 @@ public class AdminService {
         tq.executeUpdate();
     }
 
-    private <T, X> void setAttr(SingularAttribute<T, X> attr, CriteriaUpdate<T> cu, Map<String, Object> values) {
+    /**
+     * Retrieves attribute values from a map, casts it to required type and adds a SET clause to cu
+     * @param attr attribute to set
+     * @param cu update query
+     * @param values map to get value from
+     * @param <T> type of entity
+     * @param <X> type of attribute
+     */
+    private <T, X> void setAttr(SingularAttribute<? super T, X> attr, CriteriaUpdate<T> cu, Map<String, Object> values) {
         Expression<X> expr = emf.getCriteriaBuilder().literal(values.get(attr.getName())).as(attr.getJavaType());
         cu.set(attr, expr);
     }
@@ -145,15 +153,6 @@ public class AdminService {
 
         q.from(entityType);
         return em.createQuery(q);
-    }
-
-    private <T> T findAny(EntityType<T> type) {
-        CriteriaBuilder cb = emf.getCriteriaBuilder();
-        CriteriaQuery<T> q = cb.createQuery(type.getJavaType());
-
-        q.from(type);
-        TypedQuery<T> typedQuery = em.createQuery(q);
-        return typedQuery.setMaxResults(1).getSingleResult();
     }
 
 

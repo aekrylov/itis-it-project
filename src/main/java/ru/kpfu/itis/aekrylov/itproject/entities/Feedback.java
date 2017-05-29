@@ -17,7 +17,7 @@ public class Feedback {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
 
     @OneToOne(mappedBy = "feedback")
     private BuySell buySell;
@@ -26,7 +26,7 @@ public class Feedback {
     private Timestamp date;
     private int score;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

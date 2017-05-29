@@ -2,6 +2,7 @@ package ru.kpfu.itis.aekrylov.itproject.forms;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.ScriptAssert;
 
 import javax.validation.constraints.Pattern;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.Pattern;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 5/12/17 6:07 PM
  */
+@ScriptAssert(script = "_this.password.equals(_this.password_repeat", lang = "javascript")
 public class RegistrationForm {
 
     @Pattern(regexp = "^[a-zA-Z0-9]{3,}$")
