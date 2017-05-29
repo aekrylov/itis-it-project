@@ -25,13 +25,6 @@ import ru.kpfu.itis.aekrylov.itproject.controllers.MainController;
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    @Bean
-    public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        resolver.setMaxUploadSize(2_500_000);
-        return resolver;
-    }
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");

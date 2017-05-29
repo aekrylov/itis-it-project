@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kpfu.itis.aekrylov.itproject.entities.Post;
 import ru.kpfu.itis.aekrylov.itproject.forms.FilterForm;
-import ru.kpfu.itis.aekrylov.itproject.models.misc.SimpleFilter;
 import ru.kpfu.itis.aekrylov.itproject.services.PostService;
 
 import java.util.List;
@@ -31,27 +30,18 @@ public class ItemsController {
     }
 
     @GetMapping
-    protected String doGet(@RequestParam FilterForm form, @RequestParam Map<String, String> map, ModelMap dataModel) {
-        SimpleFilter filter = new SimpleFilter();
+    protected String doGet(FilterForm form, @RequestParam Map<String, String> map, ModelMap dataModel) {
 
         if(map.get("filtered") != null) {
-            //todo more filters
             dataModel.put("filtered", true);
-            filter.addSignClause("type", "=", form.getType());
-            filter.addLikeClause("brand", form.getBrand());
-            filter.addLikeClause("model", form.getModel());
-            filter.addSignClause("price", ">", form.getPrice_low());
-            filter.addSignClause("price", "<", form.getPrice_high());
-            filter.addSignClause("cores", "=", form.getCores());
         }
         if(map.get("author") != null) {
             dataModel.put("filtered", true);
-            filter.addSignClause("user", "=", form.getAuthor());
         }
 
-        List<Post> posts = postService.getPosts(filter);
+        List<Post> posts = postService.getPosts(form);
         dataModel.put("posts", posts);
-        dataModel.put("params", map);
+        dataModel.put("params", form);
 
         return "product_list";
 

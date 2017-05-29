@@ -3,15 +3,12 @@ package ru.kpfu.itis.aekrylov.itproject.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kpfu.itis.aekrylov.itproject.entities.*;
-import ru.kpfu.itis.aekrylov.itproject.misc.NotFoundException;
-import ru.kpfu.itis.aekrylov.itproject.models.misc.SimpleFilter;
+import ru.kpfu.itis.aekrylov.itproject.forms.FilterForm;
 import ru.kpfu.itis.aekrylov.itproject.repositories.BuySellRepository;
 import ru.kpfu.itis.aekrylov.itproject.repositories.PostRepository;
 import ru.kpfu.itis.aekrylov.itproject.repositories.ProductRepository;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -42,9 +39,8 @@ public class PostService {
         return postRepository.findOne(id);
     }
 
-    public List<Post> getPosts(SimpleFilter filter) {  //todo
-        filter.setOrder("timestamp", false);
-        throw new RuntimeException("not implemented");
+    public List<Post> getPosts(FilterForm form) {
+        return postRepository.findAll(form);
     }
 
     public void sellProduct(User seller, User buyer, int post_id) {

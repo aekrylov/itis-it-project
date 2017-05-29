@@ -59,4 +59,8 @@ public class CommonHelpers {
         return ((UserPrincipal) principal).getUser();
     }
 
+    public static boolean isEmpty(String str) {
+        return (str == null || "".equals(str));
+    }
+
 }

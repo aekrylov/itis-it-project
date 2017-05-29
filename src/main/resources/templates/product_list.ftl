@@ -74,7 +74,7 @@
                          <select class="form-control input-sm" name="cores">
                              <option selected value></option>
                              <#list [1, 2, 4, 6,8,10,12,16] as i>
-                                 <option value="${i}">${i}</option>
+                                 <option <#if i==params.cores!-1> selected</#if> value="${i}">${i}</option>
                              </#list>
                          </select>
                           <#-- TODO
