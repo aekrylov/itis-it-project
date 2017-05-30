@@ -1,5 +1,7 @@
 package ru.kpfu.itis.aekrylov.itproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import java.util.List;
  */
 @javax.persistence.Entity
 @Table(name = "users")
+@JsonIgnoreProperties(value = {"posts", "password", "email"}, ignoreUnknown = true)
 public class User {
 
     @Id

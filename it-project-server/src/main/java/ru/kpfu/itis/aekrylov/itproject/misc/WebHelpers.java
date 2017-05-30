@@ -20,7 +20,7 @@ import java.util.Map;
  * Date: 10/19/16 8:14 PM
  * 11-501
  */
-public class CommonHelpers {
+public class WebHelpers {
     private static Map<String, String> errors = new HashMap<>();
     static {
         errors.put("password_match", "Passwords don't match");
@@ -57,10 +57,6 @@ public class CommonHelpers {
         if(!(principal instanceof UserPrincipal))
             return null;
         return ((UserPrincipal) principal).getUser();
-    }
-
-    public static boolean isEmpty(String str) {
-        return (str == null || "".equals(str));
     }
 
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
 import ru.kpfu.itis.aekrylov.itproject.forms.RegistrationForm;
-import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
+import ru.kpfu.itis.aekrylov.itproject.misc.WebHelpers;
 import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 
 import javax.servlet.ServletException;
@@ -63,7 +63,7 @@ public class RegistrationController {
     protected String doGet(ModelMap dataModel) throws ServletException, IOException {
         String errorCode = (String) dataModel.get("error");
         if(errorCode != null) {
-            dataModel.put("error", CommonHelpers.getErrorMessage(errorCode));
+            dataModel.put("error", WebHelpers.getErrorMessage(errorCode));
         }
         return "registration";
     }

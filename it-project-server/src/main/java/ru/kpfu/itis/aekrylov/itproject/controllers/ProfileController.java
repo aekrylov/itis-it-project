@@ -5,15 +5,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
-import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
+import ru.kpfu.itis.aekrylov.itproject.misc.WebHelpers;
 import ru.kpfu.itis.aekrylov.itproject.services.FeedbackService;
 import ru.kpfu.itis.aekrylov.itproject.services.PostService;
 import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -40,7 +36,7 @@ public class ProfileController {
     public String doGet(@RequestParam(value = "id", required = false) Integer id, ModelMap dataModel) {
         User user;
         if(id == null) {
-            user = CommonHelpers.getCurrentUser();
+            user = WebHelpers.getCurrentUser();
         } else {
             user = userService.get(id);
         }
@@ -49,7 +45,7 @@ public class ProfileController {
         dataModel.put("buy_sells", feedbackService.getRecentFeedbacks(user));
         dataModel.put("user", user);
 
-        if(user.equals(CommonHelpers.getCurrentUser())) {
+        if(user.equals(WebHelpers.getCurrentUser())) {
             dataModel.put("owner", true);
         }
 
@@ -58,8 +54,8 @@ public class ProfileController {
 
     @PostMapping
     protected String doPost(@RequestPart("image") MultipartFile image) throws IOException {
-        User user = CommonHelpers.getCurrentUser();
-        CommonHelpers.saveImage(Paths.get("users", String.valueOf(user.getId())), image);
+        User user = WebHelpers.getCurrentUser();
+        WebHelpers.saveImage(Paths.get("users", String.valueOf(user.getId())), image);
         user.setHas_avatar(true);
         userService.updateInfo(user);
         return "redirect:/user";

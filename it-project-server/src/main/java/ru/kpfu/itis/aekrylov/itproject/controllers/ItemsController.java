@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kpfu.itis.aekrylov.itproject.entities.Post;
-import ru.kpfu.itis.aekrylov.itproject.forms.FilterForm;
+import ru.kpfu.itis.aekrylov.itproject.forms.FilterSpecForm;
 import ru.kpfu.itis.aekrylov.itproject.services.PostService;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class ItemsController {
     }
 
     @GetMapping
-    protected String doGet(FilterForm form, @RequestParam Map<String, String> map, ModelMap dataModel) {
+    protected String doGet(FilterSpecForm form, @RequestParam Map<String, String> map, ModelMap dataModel) {
 
         if(map.get("filtered") != null) {
             dataModel.put("filtered", true);

@@ -2,7 +2,6 @@ package ru.kpfu.itis.aekrylov.itproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kpfu.itis.aekrylov.itproject.entities.Conversation;
 import ru.kpfu.itis.aekrylov.itproject.entities.Message;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;

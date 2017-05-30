@@ -1,7 +1,6 @@
 package ru.kpfu.itis.aekrylov.itproject.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
 
 /**

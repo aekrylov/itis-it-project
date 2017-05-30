@@ -9,7 +9,6 @@ import ru.kpfu.itis.aekrylov.itproject.repositories.BuySellRepository;
 import ru.kpfu.itis.aekrylov.itproject.repositories.FeedbackRepository;
 import ru.kpfu.itis.aekrylov.itproject.repositories.UserRepository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**

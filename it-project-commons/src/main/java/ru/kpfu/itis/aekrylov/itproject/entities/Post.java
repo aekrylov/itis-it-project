@@ -17,12 +17,10 @@ public class Post {
     int id;
 
     @ManyToOne(optional = false)
-    private
-    Product product;
+    private Product product;
 
     @ManyToOne(optional = false)
-    private
-    User user;
+    private User user;
 
     private Timestamp timestamp = Timestamp.from(Instant.now());
 

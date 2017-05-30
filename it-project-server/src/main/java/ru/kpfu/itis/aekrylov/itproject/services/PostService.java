@@ -1,9 +1,12 @@
 package ru.kpfu.itis.aekrylov.itproject.services;
 
+import ru.kpfu.itis.aekrylov.itproject.entities.BuySell;
+import ru.kpfu.itis.aekrylov.itproject.entities.Post;
+import ru.kpfu.itis.aekrylov.itproject.entities.Product;
+import ru.kpfu.itis.aekrylov.itproject.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.kpfu.itis.aekrylov.itproject.entities.*;
-import ru.kpfu.itis.aekrylov.itproject.forms.FilterForm;
+import ru.kpfu.itis.aekrylov.itproject.forms.FilterSpecForm;
 import ru.kpfu.itis.aekrylov.itproject.repositories.BuySellRepository;
 import ru.kpfu.itis.aekrylov.itproject.repositories.PostRepository;
 import ru.kpfu.itis.aekrylov.itproject.repositories.ProductRepository;
@@ -39,7 +42,7 @@ public class PostService {
         return postRepository.findOne(id);
     }
 
-    public List<Post> getPosts(FilterForm form) {
+    public List<Post> getPosts(FilterSpecForm form) {
         return postRepository.findAll(form);
     }
 

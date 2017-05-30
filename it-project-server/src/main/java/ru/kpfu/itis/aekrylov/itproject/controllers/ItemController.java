@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kpfu.itis.aekrylov.itproject.entities.Post;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
-import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
+import ru.kpfu.itis.aekrylov.itproject.misc.WebHelpers;
 import ru.kpfu.itis.aekrylov.itproject.services.PostService;
 import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 
@@ -39,7 +39,7 @@ public class ItemController {
     @GetMapping
     protected String doGet(@RequestParam("id") Integer id, ModelMap dataModel) throws ServletException, IOException {
         Post post = postService.getPost(id);
-        dataModel.put("isSeller", post.getUser().getId() == CommonHelpers.getCurrentUser().getId());
+        dataModel.put("isSeller", post.getUser().getId() == WebHelpers.getCurrentUser().getId());
         dataModel.put("post", post);
         dataModel.put("product", post.getProduct());
 
@@ -56,7 +56,7 @@ public class ItemController {
         switch (action) {
             case "sell":
                 User buyer = userService.get(map.get("buyer"));
-                User seller = CommonHelpers.getCurrentUser();
+                User seller = WebHelpers.getCurrentUser();
 
                 postService.sellProduct(seller, buyer, postId);
                 return "redirect:/items";

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kpfu.itis.aekrylov.itproject.entities.Post;
 import ru.kpfu.itis.aekrylov.itproject.entities.Product;
-import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
+import ru.kpfu.itis.aekrylov.itproject.misc.WebHelpers;
 import ru.kpfu.itis.aekrylov.itproject.services.PostService;
 
 import javax.servlet.ServletException;
@@ -43,10 +43,10 @@ public class ItemAddController {
     protected String doPost(Product product, @RequestParam("image")MultipartFile image) throws IOException {
         //add product and redirect to its page
         postService.createProduct(product);
-        Post post = new Post(product, CommonHelpers.getCurrentUser());
+        Post post = new Post(product, WebHelpers.getCurrentUser());
         postService.createPost(post);
 
-        CommonHelpers.saveImage(Paths.get("products", String.valueOf(product.getId()), "1"),
+        WebHelpers.saveImage(Paths.get("products", String.valueOf(product.getId()), "1"),
                 image);
 
         return "redirect:/item?id="+post.getId();

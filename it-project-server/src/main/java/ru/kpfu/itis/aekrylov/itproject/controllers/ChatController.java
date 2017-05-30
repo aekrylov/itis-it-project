@@ -6,7 +6,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.itis.aekrylov.itproject.entities.Message;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
-import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
+import ru.kpfu.itis.aekrylov.itproject.misc.WebHelpers;
 import ru.kpfu.itis.aekrylov.itproject.services.ChatService;
 import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 
@@ -32,14 +32,14 @@ public class ChatController {
 
     @PostMapping
     public String doPost(@PathVariable("uid") int to, @RequestParam("text") String text) {
-        chatService.sendMessage(CommonHelpers.getCurrentUser(), to, text);
+        chatService.sendMessage(WebHelpers.getCurrentUser(), to, text);
         return "redirect:/user/chat/"+to;
     }
 
 
     @GetMapping
     public String doGet(@PathVariable("uid") int to, ModelMap modelMap) {
-        User thisUser = CommonHelpers.getCurrentUser();
+        User thisUser = WebHelpers.getCurrentUser();
         User thatUser = userService.get(to);
 
         List<Message> messages = chatService.getConversation(thisUser, thatUser);

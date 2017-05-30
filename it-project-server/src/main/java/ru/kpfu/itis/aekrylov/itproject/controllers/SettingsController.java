@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
-import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
-import ru.kpfu.itis.aekrylov.itproject.misc.ValidationException;
+import ru.kpfu.itis.aekrylov.itproject.misc.WebHelpers;
 import ru.kpfu.itis.aekrylov.itproject.services.UserService;
 
-import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -37,7 +35,7 @@ public class SettingsController {
 
     @GetMapping
     protected String doGet(ModelMap dataModel) {
-        User user = CommonHelpers.getCurrentUser();
+        User user = WebHelpers.getCurrentUser();
         dataModel.put("user", user);
         return "settings";
     }
@@ -46,7 +44,7 @@ public class SettingsController {
     protected String doPost(@RequestParam Map<String, String> params, ModelMap modelMap) {
         String act =  params.get("act");
 
-        User user = CommonHelpers.getCurrentUser();
+        User user = WebHelpers.getCurrentUser();
         //user is never null due to web app structure
         //todo validation
         assert user != null;
@@ -65,9 +63,9 @@ public class SettingsController {
                 String new2 = params.get("password_new2");
 
                 if(!encoder.matches(old, user.getPassword())) {
-                    modelMap.put("error", CommonHelpers.getErrorMessage("password_invalid"));
+                    modelMap.put("error", WebHelpers.getErrorMessage("password_invalid"));
                 } else if(new1 == null || !new1.equals(new2)) {
-                    modelMap.put("error", CommonHelpers.getErrorMessage("password_match"));
+                    modelMap.put("error", WebHelpers.getErrorMessage("password_match"));
                 } else {
                     userService.updatePassword(user, new1);
                 }

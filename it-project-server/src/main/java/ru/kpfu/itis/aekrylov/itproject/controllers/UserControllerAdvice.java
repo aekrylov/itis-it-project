@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
-import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
+import ru.kpfu.itis.aekrylov.itproject.misc.WebHelpers;
 import ru.kpfu.itis.aekrylov.itproject.services.ChatService;
 
 /**
@@ -23,12 +23,12 @@ public class UserControllerAdvice {
 
     @ModelAttribute("current_user")
     public User currentUser() {
-        User user = CommonHelpers.getCurrentUser();
+        User user = WebHelpers.getCurrentUser();
         return user;
     }
 
     @ModelAttribute("unread_count")
     public int unreadCount() {
-        return chatService.getUnreadCount(CommonHelpers.getCurrentUser());
+        return chatService.getUnreadCount(WebHelpers.getCurrentUser());
     }
 }

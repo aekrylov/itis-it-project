@@ -6,15 +6,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
 import ru.kpfu.itis.aekrylov.itproject.forms.BuySellFeedbackForm;
-import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
+import ru.kpfu.itis.aekrylov.itproject.misc.WebHelpers;
 import ru.kpfu.itis.aekrylov.itproject.services.FeedbackService;
-
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -35,7 +30,7 @@ public class HistoryController {
     @GetMapping
     protected String doGet(ModelMap dataModel) {
         //get recent buy_sells
-        User user = CommonHelpers.getCurrentUser();
+        User user = WebHelpers.getCurrentUser();
 
         dataModel.put("sells", feedbackService.getRecentSells(user));
         dataModel.put("buys", feedbackService.getRecentBuys(user));

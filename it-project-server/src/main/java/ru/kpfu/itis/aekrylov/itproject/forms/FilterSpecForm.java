@@ -13,74 +13,7 @@ import static ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers.isEmpty;
  * By Anton Krylov (anthony.kryloff@gmail.com)
  * Date: 5/25/17 11:05 PM
  */
-public class FilterForm implements Specification<Post> {
-
-    private String type;
-    private String brand;
-    private String model;
-
-    //using wrappers here to check for nulls and avoid spring errors
-    private Integer price_low;
-    private Integer price_high;
-    private Integer cores;
-
-    private Integer author;
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public Integer getPrice_low() {
-        return price_low;
-    }
-
-    public void setPrice_low(Integer price_low) {
-        this.price_low = price_low;
-    }
-
-    public Integer getPrice_high() {
-        return price_high;
-    }
-
-    public void setPrice_high(Integer price_high) {
-        this.price_high = price_high;
-    }
-
-    public Integer getCores() {
-        return cores;
-    }
-
-    public void setCores(Integer cores) {
-        this.cores = cores;
-    }
-
-    public Integer getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Integer author) {
-        this.author = author;
-    }
+public class FilterSpecForm extends FilterForm implements Specification<Post> {
 
     @Override
     public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

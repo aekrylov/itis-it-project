@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers;
+import ru.kpfu.itis.aekrylov.itproject.misc.WebHelpers;
 import ru.kpfu.itis.aekrylov.itproject.services.ChatService;
 
 /**
@@ -27,7 +27,7 @@ public class ChatListController {
     @GetMapping
     public String doGet(ModelMap map) {
         //todo pagination
-        map.put("conversations", chatService.getConversations(CommonHelpers.getCurrentUser()));
+        map.put("conversations", chatService.getConversations(WebHelpers.getCurrentUser()));
         return "messages";
     }
 }

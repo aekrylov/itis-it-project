@@ -5,12 +5,18 @@
         <groupId>ru.kpfu.itis.aekrylov</groupId>
         <artifactId>it-project-parent</artifactId>
         <version>2.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>it-project-server</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
+
+        <dependency>
+            <groupId>ru.kpfu.itis.aekrylov</groupId>
+            <artifactId>it-project-commons</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
