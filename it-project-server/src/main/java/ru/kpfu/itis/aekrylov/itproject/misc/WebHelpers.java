@@ -1,17 +1,12 @@
 package ru.kpfu.itis.aekrylov.itproject.misc;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.multipart.MultipartFile;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
 import ru.kpfu.itis.aekrylov.itproject.security.UserPrincipal;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,22 +25,6 @@ public class WebHelpers {
         errors.put("username_taken", "Username already taken");
 
         errors.put("db", "Database error");
-    }
-
-    private static Path imageDir = Paths.get("/media/d/www/tmp/img/").toAbsolutePath();
-
-    public static void saveImage(Path name, InputStream stream) throws IOException {
-        Path absolutePath = imageDir.resolve(name);
-        Files.createDirectories(absolutePath.getParent());
-        Files.copy(stream, absolutePath, StandardCopyOption.REPLACE_EXISTING);
-    }
-
-    public static void saveImage(Path name, MultipartFile image) throws IOException {
-        saveImage(name, image.getInputStream());
-    }
-
-    public static File getImage(Path name) {
-        return imageDir.resolve(name).toAbsolutePath().toFile();
     }
 
     public static String getErrorMessage(String errorCode) {

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kpfu.itis.aekrylov.itproject.entities.Post;
 import ru.kpfu.itis.aekrylov.itproject.entities.Product;
+import ru.kpfu.itis.aekrylov.itproject.misc.HelperBean;
 import ru.kpfu.itis.aekrylov.itproject.misc.WebHelpers;
 import ru.kpfu.itis.aekrylov.itproject.services.PostService;
 
@@ -26,12 +27,13 @@ import java.nio.file.Paths;
 @RequestMapping("/item/add")
 public class ItemAddController {
 
-
     private PostService postService;
+    private HelperBean helperBean;
 
     @Autowired
-    public ItemAddController(PostService postService) {
+    public ItemAddController(PostService postService, HelperBean helperBean) {
         this.postService = postService;
+        this.helperBean = helperBean;
     }
 
     @GetMapping
@@ -42,12 +44,12 @@ public class ItemAddController {
     @PostMapping
     protected String doPost(Product product, @RequestParam("image")MultipartFile image) throws IOException {
         //add product and redirect to its page
+
+        product.setPhoto(helperBean.uploadImage(image));
+
         postService.createProduct(product);
         Post post = new Post(product, WebHelpers.getCurrentUser());
         postService.createPost(post);
-
-        WebHelpers.saveImage(Paths.get("products", String.valueOf(product.getId()), "1"),
-                image);
 
         return "redirect:/item?id="+post.getId();
     }

@@ -12,8 +12,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  * Date: 5/27/17 4:48 PM
  */
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class,
-        SecurityAutoConfiguration.class})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

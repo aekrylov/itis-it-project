@@ -5,6 +5,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
+import ru.kpfu.itis.aekrylov.itproject.misc.HelperBean;
 import ru.kpfu.itis.aekrylov.itproject.misc.WebHelpers;
 import ru.kpfu.itis.aekrylov.itproject.services.FeedbackService;
 import ru.kpfu.itis.aekrylov.itproject.services.PostService;
@@ -25,11 +26,13 @@ public class ProfileController {
     private UserService userService;
     private PostService postService;
     private FeedbackService feedbackService;
+    private HelperBean helperBean;
 
-    public ProfileController(UserService userService, PostService postService, FeedbackService feedbackService) {
+    public ProfileController(UserService userService, PostService postService, FeedbackService feedbackService, HelperBean helperBean) {
         this.userService = userService;
         this.postService = postService;
         this.feedbackService = feedbackService;
+        this.helperBean = helperBean;
     }
 
     @GetMapping
@@ -55,7 +58,7 @@ public class ProfileController {
     @PostMapping
     protected String doPost(@RequestPart("image") MultipartFile image) throws IOException {
         User user = WebHelpers.getCurrentUser();
-        WebHelpers.saveImage(Paths.get("users", String.valueOf(user.getId())), image);
+        user.setAvatarUrl(helperBean.uploadImage(image));
         user.setHas_avatar(true);
         userService.updateInfo(user);
         return "redirect:/user";

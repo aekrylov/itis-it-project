@@ -35,6 +35,7 @@ public class User {
     private String role = "USER";
 
     private boolean has_avatar = false;
+    private String avatarUrl;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<Post> posts;
@@ -143,4 +144,11 @@ public class User {
     public User() {
     }
 
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
 }

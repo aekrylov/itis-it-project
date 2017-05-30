@@ -2,6 +2,7 @@ package ru.kpfu.itis.aekrylov.itproject.controllers.ajax;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kpfu.itis.aekrylov.itproject.entities.Post;
@@ -27,7 +28,7 @@ public class ItemsAjaxController {
     }
 
     @PostMapping
-    public List<Post> doFilterPost(FilterSpecForm form) {
+    public List<Post> doFilterPost(@RequestBody FilterSpecForm form) {
         List<Post> posts = postService.getPosts(form);
         return posts;
     }
