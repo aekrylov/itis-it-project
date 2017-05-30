@@ -8,9 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.web.WebView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import ru.kpfu.itis.aekrylov.itproject.entities.Post;
@@ -18,7 +18,6 @@ import ru.kpfu.itis.aekrylov.itproject.forms.FilterForm;
 
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -33,7 +32,6 @@ import static ru.kpfu.itis.aekrylov.itproject.misc.CommonHelpers.isEmpty;
 
 @FXMLController
 public class MainController implements Initializable {
-    public WebView webView;
     public TextField tfBrand;
     public TextField tfModel;
 
@@ -47,8 +45,14 @@ public class MainController implements Initializable {
 
     private final ObservableList<Post> observablePosts = FXCollections.observableArrayList();
 
-    @Value("${app.post_base}")
-    private String postBase;
+    @Value("${app.ajax_base}")
+    private String ajaxBase;
+    private HelperBean helperBean;
+
+    @Autowired
+    public MainController(HelperBean helperBean) {
+        this.helperBean = helperBean;
+    }
 
     public void submitForm() {
         FilterForm form = new FilterForm();
@@ -63,13 +67,16 @@ public class MainController implements Initializable {
         if(!isEmpty(tfPriceHigh.getText()))
             form.setPrice_high(Integer.valueOf(tfPriceHigh.getText()));
 
-        ResponseEntity<Post[]> resp = restTemplate.postForEntity(URI.create(postBase).resolve("./items"), form, Post[].class);
+        ResponseEntity<Post[]> resp = restTemplate.postForEntity(URI.create(ajaxBase).resolve("./items"), form, Post[].class);
         List<Post> posts = Arrays.stream(resp.getBody()).collect(Collectors.toList());
         observablePosts.setAll(posts);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        StaticHelpers.itemUrl = helperBean.getItemUrl(); //todo ugly
+        StaticHelpers.hostServices = Client.getAppHostServices();
+
         postList.setItems(observablePosts);
         postList.setCellFactory(view -> new PostCell());
     }

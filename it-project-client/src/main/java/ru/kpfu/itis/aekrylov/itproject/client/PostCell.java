@@ -9,13 +9,14 @@ import ru.kpfu.itis.aekrylov.itproject.entities.Post;
  */
 public class PostCell extends ListCell<Post> {
 
+    private PostListItemView itemView = new PostListItemView();
+
     @Override
     protected void updateItem(Post item, boolean empty) {
         super.updateItem(item, empty);
 
         if(item != null) {
-            PostListItemView itemView = new PostListItemView(item);
-            //getChildren().add(itemView.getRoot());
+            itemView.setPost(item);
             setGraphic(itemView.getRoot());
         } else {
             setGraphic(null);
