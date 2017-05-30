@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="root" prefWidth="300" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="image" fitHeight="70.0" fitWidth="100.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" styleClass="post-list-image" />
+      <Hyperlink fx:id="header" layoutX="153.0" layoutY="14.0" styleClass="post-list-header" text="Hyperlink" />
+      <Label fx:id="price" layoutY="18.0" text="Label" AnchorPane.rightAnchor="10" />
+   </children>
+</AnchorPane>
