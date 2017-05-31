@@ -6,7 +6,8 @@
 
                 <h3>${user.name}</h3>
                 <div class="col-xs-12">
-                    <img src="<#if user.has_avatar>/files/users/${user.id}<#else>/static/img/avatar_default.png</#if>"
+                    <#-- TODO remove old avatars -->
+                    <img src="<#if user.has_avatar>${user.photo!"/files/users/${user.id}"}<#else>/static/img/avatar_default.png</#if>"
                          class="img-responsive" width="100%" />
                 </div>
 

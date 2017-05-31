@@ -56,11 +56,11 @@ public class ProfileController {
     }
 
     @PostMapping
-    protected String doPost(@RequestPart("image") MultipartFile image) throws IOException {
+    public String doPost(@RequestPart("image") MultipartFile image) throws IOException {
         User user = WebHelpers.getCurrentUser();
-        user.setAvatarUrl(helperBean.uploadImage(image));
+        user.setPhoto(helperBean.uploadImage(image));
         user.setHas_avatar(true);
-        userService.updateInfo(user);
+        userService.save(user);
         return "redirect:/user";
     }
 }

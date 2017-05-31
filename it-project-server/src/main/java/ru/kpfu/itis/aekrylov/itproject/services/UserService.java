@@ -26,12 +26,6 @@ public class UserService implements UserDetailsService {
         this.encoder = encoder;
     }
 
-    public boolean create(User user) {
-        user.setPassword(encoder.encode(user.getPassword_raw()));
-        userRepository.save(user);
-        return true;
-    }
-
     public User get(String username) {
         return userRepository.findByUsername(username);
     }
@@ -44,17 +38,15 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username) != null;
     }
 
-    public void updateInfo(User user) {
-        userRepository.save(user);
-    }
-
     public void updatePassword(User user, String newPassword) {
         user.setPassword(encoder.encode(newPassword));
         userRepository.save(user);
     }
 
-    public void updateAvatar(User user, boolean hasAvatar) {
-        user.setHas_avatar(hasAvatar);
+    public void save(User user) {
+        if(user.getPassword_raw() != null && !encoder.matches(user.getPassword_raw(), user.getPassword())) {
+            user.setPassword(encoder.encode(user.getPassword_raw()));
+        }
         userRepository.save(user);
     }
 

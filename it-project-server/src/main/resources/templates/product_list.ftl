@@ -138,7 +138,7 @@
 
                        <div class="row">
                            <div class="col-md-4 product-image">
-                               <img src="/files/products/${p.product.id}/1" width="100%" class="img-responsive"/>
+                               <@product_photo product />
                            </div>
 
                            <div class="col-md-8">

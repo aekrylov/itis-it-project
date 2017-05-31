@@ -55,7 +55,7 @@ public class RegistrationController {
         user.setName(form.getName());
         user.setUsername(form.getUsername());
 
-        userService.create(user);
+        userService.save(user);
         return "redirect:/";
     }
 

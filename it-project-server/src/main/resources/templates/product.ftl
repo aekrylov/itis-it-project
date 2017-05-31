@@ -15,7 +15,7 @@
 
             <#-- TODO -->
             <div class="fotorama">
-                <img src="/files/products/${product.id}/1" class="img-responsive">
+                <@product_photo product />
             </div>
 
             <h4>Описание:</h4>

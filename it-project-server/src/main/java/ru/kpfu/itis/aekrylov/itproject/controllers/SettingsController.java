@@ -54,7 +54,7 @@ public class SettingsController {
                 if(params.get("name") != null) user.setName(params.get("name"));
                 if(params.get("email") != null) user.setEmail(params.get("email"));
 
-                userService.updateInfo(user);
+                userService.save(user);
                 break;
 
             case "password":

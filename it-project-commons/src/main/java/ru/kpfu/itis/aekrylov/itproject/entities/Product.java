@@ -13,9 +13,11 @@ public class Product {
     @Id
     @GeneratedValue
     private Integer id;
+
     @Column(nullable = false)
     private String name;
     private int price;
+
     @Lob
     private String description;
     private String photo;
@@ -27,6 +29,8 @@ public class Product {
     private String video_card;
     private String hdd_name;
     private int hdd_capacity;
+
+    @Column(nullable = false)
     private String type;
 
     public Integer getId() {
@@ -139,6 +143,30 @@ public class Product {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+
+        Product product = (Product) o;
+
+        if (getId() != null ? !getId().equals(product.getId()) : product.getId() != null) return false;
+        if (!getName().equals(product.getName())) return false;
+        if (getBrand() != null ? !getBrand().equals(product.getBrand()) : product.getBrand() != null) return false;
+        if (getModel() != null ? !getModel().equals(product.getModel()) : product.getModel() != null) return false;
+        return getType().equals(product.getType());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + (getBrand() != null ? getBrand().hashCode() : 0);
+        result = 31 * result + (getModel() != null ? getModel().hashCode() : 0);
+        result = 31 * result + getType().hashCode();
+        return result;
     }
 }
 

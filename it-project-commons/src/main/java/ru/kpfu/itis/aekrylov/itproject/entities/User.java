@@ -19,6 +19,8 @@ public class User {
     @Id
     @GeneratedValue
     private Integer id;
+
+    @Column(unique = true)
     private String username;
     private String password;
 
@@ -35,7 +37,6 @@ public class User {
     private String role = "USER";
 
     private boolean has_avatar = false;
-    private String avatarUrl;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<Post> posts;
@@ -144,11 +145,19 @@ public class User {
     public User() {
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (getId() != null ? !getId().equals(user.getId()) : user.getId() != null) return false;
+        return getUsername().equals(user.getUsername());
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    @Override
+    public int hashCode() {
+        return getUsername().hashCode();
     }
 }

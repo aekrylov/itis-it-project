@@ -1,4 +1,10 @@
 <#ftl encoding='utf-8'>
+
+<#macro product_photo product>
+    <#-- TODO remove old avatars -->
+    <img src="${product.photo!'/files/products/${product.id}/1'}" class="img-responsive">
+</#macro>
+
 <#macro display title="Название компании">
 <!DOCTYPE html>
 <html lang="en">

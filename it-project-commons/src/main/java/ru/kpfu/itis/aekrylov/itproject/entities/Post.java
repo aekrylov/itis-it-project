@@ -13,8 +13,7 @@ import java.time.Instant;
 public class Post {
     @Id
     @GeneratedValue
-    private
-    int id;
+    private int id;
 
     @ManyToOne(optional = false)
     private Product product;
@@ -54,5 +53,25 @@ public class Post {
 
     public Timestamp getTimestamp() {
         return timestamp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Post)) return false;
+
+        Post post = (Post) o;
+
+        if (getId() != post.getId()) return false;
+        if (!getProduct().equals(post.getProduct())) return false;
+        return getTimestamp().equals(post.getTimestamp());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + getProduct().hashCode();
+        result = 31 * result + getTimestamp().hashCode();
+        return result;
     }
 }
