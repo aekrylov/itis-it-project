@@ -54,6 +54,8 @@ public class FeedbackService {
         userRepository.save(user);
 
         Feedback feedback = new Feedback(text, score);
+        feedback.setBuySell(bs);
+
         feedbackRepository.save(feedback);
         bs.setFeedback(feedback);
         buySellRepository.save(bs);

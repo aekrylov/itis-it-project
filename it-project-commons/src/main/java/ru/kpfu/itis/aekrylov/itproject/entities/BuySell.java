@@ -67,4 +67,24 @@ public class BuySell {
     public void setFeedback(Feedback feedback) {
         this.feedback = feedback;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
 }

@@ -65,4 +65,24 @@ public class Feedback {
     public void setBuySell(BuySell buySell) {
         this.buySell = buySell;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Feedback)) return false;
+
+        Feedback feedback = (Feedback) o;
+
+        if (getScore() != feedback.getScore()) return false;
+        if (getId() != null ? !getId().equals(feedback.getId()) : feedback.getId() != null) return false;
+        return getBuySell().equals(feedback.getBuySell());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + getBuySell().hashCode();
+        result = 31 * result + getScore();
+        return result;
+    }
 }

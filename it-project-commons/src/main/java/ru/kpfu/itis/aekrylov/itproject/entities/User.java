@@ -96,8 +96,8 @@ public class User {
     }
 
     public void addRating(int score) {
+        setRating((getRating() * getRate_count() + score) / (getRate_count() + 1));
         setRate_count(getRate_count() + 1);
-        setRating((rating * rate_count + score) / getRate_count());
     }
 
     public void setUsername(String username) {
