@@ -4,10 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.kpfu.itis.aekrylov.itproject.SpringBootTestProfile;
+import ru.kpfu.itis.aekrylov.itproject.NonWebTestProfile;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
 import ru.kpfu.itis.aekrylov.itproject.repositories.UserRepository;
 import ru.kpfu.itis.aekrylov.itproject.services.UserService;
@@ -20,7 +19,7 @@ import static org.junit.Assert.*;
  */
 
 @RunWith(SpringRunner.class) //RunWith can't be moved to meta annotations
-@SpringBootTestProfile
+@NonWebTestProfile
 public class UserServiceTest {
 
     private UserService userService;

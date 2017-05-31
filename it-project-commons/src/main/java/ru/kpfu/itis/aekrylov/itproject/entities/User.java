@@ -41,6 +41,20 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<Post> posts;
 
+    public User() {
+    }
+
+    public User(String username, String name, String email) {
+        this.username = username;
+        this.name = name;
+        this.email = email;
+    }
+
+    public User(int id, String username, String name, String email) {
+        this(username, name, email);
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -140,9 +154,6 @@ public class User {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
-    }
-
-    public User() {
     }
 
     @Override

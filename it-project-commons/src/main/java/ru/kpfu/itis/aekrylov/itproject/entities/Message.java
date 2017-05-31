@@ -32,6 +32,12 @@ public class Message {
     public Message() {
     }
 
+    public Message(User from, User to, String text) {
+        this.from = from;
+        this.to = to;
+        this.text = text;
+    }
+
     public Message(User from, User to, String text, Timestamp timestamp) {
         this.from = from;
         this.to = to;
@@ -94,5 +100,29 @@ public class Message {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Message)) return false;
+
+        Message message = (Message) o;
+
+        if (getId() != null ? !getId().equals(message.getId()) : message.getId() != null) return false;
+        if (!getFrom().equals(message.getFrom())) return false;
+        if (!getTo().equals(message.getTo())) return false;
+        if (!getText().equals(message.getText())) return false;
+        return getTimestamp().equals(message.getTimestamp());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + getFrom().hashCode();
+        result = 31 * result + getTo().hashCode();
+        result = 31 * result + getText().hashCode();
+        result = 31 * result + getTimestamp().hashCode();
+        return result;
     }
 }

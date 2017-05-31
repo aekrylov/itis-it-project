@@ -34,7 +34,7 @@ public class ChatService {
 
     public void sendMessage(User from, int to, String text) {
         messageRepository.save(
-                new Message(from, userRepository.findOne(to), text, Timestamp.from(Instant.now()))
+                new Message(from, userRepository.findOne(to), text)
         );
     }
 
