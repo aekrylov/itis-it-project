@@ -31,7 +31,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 
     @Query("select new ru.kpfu.itis.aekrylov.itproject.entities.Conversation(m.from, m.to, (" +
             "   select count(m1.id) from Message m1 " +
-            "   where m1.from in (m.from, m.to) and m1.to in (m.from, m.to) and m1.read = false" +
+            "   where m1.from in (m.from, m.to) and m1.to = :user and m1.read = false" +
             "), m)" +
             "from Message m " +
             "where m.timestamp = (select max(m2.timestamp) from Message m2" +
