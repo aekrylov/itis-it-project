@@ -138,7 +138,7 @@
 
                        <div class="row">
                            <div class="col-md-4 product-image">
-                               <@product_photo product />
+                               <@product_photo p.product />
                            </div>
 
                            <div class="col-md-8">

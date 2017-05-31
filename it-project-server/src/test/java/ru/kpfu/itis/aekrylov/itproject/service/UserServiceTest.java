@@ -26,8 +26,7 @@ public class UserServiceTest {
 
     private UserRepository repository;
 
-    @Autowired
-    private BCryptPasswordEncoder encoder;
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private User user1;
 

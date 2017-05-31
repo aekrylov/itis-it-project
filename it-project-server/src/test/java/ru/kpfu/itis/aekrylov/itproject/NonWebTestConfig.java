@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.*;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.test.context.ActiveProfiles;
 import ru.kpfu.itis.aekrylov.itproject.repositories.UserRepository;
@@ -27,8 +28,8 @@ import javax.sql.DataSource;
  */
 
 @SpringBootConfiguration
-@Import(ApplicationConfig.class)
 @ImportAutoConfiguration({DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
+@EnableJpaRepositories
 public class NonWebTestConfig {
 
 }

@@ -7,6 +7,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.kpfu.itis.aekrylov.itproject.NoContextTestProfile;
 import ru.kpfu.itis.aekrylov.itproject.NonWebTestProfile;
 import ru.kpfu.itis.aekrylov.itproject.entities.Message;
 import ru.kpfu.itis.aekrylov.itproject.entities.User;
@@ -25,7 +26,7 @@ import static org.mockito.Mockito.*;
  */
 
 @RunWith(SpringRunner.class)
-@NonWebTestProfile
+@NoContextTestProfile
 public class ChatServiceTest {
 
     private ChatService chatService;
@@ -39,12 +40,6 @@ public class ChatServiceTest {
     private User alice = new User(1, "alice", "Alice", "alice@ex.com");
     private User bob = new User(2, "bob", "bob", "bob@ex.com");
 
-/*
-    @Autowired
-    public void setMessageRepository(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
-    }
-*/
 
     @Before
     public void setUp() {
@@ -52,10 +47,6 @@ public class ChatServiceTest {
         when(userRepository.findOne(1)).thenReturn(alice);
         when(userRepository.findOne(2)).thenReturn(bob);
 
-/*
-        messageRepository.save(new Message(alice, bob, "A->B", Timestamp.from(Instant.now())));
-        messageRepository.save(new Message(bob, alice, "B->A", Timestamp.from(Instant.now().plusSeconds(5))));
-*/
     }
 
     @Test

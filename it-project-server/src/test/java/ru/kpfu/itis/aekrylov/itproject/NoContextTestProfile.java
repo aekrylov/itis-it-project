@@ -1,6 +1,7 @@
 package ru.kpfu.itis.aekrylov.itproject;
 
 import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * By Anton Krylov (anthony.kryloff@gmail.com)
@@ -10,5 +11,6 @@ import org.springframework.boot.SpringBootConfiguration;
  */
 
 @SpringBootConfiguration
+@ActiveProfiles("test")
 public @interface NoContextTestProfile {
 }
